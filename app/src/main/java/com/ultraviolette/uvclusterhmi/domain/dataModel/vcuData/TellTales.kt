@@ -1,0 +1,33 @@
+package com.ultraviolette.uvclusterhmi.domain.dataModel.vcuData
+
+data class TellTales(
+    val hillHold: Int = 0,
+    val motorTempIcon: Int = 0,
+    val absWarningLamp: Int = 0,
+    val mtcMode: Int = 0,
+    val mtcState: Int = 0,
+    val charger: Int = 0,
+    var rideMode: Int = 1,
+    val modeHover: Int = 0,
+    val milState: Int = 0,
+    val absMode: Int = 0,
+    val batteryError: Int = 0,
+    val batteryOverTemp: Int = 0,
+    val highBeam: Int = 0,
+    val indicatorLeft: Int = 0,
+    val indicatorRight: Int = 0,
+    val milIcon: Int = 0,
+    val motorArmed: Int = 0,
+    val otaPending: Int = 0,
+    val regenUnavailable: Int = 0,
+    val vehicleSpeed: Int = 0,
+    val batterySoc: Int = 0,
+    val hazardLamps: Int = 0,
+    val regenLevel: Int = 0,
+    val criticalMalfunction :Int = 0,
+    val radarIndicator : Int=0,
+    val motorNoArmCause : Int=0,
+    val availableRideModes : Int=0,
+    val thermalRunway : Int=0,
+    val reserved: Int = 0
+)

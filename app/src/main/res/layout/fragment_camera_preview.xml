@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".CameraPreviewFragment">
+    <ImageView
+        android:id="@+id/bgTopBar"
+        android:contentDescription="@string/top_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bg_setting_top_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvAdvanceFeatures"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="@string/advanced_features"
+        android:textColor="@color/white"
+        android:textFontWeight="500"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@id/bgTopBar"
+        app:layout_constraintStart_toStartOf="@id/bgTopBar"
+        app:layout_constraintTop_toTopOf="@id/bgTopBar" />
+
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.SfProTextView
+        android:id="@+id/tvBack"
+        android:layout_width="80dp"
+        android:layout_height="26dp"
+        android:layout_marginEnd="20dp"
+        android:drawableEnd="@drawable/ic_back"
+        android:text="@string/back"
+        android:textFontWeight="400"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/bgTopBar"
+        app:layout_constraintEnd_toEndOf="@+id/bgTopBar"
+        app:layout_constraintTop_toTopOf="@id/bgTopBar" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="1024dp"
+        android:layout_height="449dp"
+        app:layout_constraintTop_toBottomOf="@id/bgTopBar"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/image_camera"
+        >
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FONT"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="20.31dp"
+            android:textSize="32sp"
+            android:textFontWeight="400"
+            android:id="@+id/tvFont"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_camera_rotate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/ivCameraRotate"/>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

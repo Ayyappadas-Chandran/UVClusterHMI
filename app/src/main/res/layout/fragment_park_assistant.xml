@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ParkAssistantFragment">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clWithoutDashCam"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible">
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvReverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="400dp"
+            android:layout_marginTop="34dp"
+            android:text="reverse"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="52sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvSpeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
+            android:text="0 km/h"
+            android:textColor="@color/lockdownGrey"
+            android:textSize="31.sp"
+            app:layout_constraintEnd_toEndOf="@id/tvReverse"
+            app:layout_constraintStart_toStartOf="@id/tvReverse"
+            app:layout_constraintTop_toBottomOf="@id/tvReverse" />
+
+        <ImageView
+            android:id="@+id/ivParkAssistantLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:src="@drawable/bg_park_assistant_reverse_left"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivReverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:src="@drawable/ic_reverse"
+            app:layout_constraintEnd_toEndOf="@id/tvReverse"
+            app:layout_constraintStart_toStartOf="@id/tvReverse"
+            app:layout_constraintTop_toBottomOf="@id/tvSpeed" />
+
+
+        <ImageView
+            android:id="@+id/ivParkAssistantRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="729dp"
+            android:src="@drawable/bg_park_assistant_reverse_right"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivParkAssistantLeft" />
+
+        <TextView
+            android:id="@+id/tvSwitchDirection"
+            android:layout_width="213dp"
+            android:layout_height="30dp"
+            android:drawablePadding="16dp"
+            android:fontFamily="sans-serif"
+            android:text="Switch Direction"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            app:drawableStartCompat="@drawable/ic_switch_direction"
+            app:layout_constraintEnd_toEndOf="@id/tvReverse"
+            app:layout_constraintStart_toStartOf="@id/tvReverse"
+            app:layout_constraintTop_toBottomOf="@id/ivReverse" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clWithDashCam"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/ivBgDashCam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/image_dashcam_reverse"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvSpeed"
+            android:layout_width="91dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="13.47dp"
+            app:cardBackgroundColor="@color/blackTransparent"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="6dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+                    android:id="@+id/tvSpeedReverse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3 Km/h"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/clSwitchDirection"
+            android:layout_width="200dp"
+            android:layout_height="47dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="13.47dp"
+            android:layout_marginEnd="28dp"
+            app:cardBackgroundColor="@color/blackTransparent"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+                    android:id="@+id/tvSwitchDirectionDashCam"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_switch_direction"
+                    android:drawablePadding="6dp"
+                    android:text="Switch Direction"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <ImageView
+            android:id="@+id/ivReverseDashcam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:src="@drawable/ic_reverse_dashcam"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="reverse"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@id/ivReverseDashcam"
+            app:layout_constraintStart_toStartOf="@id/ivReverseDashcam"
+            app:layout_constraintTop_toBottomOf="@id/ivReverseDashcam" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

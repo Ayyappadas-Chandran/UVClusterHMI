@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.features.settings.data.DataFragment">
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="22dp"
+        android:textFontWeight="400"
+        android:text="@string/data"
+        android:textColor="@color/unSelectedTitle"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/llData"
+        android:layout_width="628dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_stroke"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        app:layout_constraintStart_toStartOf="@id/tvData"
+        app:layout_constraintTop_toBottomOf="@id/tvData">
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvDataOn"
+            android:layout_width="306dp"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:textFontWeight="500"
+            android:background="@color/activeSelectionRed"
+            android:gravity="center"
+            android:text="@string/on"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+        <ImageView
+            android:id="@+id/ivDataOnSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/on_selected"
+            android:src="@drawable/ic_selection"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/ivDataOffSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/off_selected"
+            android:rotation="180"
+            android:src="@drawable/ic_selection"
+            android:visibility="invisible" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvDataOff"
+            android:layout_width="306dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="8dp"
+            android:textFontWeight="500"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/off"
+            android:textColor="@color/unSelected"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvBugReportTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Bug Report"
+        android:textColor="@color/unSelectedTitle"
+        android:textFontWeight="400"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@id/tvData"
+        app:layout_constraintTop_toBottomOf="@id/llData" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tv_bug_report_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/unSelected"
+        android:textFontWeight="400"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@id/tvBugReportTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvBugReportTitle" />
+
+    <LinearLayout
+        android:id="@+id/llCollectLog"
+        android:layout_width="628dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_stroke"
+        android:padding="8dp"
+        app:layout_constraintStart_toStartOf="@id/tvBugReportTitle"
+        app:layout_constraintTop_toBottomOf="@id/tv_bug_report_message">
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvCollectLog"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/unSelected"
+            android:gravity="center"
+            android:text="Collect Log"
+            android:textFontWeight="500"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llSecondaryAction"
+        android:layout_width="628dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_stroke"
+        android:padding="8dp"
+        app:layout_constraintStart_toStartOf="@id/tvBugReportTitle"
+        app:layout_constraintTop_toBottomOf="@id/llCollectLog">
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvHabitatreset"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/unSelected"
+            android:gravity="center"
+            android:text="Upload Log"
+            android:textFontWeight="500"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

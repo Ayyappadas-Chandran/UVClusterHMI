@@ -1,0 +1,52 @@
+<resources>
+
+    <style name="Base.Theme.UVCluster" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/background</item>
+        <item name="primaryColor">@color/white</item>
+        <item name="secondaryColor">@color/black</item>
+        <item name="android:colorAccent">@color/white</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="appBackgroundColor">@color/white</item>
+        <item name="appTextColor">@color/black</item>
+        <item name="bgSide">@color/bgSideDay</item>
+        <item name="bgMode">@color/bgModeDay</item>
+        <item name="toolbarIcon">@color/backgroundDeselected</item>
+        <item name="toolbarCenter">@drawable/toolbar_center_day</item>
+        <item name="levelColor">@color/motorArmedGreyLight</item>
+        <item name ="pbBgColor">@color/greyMediumLight</item>
+        <item name ="bdpowerbar">@color/greylightpb</item>
+        <item name="regen4level">@color/levelGreyLight</item>
+
+    </style>
+
+    <style name="Theme.Launcher" parent="Base.Theme.UVCluster" />
+
+    <style name="Theme.Launcher.AppTrayActivity" parent="Theme.Launcher" />
+
+    <style name="Theme.Ballistic" parent="Base.Theme.UVCluster">
+        <item name="modeColor">@color/ballisticRed</item>
+    </style>
+
+    <style name="Theme.Combat" parent="Base.Theme.UVCluster">
+        <item name="modeColor">@color/combatBlue</item>
+    </style>
+
+    <style name="Theme.Glide" parent="Base.Theme.UVCluster">
+        <item name="modeColor">@color/glideGreen</item>
+    </style>
+    <style name="Theme.MotorArmed" parent="Base.Theme.UVCluster">
+        <item name ="modeColor">@color/levelGreyLight</item>
+    </style>
+
+    <style name="RegenSegment">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@drawable/bg_segment_inactive</item>
+    </style>
+
+
+</resources>
+
+
+

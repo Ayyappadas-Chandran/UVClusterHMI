@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clSoftwareUpdate"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.features.settings.systemUpdates.UpdateFragment">
+
+    <ImageView
+        android:id="@+id/ivTopBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/top_bar"
+        android:src="@drawable/bg_setting_top_bar"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvUpdating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="@string/updating"
+        android:textAllCaps="true"
+        android:textColor="@color/green"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@id/ivTopBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.DonutProgressView
+        android:id="@+id/pbUpdate"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:layout_marginTop="18dp"
+        app:layout_constraintEnd_toEndOf="@id/ivTopBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvUpdating" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvProgressValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="@id/pbUpdate"
+        app:layout_constraintEnd_toEndOf="@id/pbUpdate"
+        app:layout_constraintStart_toStartOf="@id/pbUpdate"
+        app:layout_constraintTop_toTopOf="@id/pbUpdate"
+        tools:text="100%" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvUpdateMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:textColor="@color/unSelectedTitle"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@id/ivTopBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pbUpdate"
+        tools:text="Please keep the vehicle parked and powered." />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

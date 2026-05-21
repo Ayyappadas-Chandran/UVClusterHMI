@@ -1,0 +1,1085 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/bgTopBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/top_bar"
+        android:src="@drawable/bg_setting_top_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvPerformance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:text="@string/performance"
+        android:textColor="@color/white"
+        android:textFontWeight="500"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@id/bgTopBar"
+        app:layout_constraintStart_toStartOf="@id/bgTopBar"
+        app:layout_constraintTop_toTopOf="@id/bgTopBar" />
+
+    <ImageView
+        android:id="@+id/ivBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:src="@drawable/ic_back"
+        app:layout_constraintBottom_toBottomOf="@id/bgTopBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/bgTopBar" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="270dp"
+        android:layout_height="36dp"
+        app:layout_constraintBottom_toBottomOf="@id/bgTopBar"
+        app:layout_constraintEnd_toEndOf="@id/bgTopBar"
+        app:layout_constraintTop_toTopOf="@id/bgTopBar">
+
+        <TextView
+            android:id="@+id/tvHoldo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="[hold]"
+            android:textAllCaps="true"
+            android:textColor="@color/greyWinterMode"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="toggle"
+            android:textAllCaps="true"
+            android:textColor="@color/greyMediumLight"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@id/tvHoldo"
+            app:layout_constraintTop_toTopOf="@id/tvHoldo" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_o"
+            app:layout_constraintEnd_toEndOf="@id/tvToggle"
+            app:layout_constraintStart_toStartOf="@id/tvHoldo"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tvHoldX"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="19dp"
+            android:fontFamily="sans-serif"
+            android:text="[hold]"
+            android:textAllCaps="true"
+            android:textColor="@color/greyWinterMode"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvToggle" />
+
+        <TextView
+            android:id="@+id/tvToggleX"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="toggle"
+            android:textAllCaps="true"
+            android:textColor="@color/greyMediumLight"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@id/tvHoldX"
+            app:layout_constraintTop_toTopOf="@id/tvHoldX" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/iv_square"
+            app:layout_constraintEnd_toEndOf="@id/tvToggleX"
+            app:layout_constraintStart_toStartOf="@id/tvHoldX"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvNavigate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/navigate"
+            android:textAllCaps="true"
+            android:textColor="@color/greyMediumLight"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvToggleX"
+            app:layout_constraintStart_toEndOf="@id/tvToggleX"
+            app:layout_constraintTop_toTopOf="@id/tvToggleX" />
+
+        <ImageView
+            android:id="@+id/tvExpand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_expand_all"
+            app:layout_constraintEnd_toEndOf="@id/tvNavigate"
+            app:layout_constraintStart_toStartOf="@id/tvNavigate"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintTop_toBottomOf="@id/bgTopBar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clPerformance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="180dp">
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvSurgeMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:text="Ballistic Plus"
+                android:textColor="@color/unSelectedTitle"
+                android:textFontWeight="400"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/llSurgeMode"
+                android:layout_width="976dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_stroke"
+                app:layout_constraintStart_toStartOf="@id/tvRegenModes"
+                app:layout_constraintTop_toBottomOf="@id/tvSurgeMode">
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvSurgeModeOff"
+                    android:layout_width="480dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="8dp"
+                    android:gravity="center"
+                    android:text="@string/off"
+                    android:textColor="@color/unSelected"
+                    android:textFontWeight="500"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivSurgeModeOffSelect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="@string/hill_hold_on_select"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvSurgeModeOff"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivSurgeModeOnSelect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/hill_hold_off_select"
+                    android:rotation="180"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvSurgeModeOn"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvSurgeModeOn"
+                    android:layout_width="480dp"
+                    android:layout_height="64dp"
+                    android:gravity="center"
+                    android:text="@string/on"
+                    android:textColor="@color/unSelected"
+                    android:textFontWeight="500"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvSurgeModeOff"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvRegenModes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/regen_modes"
+                android:textColor="@color/unSelectedTitle"
+                android:textFontWeight="500"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llSurgeMode" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/llRegenModes"
+                android:layout_width="976dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="16sp"
+                android:background="@drawable/bg_stroke"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                app:layout_constraintStart_toStartOf="@id/tvRegenModes"
+                app:layout_constraintTop_toBottomOf="@id/tvRegenModes">
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvTenLevels"
+                    android:layout_width="480dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@color/activeSelectionRed"
+                    android:gravity="center"
+                    android:text="@string/_10_levels"
+                    android:textColor="@color/white"
+                    android:textFontWeight="500"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivTenLevelsSelect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="@string/ten_level_select"
+                    android:src="@drawable/ic_selection"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvTenLevels"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivFourLevelsSelect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/four_level_select"
+                    android:rotation="180"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvFourLevels"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvFourLevels"
+                    android:layout_width="480dp"
+                    android:layout_height="64dp"
+                    android:gravity="center"
+                    android:text="@string/_04_levels"
+                    android:textColor="@color/unSelected"
+                    android:textFontWeight="500"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvTenLevels"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clRegen"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/tvRegenModes"
+                app:layout_constraintTop_toBottomOf="@id/llRegenModes">
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvRegen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/regen"
+                    android:textColor="@color/unSelectedTitle"
+                    android:textFontWeight="500"
+                    android:textSize="24sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvRegenValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:textColor="@color/white"
+                    android:textFontWeight="500"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tvRegen"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tvRegen"
+                    tools:text="R3" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clRegenLevelFour"
+                    android:layout_width="976dp"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/bg_stroke"
+                    android:gravity="center"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvRegen">
+
+                    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                        android:id="@+id/tvR0"
+                        android:layout_width="240dp"
+                        android:layout_height="64dp"
+                        android:layout_marginStart="8dp"
+                        android:gravity="center"
+                        android:text="@string/r0"
+                        android:textColor="@color/unSelected"
+                        android:textFontWeight="500"
+                        android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/ivR0Select"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:contentDescription="@string/r0_select"
+                        android:src="@drawable/ic_selection"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tvR0"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/ivR3SelectLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription="@string/r3_select"
+                        android:rotation="180"
+                        android:src="@drawable/ic_selection"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tvR3"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                        android:id="@+id/tvR3"
+                        android:layout_width="240dp"
+                        android:layout_height="64dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/r3"
+                        android:textColor="@color/unSelected"
+                        android:textFontWeight="500"
+                        android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tvR0"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/ivR3SelectRight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:contentDescription="@string/r3_select"
+                        android:src="@drawable/ic_selection"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tvR3"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/ivR6SelectLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription="@string/r6_select"
+                        android:rotation="180"
+                        android:src="@drawable/ic_selection"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tvR6"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                        android:id="@+id/tvR6"
+                        android:layout_width="240dp"
+                        android:layout_height="64dp"
+                        android:gravity="center"
+                        android:text="@string/r6"
+                        android:textColor="@color/unSelected"
+                        android:textFontWeight="500"
+                        android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tvR3"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/ivR6SelectRight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:contentDescription="@string/r6_select"
+                        android:src="@drawable/ic_selection"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tvR6"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/ivR9Select"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription="@string/r9_select"
+                        android:rotation="180"
+                        android:src="@drawable/ic_selection"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tvR9"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                        android:id="@+id/tvR9"
+                        android:layout_width="240dp"
+                        android:layout_height="64dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/r9"
+                        android:textColor="@color/unSelected"
+                        android:textFontWeight="500"
+                        android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tvR6"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clRegenLevelTen"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/bg_stroke"
+                    android:padding="8dp"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvRegen">
+
+                    <View
+                        android:id="@+id/vRegenLevel1"
+                        style="@style/RegenSegment"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/vRegenLevel2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/vDivideRegen1"
+                        android:layout_width="1dp"
+                        android:layout_height="56dp"
+                        android:background="@color/greyLight"
+                        android:translationZ="90dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/vRegenLevel1"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/vRegenLevel2"
+                        style="@style/RegenSegment"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/vRegenLevel3"
+                        app:layout_constraintStart_toEndOf="@id/vRegenLevel1"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/vDivideRegen2"
+                        android:layout_width="1dp"
+                        android:layout_height="56dp"
+                        android:background="@color/greyLight"
+                        android:translationZ="90dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/vRegenLevel2"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/vRegenLevel3"
+                        style="@style/RegenSegment"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/vRegenLevel4"
+                        app:layout_constraintStart_toEndOf="@id/vRegenLevel2"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/vDivideRegen3"
+                        android:layout_width="1dp"
+                        android:layout_height="56dp"
+                        android:background="@color/greyLight"
+                        android:translationZ="90dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/vRegenLevel3"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/vRegenLevel4"
+                        style="@style/RegenSegment"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/vRegenLevel5"
+                        app:layout_constraintStart_toEndOf="@id/vRegenLevel3"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/vDivideRegen4"
+                        android:layout_width="1dp"
+                        android:layout_height="56dp"
+                        android:background="@color/greyLight"
+                        android:translationZ="90dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/vRegenLevel4"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/vRegenLevel5"
+                        style="@style/RegenSegment"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/vRegenLevel6"
+                        app:layout_constraintStart_toEndOf="@id/vRegenLevel4"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/vDivideRegen5"
+                        android:layout_width="1dp"
+                        android:layout_height="56dp"
+                        android:background="@color/greyLight"
+                        android:translationZ="90dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/vRegenLevel5"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/vRegenLevel6"
+                        style="@style/RegenSegment"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/vRegenLevel7"
+                        app:layout_constraintStart_toEndOf="@id/vRegenLevel5"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/vDivideRegen6"
+                        android:layout_width="1dp"
+                        android:layout_height="56dp"
+                        android:background="@color/greyLight"
+                        android:translationZ="90dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/vRegenLevel6"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/vRegenLevel7"
+                        style="@style/RegenSegment"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/vRegenLevel8"
+                        app:layout_constraintStart_toEndOf="@id/vRegenLevel6"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/vDivideRegen7"
+                        android:layout_width="1dp"
+                        android:layout_height="56dp"
+                        android:background="@color/greyLight"
+                        android:translationZ="90dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/vRegenLevel7"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/vRegenLevel8"
+                        style="@style/RegenSegment"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/vRegenLevel9"
+                        app:layout_constraintStart_toEndOf="@id/vRegenLevel7"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/vDivideRegen8"
+                        android:layout_width="1dp"
+                        android:layout_height="56dp"
+                        android:background="@color/greyLight"
+                        android:translationZ="90dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/vRegenLevel8"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/vRegenLevel9"
+                        style="@style/RegenSegment"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/vRegenLevel8"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.helper.widget.Flow
+                        android:id="@+id/flowRegen"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:constraint_referenced_ids="vRegenLevel1,vRegenLevel2,vRegenLevel3,vRegenLevel4,vRegenLevel5,vRegenLevel6,vRegenLevel7,vRegenLevel8,vRegenLevel9"
+                        app:flow_wrapMode="none"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/ivThumbView"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:contentDescription="@string/thumb_ten_level"
+                        android:src="@drawable/thumb_regen"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatSeekBar
+                        android:id="@+id/sbRegenLevel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:max="9"
+                        android:padding="0dp"
+                        android:progress="0"
+                        android:progressDrawable="@android:color/transparent"
+                        android:thumbTint="@android:color/transparent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvHillHold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/hill_hold"
+                android:textColor="@color/unSelectedTitle"
+                android:textFontWeight="400"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="@id/tvRegenModes"
+                app:layout_constraintTop_toBottomOf="@id/clRegen" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/llHillHold"
+                android:layout_width="976dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_stroke"
+                app:layout_constraintStart_toStartOf="@id/tvHillHold"
+                app:layout_constraintTop_toBottomOf="@id/tvHillHold">
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvHillHoldOff"
+                    android:layout_width="480dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="8dp"
+                    android:gravity="center"
+                    android:text="@string/off"
+                    android:textColor="@color/unSelected"
+                    android:textFontWeight="500"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivHillHoldOffSelect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="@string/hill_hold_on_select"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvHillHoldOff"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivHillHoldOnSelect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/hill_hold_off_select"
+                    android:rotation="180"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvHillHoldOn"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvHillHoldOn"
+                    android:layout_width="480dp"
+                    android:layout_height="64dp"
+                    android:gravity="center"
+                    android:text="@string/on"
+                    android:textColor="@color/unSelected"
+                    android:textFontWeight="500"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvHillHoldOff"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvAbsCustom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/abs"
+                android:textColor="@color/unSelectedTitle"
+                android:textFontWeight="400"
+                android:textSize="24sp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintStart_toStartOf="@id/llHillHold"
+                app:layout_constraintTop_toBottomOf="@id/llHillHold" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/llAbs"
+                android:layout_width="976dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_stroke"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="@id/tvAbsCustom"
+                app:layout_constraintTop_toBottomOf="@id/tvAbsCustom">
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvDualAbsCustom"
+                    android:layout_width="480dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="8dp"
+                    android:gravity="center"
+                    android:text="@string/dual"
+                    android:textColor="@color/unSelected"
+                    android:textFontWeight="500"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivDualSelect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="@string/abs_dual_select"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvDualAbsCustom"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivMonoSelect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/mono_abs_select"
+                    android:rotation="180"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvMonoAbsCustom"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvMonoAbsCustom"
+                    android:layout_width="480dp"
+                    android:layout_height="64dp"
+                    android:gravity="center"
+                    android:text="@string/mono"
+                    android:textColor="@color/unSelected"
+                    android:textFontWeight="500"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvDualAbsCustom"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvCruise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cruise_control"
+                android:textColor="@color/unSelectedTitle"
+                android:textFontWeight="400"
+                android:textSize="24sp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintStart_toStartOf="@id/llAbs"
+                app:layout_constraintTop_toBottomOf="@id/llAbs" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/llCruise"
+                android:layout_width="976dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_stroke"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="@id/tvCruise"
+                app:layout_constraintTop_toBottomOf="@id/tvCruise">
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvCruiseOff"
+                    android:layout_width="480dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="8dp"
+                    android:gravity="center"
+                    android:text="@string/off"
+                    android:textColor="@color/unSelected"
+                    android:textFontWeight="500"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivCruiseSelectOn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="@string/cruise_off_select"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvCruiseOff"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivCruiseSelectOff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/cruise_on_select"
+                    android:rotation="180"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvCruiseOn"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvCruiseOn"
+                    android:layout_width="480dp"
+                    android:layout_height="64dp"
+                    android:gravity="center"
+                    android:text="@string/on"
+                    android:textColor="@color/unSelected"
+                    android:textFontWeight="500"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvCruiseOff"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvTractionControlCustom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/traction_control"
+                android:textAllCaps="true"
+                android:textColor="@color/unSelectedTitle"
+                android:textFontWeight="400"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="@id/llCruise"
+                app:layout_constraintTop_toBottomOf="@id/llCruise" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/llTractionControl"
+                android:layout_width="976dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_stroke"
+                android:padding="8dp"
+                app:layout_constraintStart_toStartOf="@id/tvCruiseOn"
+                app:layout_constraintTop_toBottomOf="@id/tvTractionControlCustom">
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvTcOff"
+                    android:layout_width="240dp"
+                    android:layout_height="64dp"
+                    android:gravity="center"
+                    android:text="@string/off"
+                    android:textColor="@color/unSelected"
+                    android:textFontWeight="500"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivTcOffSelect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="@string/traction_control_off_select"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvTcOff"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivTc1SelectLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/tc1_select"
+                    android:rotation="180"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvTc1"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvTc1"
+                    android:layout_width="240dp"
+                    android:layout_height="64dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/tc1"
+                    android:textColor="@color/unSelected"
+                    android:textFontWeight="500"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvTcOff"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivTc1SelectRight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="@string/tc1_select"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvTc1"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivTc2SelectLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/tc2_select"
+                    android:rotation="180"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvTc2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvTc2"
+                    android:layout_width="240dp"
+                    android:layout_height="64dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/tc2"
+                    android:textColor="@color/unSelected"
+                    android:textFontWeight="500"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvTc1"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivTc2SelectRight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="@string/tc2_select"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvTc2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivTc3Select"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/tc3_select"
+                    android:rotation="180"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvTc3"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvTc3"
+                    android:layout_width="240dp"
+                    android:layout_height="64dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/tc3"
+                    android:textColor="@color/unSelected"
+                    android:textFontWeight="500"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvTc2"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+

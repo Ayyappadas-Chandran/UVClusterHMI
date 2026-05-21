@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ClDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="22dp"
+        android:background="@color/background"
+        tools:context=".ui.features.settings.display.DisplayFragment">
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvBrightness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/brightness"
+            android:textFontWeight="400"
+            android:textColor="@color/unSelectedTitle"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/llBrightness"
+            android:layout_width="628dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_stroke"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            app:layout_constraintStart_toStartOf="@id/tvBrightness"
+            app:layout_constraintTop_toBottomOf="@id/tvBrightness">
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvAutoBrightness"
+                android:layout_width="306dp"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:textFontWeight="500"
+                android:background="@color/backgroundDeselected"
+                android:gravity="center"
+                android:text="@string/auto"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+
+            <ImageView
+                android:id="@+id/ivAutoBrightnessSelected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/auto_brightness_selected"
+                android:src="@drawable/ic_selection"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/ivManualBrightnessSelected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/manual_brightness_selected"
+                android:rotation="180"
+                android:src="@drawable/ic_selection"
+                android:visibility="invisible" />
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvManualBrightness"
+                android:layout_width="306dp"
+                android:layout_height="68dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:textFontWeight="500"
+                android:gravity="center"
+                android:text="@string/manual"
+                android:textColor="@color/unSelected"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvAdjustBrightness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:textFontWeight="400"
+            android:text="@string/adjust_brightness"
+            android:textColor="@color/unSelectedTitle"
+            android:textSize="24sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llBrightness" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvBrightnessLevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textFontWeight="500"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/tvAdjustBrightness"
+            app:layout_constraintEnd_toEndOf="@id/llBrightnessBar"
+            app:layout_constraintTop_toTopOf="@id/tvAdjustBrightness"
+            tools:text="45%" />
+
+        <LinearLayout
+            android:id="@+id/llBrightnessBar"
+            android:layout_width="628dp"
+            android:layout_height="80dp"
+            android:padding="8dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_stroke"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAdjustBrightness">
+
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/sbBrightness"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="0dp"
+                android:max="100"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:progress="45"
+                android:thumb="@drawable/thumb_grey"
+                android:progressDrawable="@drawable/progress_indicator_grey" />
+        </LinearLayout>
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:textFontWeight="400"
+            android:text="@string/mode"
+            android:textColor="@color/unSelectedTitle"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llBrightnessBar" />
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvMode">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/llMode"
+                android:layout_width="934dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/bg_stroke">
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvModeAuto"
+                    android:layout_width="306dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="8dp"
+                    android:textFontWeight="500"
+                    android:background="@color/backgroundDeselected"
+                    android:gravity="center"
+                    android:text="@string/auto"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivAutoModeSelected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="@string/mode_auto_selected"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@id/tvModeAuto"
+                    app:layout_constraintStart_toEndOf="@id/tvModeAuto"
+                    app:layout_constraintTop_toTopOf="@id/tvModeAuto" />
+
+                <ImageView
+                    android:id="@+id/ivDaySelectedLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/day_mode_selected"
+                    android:rotation="180"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvModeDay"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvModeDay"
+                    android:layout_width="306dp"
+                    android:layout_height="64dp"
+                    android:gravity="center"
+                    android:text="@string/day"
+                    android:textSize="24sp"
+                    android:textFontWeight="500"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvModeAuto"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivDaySelectedRight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="@string/day_mode_selected"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvModeDay"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivNightSelected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/night_mode_selected"
+                    android:rotation="180"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvModeNight"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvModeNight"
+                    android:layout_width="306dp"
+                    android:layout_height="64dp"
+                    android:gravity="center"
+                    android:text="@string/night"
+                    android:textSize="24sp"
+                    android:textFontWeight="500"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvModeDay"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </HorizontalScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

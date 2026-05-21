@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvRadar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="22dp"
+            android:text="@string/radar"
+            android:textColor="@color/unSelected"
+            android:textFontWeight="400"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/llRadar"
+            android:layout_width="628dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_stroke"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            app:layout_constraintStart_toStartOf="@id/tvRadar"
+            app:layout_constraintTop_toBottomOf="@id/tvRadar">
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvRadarOn"
+                android:layout_width="306dp"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:background="@color/activeSelectionRed"
+                android:gravity="center"
+                android:text="@string/on"
+                android:textColor="@color/white"
+                android:textFontWeight="500"
+                android:textSize="24sp" />
+
+            <ImageView
+                android:id="@+id/ivRadarOnSelected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/radar_on_select"
+                android:src="@drawable/ic_selection"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/ivRadarOffSelected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/radar_off_select"
+                android:rotation="180"
+                android:src="@drawable/ic_selection"
+                android:visibility="invisible" />
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvRadarOff"
+                android:layout_width="306dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/off"
+                android:textColor="@color/unSelected"
+                android:textFontWeight="500"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clRadarOn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@id/llRadar"
+            app:layout_constraintTop_toBottomOf="@id/llRadar">
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvConsoleAlerts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/console_alerts"
+                android:textColor="@color/unSelected"
+                android:textFontWeight="400"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/llConsoleAlert"
+                android:layout_width="628dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_stroke"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                app:layout_constraintStart_toStartOf="@id/tvConsoleAlerts"
+                app:layout_constraintTop_toBottomOf="@id/tvConsoleAlerts">
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvConsoleAlertsOn"
+                    android:layout_width="306dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:background="@color/backgroundDeselected"
+                    android:gravity="center"
+                    android:text="@string/on"
+                    android:textColor="@color/white"
+                    android:textFontWeight="500"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:id="@+id/ivConsoleAlertsOnSelected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/console_alert_on_select"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible" />
+
+                <ImageView
+                    android:id="@+id/ivConsoleAlertsOffSelected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/console_alert_off_select"
+                    android:rotation="180"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible" />
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvConsoleAlertsOff"
+                    android:layout_width="306dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/off"
+                    android:textColor="@color/unSelected"
+                    android:textFontWeight="500"
+                    android:textSize="24sp" />
+            </LinearLayout>
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvMirrorAlerts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/mirror_alerts"
+                android:textColor="@color/unSelected"
+                android:textFontWeight="400"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llConsoleAlert"
+                android:visibility="invisible"/>
+
+            <LinearLayout
+                android:id="@+id/llMirrorAlert"
+                android:layout_width="628dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_stroke"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                app:layout_constraintStart_toStartOf="@id/tvMirrorAlerts"
+                app:layout_constraintTop_toBottomOf="@id/tvMirrorAlerts"
+                android:visibility="invisible">
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvMirrorAlertsOn"
+                    android:layout_width="306dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:background="@color/backgroundDeselected"
+                    android:gravity="center"
+                    android:text="@string/on"
+                    android:textColor="@color/white"
+                    android:textFontWeight="500"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:id="@+id/ivMirrorAlertsOnSelected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/mirror_alert_on_select"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible" />
+
+                <ImageView
+                    android:id="@+id/ivMirrorAlertsOffSelected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/mirror_alert_off_select"
+                    android:rotation="180"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible" />
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvMirrorAlertsOff"
+                    android:layout_width="306dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/off"
+                    android:textColor="@color/unSelected"
+                    android:textFontWeight="500"
+                    android:textSize="24sp" />
+            </LinearLayout>
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvAudioAlerts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/audio_alerts"
+                android:textColor="@color/unSelected"
+                android:textFontWeight="500"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llMirrorAlert"
+                android:visibility="invisible"/>
+
+            <LinearLayout
+                android:id="@+id/llAudioAlert"
+                android:layout_width="628dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_stroke"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                app:layout_constraintStart_toStartOf="@id/tvAudioAlerts"
+                app:layout_constraintTop_toBottomOf="@id/tvAudioAlerts"
+                android:visibility="invisible">
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvAudioAlertsOn"
+                    android:layout_width="306dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:background="@color/backgroundDeselected"
+                    android:gravity="center"
+                    android:text="@string/on"
+                    android:textColor="@color/white"
+                    android:textFontWeight="500"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:id="@+id/ivAudioAlertsOnSelected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/audio_alert_on_select"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible" />
+
+                <ImageView
+                    android:id="@+id/ivAudioAlertsOffSelected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/audio_alert_off_select"
+                    android:rotation="180"
+                    android:src="@drawable/ic_selection"
+                    android:visibility="invisible" />
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvAudioAlertsOff"
+                    android:layout_width="306dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/off"
+                    android:textColor="@color/unSelected"
+                    android:textFontWeight="500"
+                    android:textSize="24sp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
+

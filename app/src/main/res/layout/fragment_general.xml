@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:id="@+id/scrollView"
+    tools:context=".ui.features.settings.general.GeneralFragment">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clGeneral"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="22dp"
+        android:paddingBottom="50dp">
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvDateAndTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/date_tnd_time"
+            android:textColor="@color/unSelectedTitle"
+            android:textFontWeight="400"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/llDateAndTime"
+            android:layout_width="628dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_stroke"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            app:layout_constraintStart_toStartOf="@id/tvDateAndTime"
+            app:layout_constraintTop_toBottomOf="@id/tvDateAndTime">
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvAutoTimeZone"
+                android:layout_width="306dp"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:background="@color/activeSelectionRed"
+                android:gravity="center"
+                android:text="@string/auto"
+                android:textColor="@color/white"
+                android:textFontWeight="500"
+                android:textSize="24sp" />
+
+            <ImageView
+                android:id="@+id/ivAutoTimeZoneSelected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/auto_time_zone_selected"
+                android:src="@drawable/ic_selection"
+                android:visibility="invisible" />
+
+
+            <ImageView
+                android:id="@+id/ivManualTimeZoneSelected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/manual_time_zone_selected"
+                android:rotation="180"
+                android:src="@drawable/ic_selection"
+                android:visibility="invisible" />
+
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvManualTimeZone"
+                android:layout_width="306dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/manual"
+                android:textColor="@color/unSelected"
+                android:textFontWeight="500"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvTimeZone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/time_zone"
+            android:textColor="@color/unSelectedTitle"
+            android:textFontWeight="400"
+            android:textSize="24sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llDateAndTime" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clTimeZone"
+            android:layout_width="628dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_stroke"
+            android:padding="8dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTimeZone">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clTimeZoneValue"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/grey">
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvZone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="20dp"
+                    android:text="@string/india"
+                    android:textColor="@color/unSelected"
+                    android:textFontWeight="500"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="24dp"
+                    android:text="@string/_8_00_p_m"
+                    android:textColor="@color/unSelected"
+                    android:textFontWeight="500"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvTimeFormat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/time_format"
+            android:textColor="@color/unSelectedTitle"
+            android:textFontWeight="400"
+            android:textSize="24sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/clTimeZone" />
+
+        <LinearLayout
+            android:id="@+id/llTimeFormat"
+            android:layout_width="628dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_stroke"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:weightSum="2"
+            app:layout_constraintStart_toStartOf="@id/tvDateAndTime"
+            app:layout_constraintTop_toBottomOf="@id/tvTimeFormat">
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvNormalTimeFormat"
+                android:layout_width="306dp"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:background="@color/strokeColor"
+                android:gravity="center"
+                android:text="@string/_12_hour"
+                android:textColor="@color/white"
+                android:textFontWeight="500"
+                android:textSize="24sp" />
+
+            <ImageView
+                android:id="@+id/ivNormalTimeFormatSelected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/normal_time_zone_selected"
+                android:src="@drawable/ic_selection"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/ivRailwayTimeFormatSelected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/railway_time_zone_selected"
+                android:rotation="180"
+                android:src="@drawable/ic_selection"
+                android:visibility="invisible" />
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvRailwayTimeFormat"
+                android:layout_width="306dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/_24_hour"
+                android:textColor="@color/unSelected"
+                android:textFontWeight="500"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvLanguageSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/language_selected"
+            android:textColor="@color/unSelectedTitle"
+            android:textFontWeight="400"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llTimeFormat" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clLanguage"
+            android:layout_width="628dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_stroke"
+            android:padding="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvLanguageSelected">
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvLanguage"
+                android:layout_width="612dp"
+                android:layout_height="64dp"
+                android:background="@color/grey"
+                android:gravity="center_vertical"
+                android:paddingStart="20dp"
+                android:paddingEnd="0dp"
+                android:text="@string/english"
+                android:textColor="@color/unSelected"
+                android:textFontWeight="500"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvChargeType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Type-C Charging"
+            android:textColor="@color/unSelectedTitle"
+            android:textFontWeight="400"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/clLanguage" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clChargeType"
+            android:layout_width="628dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_stroke"
+            android:padding="8dp"
+            android:paddingBottom="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvChargeType">
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvChargeTypeOn"
+                android:layout_width="306dp"
+                android:layout_height="64dp"
+                android:gravity="center"
+                android:text="On"
+                android:textColor="@color/unSelected"
+                android:textFontWeight="500"
+                android:textSize="22sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivChargeTyeOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6.84dp"
+                android:src="@drawable/ic_selection"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tvChargeTypeOn"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivChargeTyeOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6.84dp"
+                android:rotation="180"
+                android:src="@drawable/ic_selection"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tvChargeTypeOff"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvChargeTypeOff"
+                android:layout_width="306dp"
+                android:layout_height="64dp"
+                android:gravity="center"
+                android:text="Off"
+                android:textColor="@color/unSelected"
+                android:textFontWeight="500"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvDistanceUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Distance Unit"
+            android:textColor="@color/unSelectedTitle"
+            android:textFontWeight="400"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/clChargeType" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clDistanceUnit"
+            android:layout_width="628dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_stroke"
+            android:padding="8dp"
+            android:paddingBottom="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDistanceUnit">
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvDistanceUnitKm"
+                android:layout_width="306dp"
+                android:layout_height="64dp"
+                android:gravity="center"
+                android:text="Km"
+                android:textColor="@color/unSelected"
+                android:textFontWeight="500"
+                android:textSize="22sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivDistanceUnitKm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6.84dp"
+                android:src="@drawable/ic_selection"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tvDistanceUnitKm"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivDistanceUnitMile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6.84dp"
+                android:rotation="180"
+                android:src="@drawable/ic_selection"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tvDistanceUnitMiles"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvDistanceUnitMiles"
+                android:layout_width="306dp"
+                android:layout_height="64dp"
+                android:gravity="center"
+                android:text="Miles"
+                android:textColor="@color/unSelected"
+                android:textFontWeight="500"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
+

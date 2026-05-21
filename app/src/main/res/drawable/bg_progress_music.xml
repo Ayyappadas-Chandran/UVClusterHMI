@@ -1,0 +1,21 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@android:id/background">
+        <bitmap
+            android:gravity="fill"
+            android:src="@drawable/bg_music_seekbar" />
+    </item>
+
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <size android:height="8dp" />
+                <gradient
+                    android:angle="0"
+                    android:endColor="#D61A21"
+                    android:startColor="#5A0509"
+                    android:type="linear" />
+            </shape>
+        </clip>
+    </item>
+</layer-list>

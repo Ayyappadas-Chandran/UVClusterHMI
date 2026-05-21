@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.features.myF77.InfoFragment">
+
+    <ImageView
+        android:id="@+id/ivTopBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/top_bar"
+        android:src="@drawable/bg_setting_top_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:src="@drawable/ic_back"
+        app:layout_constraintBottom_toBottomOf="@id/ivTopBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivTopBar" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="270dp"
+        android:layout_height="36dp"
+        app:layout_constraintBottom_toBottomOf="@id/ivTopBar"
+        app:layout_constraintEnd_toEndOf="@id/ivTopBar"
+        app:layout_constraintTop_toTopOf="@id/ivTopBar">
+
+        <TextView
+            android:id="@+id/tvHoldo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="[hold]"
+            android:textAllCaps="true"
+            android:textColor="@color/greyWinterMode"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="toggle"
+            android:textAllCaps="true"
+            android:textColor="@color/greyMediumLight"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@id/tvHoldo"
+            app:layout_constraintTop_toTopOf="@id/tvHoldo" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_o"
+            app:layout_constraintEnd_toEndOf="@id/tvToggle"
+            app:layout_constraintStart_toStartOf="@id/tvHoldo"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tvHoldX"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="19dp"
+            android:fontFamily="sans-serif"
+            android:text="[hold]"
+            android:textAllCaps="true"
+            android:textColor="@color/greyWinterMode"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvToggle" />
+
+        <TextView
+            android:id="@+id/tvToggleX"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="toggle"
+            android:textAllCaps="true"
+            android:textColor="@color/greyMediumLight"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@id/tvHoldX"
+            app:layout_constraintTop_toTopOf="@id/tvHoldX" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/iv_square"
+            app:layout_constraintEnd_toEndOf="@id/tvToggleX"
+            app:layout_constraintStart_toStartOf="@id/tvHoldX"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvNavigate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/navigate"
+            android:textAllCaps="true"
+            android:textColor="@color/greyMediumLight"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvToggleX"
+            app:layout_constraintStart_toEndOf="@id/tvToggleX"
+            app:layout_constraintTop_toTopOf="@id/tvToggleX" />
+
+        <ImageView
+            android:id="@+id/tvExpand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_expand_all"
+            app:layout_constraintEnd_toEndOf="@id/tvNavigate"
+            app:layout_constraintStart_toStartOf="@id/tvNavigate"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:gravity="center_vertical"
+        android:text="My X-47"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@id/ivTopBar"
+        app:layout_constraintStart_toStartOf="@id/ivTopBar"
+        app:layout_constraintTop_toTopOf="@id/ivTopBar" />
+
+    <ImageView
+        android:id="@+id/ivBgInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:src="@drawable/bg_info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivTopBar" />
+
+    <ImageView
+        android:id="@+id/ivBikeImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:src="@drawable/image_info_bike"
+        app:layout_constraintEnd_toEndOf="@id/ivBgInfo"
+        app:layout_constraintTop_toTopOf="@id/ivBgInfo" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvVariantLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="40dp"
+        android:text="Variant"
+        android:textColor="@color/unSelectedTitle"
+        android:textFontWeight="400"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@id/ivBgInfo"
+        app:layout_constraintTop_toTopOf="@id/ivBgInfo" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvOdometerLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="309dp"
+        android:text="Odometer"
+        android:textColor="@color/unSelectedTitle"
+        android:textFontWeight="400"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/tvVariantLabel"
+        app:layout_constraintStart_toStartOf="@id/ivBgInfo"
+        app:layout_constraintTop_toTopOf="@id/tvVariantLabel" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvVariant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="X-47 Recon"
+        android:textColor="@color/lightGrey"
+        android:textFontWeight="400"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@id/tvVariantLabel"
+        app:layout_constraintTop_toBottomOf="@id/tvVariantLabel" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvOdoMeter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="12893"
+        android:textColor="@color/lightGrey"
+        android:textFontWeight="400"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@id/tvOdometerLabel"
+        app:layout_constraintTop_toBottomOf="@id/tvOdometerLabel" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvOdoMeterUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:text="km"
+        android:textColor="@color/lightGrey"
+        android:textFontWeight="400"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@id/tvOdoMeter"
+        app:layout_constraintTop_toBottomOf="@id/tvOdometerLabel" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvColorLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="Color"
+        android:textColor="@color/unSelectedTitle"
+        android:textFontWeight="400"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@id/tvVariant"
+        app:layout_constraintTop_toBottomOf="@id/tvVariant" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="Cosmic Black"
+        android:textColor="@color/lightGrey"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@id/tvVariant"
+        app:layout_constraintTop_toBottomOf="@id/tvColorLabel" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvVinLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VIN"
+        android:textColor="@color/unSelectedTitle"
+        android:textFontWeight="400"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/tvColorLabel"
+        app:layout_constraintStart_toStartOf="@id/tvOdometerLabel"
+        app:layout_constraintTop_toTopOf="@id/tvColorLabel" /> 
+
+<!--    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvVin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="MD12891"
+        android:textColor="@color/lightGrey"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@id/tvVinLabel"
+        app:layout_constraintTop_toBottomOf="@id/tvVinLabel" /> -->
+    
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@id/tvVinLabel"
+        app:layout_constraintTop_toBottomOf="@id/tvVinLabel">
+
+        <!-- Display -->
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvVin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MD12891"
+            android:textColor="@color/lightGrey"
+            android:textSize="24sp" />
+
+        <!-- Edit -->
+        <EditText
+            android:id="@+id/etVin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:textColor="@color/lightGrey"
+            android:textSize="24sp"/>
+
+    </FrameLayout>
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvImeiLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="IMEI NO."
+        android:textColor="@color/unSelectedTitle"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@id/tvColorLabel"
+        app:layout_constraintTop_toBottomOf="@id/tvColor" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvImei"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="17903001092938202"
+        android:textColor="@color/lightGrey"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@id/tvImeiLabel"
+        app:layout_constraintTop_toBottomOf="@id/tvImeiLabel" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvSoftwareVersionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vehicle Software Versions"
+        android:textColor="@color/unSelectedTitle"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/tvImeiLabel"
+        app:layout_constraintStart_toStartOf="@id/tvOdometerLabel"
+        app:layout_constraintTop_toTopOf="@id/tvImeiLabel" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvSoftwareVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="VCU : "
+        android:textColor="@color/unSelectedTitle"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@id/tvSoftwareVersionLabel"
+        app:layout_constraintTop_toBottomOf="@id/tvSoftwareVersionLabel" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvVcuVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="V3"
+        android:textColor="@color/lightGrey"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@id/tvSoftwareVersion"
+        app:layout_constraintTop_toBottomOf="@id/tvSoftwareVersionLabel" />
+
+    <!-- MCU Version -->
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvMcuLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:text="MCU : "
+        android:textColor="@color/unSelectedTitle"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@id/tvVcuVersion"
+        app:layout_constraintTop_toBottomOf="@id/tvSoftwareVersionLabel" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvMcuVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="V7"
+        android:textColor="@color/lightGrey"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@id/tvMcuLabel"
+        app:layout_constraintTop_toBottomOf="@id/tvSoftwareVersionLabel" />
+
+    <!-- BMS Version -->
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvBmsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:text="BMS : "
+        android:textColor="@color/unSelectedTitle"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@id/tvMcuVersion"
+        app:layout_constraintTop_toBottomOf="@id/tvSoftwareVersionLabel" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvBmsVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="V1"
+        android:textColor="@color/lightGrey"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@id/tvBmsLabel"
+        app:layout_constraintTop_toBottomOf="@id/tvSoftwareVersionLabel" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

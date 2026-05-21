@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".ChargingFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clChargingReview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivBgRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="136dp"
+            android:src="@drawable/bg_charging_right"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivBgLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="914dp"
+            android:src="@drawable/bg_charging_left"
+            app:layout_constraintBottom_toBottomOf="@id/ivBgRight"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivBgRight" />
+
+        <ImageView
+            android:id="@+id/ivKey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="268dp"
+            android:layout_marginTop="176.5dp"
+            android:src="@drawable/ic_key"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvTurnOffKey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:text="To start charging"
+            android:textAllCaps="true"
+            android:textColor="@color/lockdownGrey"
+            android:textFontWeight="500"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@id/ivKey"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="@id/ivKey"
+            app:layout_constraintTop_toBottomOf="@id/ivKey" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvStartCharging"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TURN OFF KEY"
+            android:textColor="@color/white"
+            android:textFontWeight="400"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@id/tvTurnOffKey"
+            app:layout_constraintStart_toStartOf="@id/tvTurnOffKey"
+            app:layout_constraintTop_toBottomOf="@id/tvTurnOffKey" />
+
+        <ImageView
+            android:id="@+id/ivLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="512dp"
+            android:layout_marginTop="69dp"
+            android:src="@drawable/ic_line"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivPlug"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="709dp"
+            android:src="@drawable/ic_plug"
+            app:layout_constraintBottom_toBottomOf="@id/ivKey"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivKey" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvPlugCharger"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="37dp"
+            android:text="To resume riding"
+            android:textAllCaps="true"
+            android:textColor="@color/lockdownGrey"
+            android:textFontWeight="500"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@id/ivPlug"
+            app:layout_constraintStart_toStartOf="@id/ivPlug"
+            app:layout_constraintTop_toBottomOf="@id/ivPlug" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvResumeRiding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UNPLUG CHARGER"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@id/ivPlug"
+            app:layout_constraintStart_toStartOf="@id/ivPlug"
+            app:layout_constraintTop_toBottomOf="@id/tvPlugCharger" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clCharging"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <ImageView
+            android:id="@+id/ivChargeAnim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bg_charging_anim"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivEllipse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-40dp"
+            android:src="@drawable/bg_ellipse"
+            app:layout_constraintBottom_toBottomOf="@id/ivChargeAnim"
+            app:layout_constraintEnd_toEndOf="@id/ivChargeAnim"
+            app:layout_constraintStart_toStartOf="@id/ivChargeAnim"
+            app:layout_constraintTop_toTopOf="@id/ivChargeAnim" />
+
+        <com.ultraviolette.uvclusterhmi.CircularGradientProgress
+            android:id="@+id/pbBattery"
+            android:layout_width="260dp"
+            android:layout_height="260dp"
+            app:layout_constraintBottom_toBottomOf="@id/ivEllipse"
+            app:layout_constraintEnd_toEndOf="@id/ivEllipse"
+            app:layout_constraintStart_toStartOf="@id/ivEllipse"
+            app:layout_constraintTop_toTopOf="@id/ivEllipse" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvCharge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-10dp"
+            android:text="80"
+            android:textColor="@color/white"
+            android:textFontWeight="500"
+            android:textSize="52.54sp"
+            app:layout_constraintBottom_toBottomOf="@id/ivEllipse"
+            app:layout_constraintEnd_toEndOf="@id/ivEllipse"
+            app:layout_constraintStart_toStartOf="@id/ivEllipse"
+            app:layout_constraintTop_toTopOf="@id/ivEllipse" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvChargeUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="20dp"
+            android:text="%"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvCharge"
+            app:layout_constraintStart_toEndOf="@id/tvCharge" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvRangeValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="126dp"
+            android:layout_marginTop="254dp"
+            android:text="150 km"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvModeValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="Ballistic"
+            android:textColor="@color/darkGreyMedium"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@id/tvRangeValue"
+            app:layout_constraintStart_toStartOf="@id/tvRangeValue"
+            app:layout_constraintTop_toBottomOf="@id/tvRangeValue" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="253dp"
+            android:layout_marginEnd="120dp"
+            tools:text="02Hr 10Min"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvTimeLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time left"
+            android:textColor="@color/darkGreyMedium"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@id/tvTime"
+            app:layout_constraintStart_toStartOf="@id/tvTime"
+            app:layout_constraintTop_toBottomOf="@id/tvTime" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvFastCharging"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:drawableStart="@drawable/ic_charging"
+            android:drawablePadding="4dp"
+            android:text="fast charging"
+            android:textAllCaps="true"
+            android:textColor="@color/chargingGreen"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/ivRideModes"
+            android:layout_width="82dp"
+            android:layout_height="82dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_ballistic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivChargeAnim" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

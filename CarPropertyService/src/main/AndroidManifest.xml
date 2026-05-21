@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-permission android:name="android.car.permission.CAR_ENGINE_DETAILED" />
+    <uses-permission android:name="android.car.permission.CAR_POWERTRAIN" />
+    <uses-permission android:name="android.car.permission.READ_CAR_SPEED" />
+    <uses-permission android:name="android.car.permission.CAR_ENERGY" />
+    <uses-permission android:name="android.car.permission.CAR_MILEAGE" />
+    <uses-permission android:name="vendor.vehicle.permission.TWO_WHEELER_CONTROLLER" />
+    <uses-permission android:name="android.car.permission.CAR_VENDOR_EXTENSION" />
+    <uses-permission android:name="android.car.permission.CONTROL_CAR_VENDOR_EXTENSION" />
+    <uses-permission android:name="android.car.permission.CAR_POWER" />
+    <uses-permission android:name="android.car.permission.READ_CAR_PROPERTY" />
+    <permission
+        android:name="android.permission.BIND_CAR_SERVICE"
+        android:protectionLevel="signature|privileged" />
+
+    <uses-feature android:name="android.hardware.type.automotive" android:required="true" />
+
+    <queries>
+        <package android:name="com.ultraviolette.clusterdatabus" />
+    </queries>
+
+    <application
+        android:label="UV CarProperty Service"
+        android:persistent="true"
+        tools:targetApi="34">
+
+        <service
+            android:name=".CarPropertyService"
+            android:exported="true"
+            android:persistent="true"
+            android:foregroundServiceType="specialUse"
+            android:permission="android.permission.BIND_CAR_SERVICE">
+            <intent-filter>
+                <action android:name="com.ultraviolette.carproperty.ICarPropertyService" />
+            </intent-filter>
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Vehicle data fan-out service" />
+        </service>
+
+        <receiver
+            android:name=".BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+</manifest>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clSoftwareUpdate"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.features.settings.systemUpdates.SystemUpdatesFragment">
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvSoftware"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="22dp"
+        android:textFontWeight="400"
+        android:text="@string/software"
+        android:textColor="@color/unSelectedTitle"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvCurrentVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:textFontWeight="400"
+        android:layout_marginTop="16dp"
+        android:text="@string/current_version_v1_1_2024"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSoftware" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvDateUploaded"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textFontWeight="400"
+        android:text="@string/date_upload"
+        android:textColor="@color/unSelected"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@id/tvCurrentVersion"
+        app:layout_constraintTop_toBottomOf="@id/tvCurrentVersion" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvUpdateAvailable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        android:textFontWeight="400"
+        android:text="@string/update_available"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDateUploaded" />
+
+
+    <LinearLayout
+        android:id="@+id/llCheckForUpdate"
+        android:layout_width="628dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="58dp"
+        android:background="@drawable/bg_stroke"
+        android:padding="8dp"
+        app:layout_constraintStart_toStartOf="@id/tvDateUploaded"
+        app:layout_constraintTop_toBottomOf="@id/tvUpdateAvailable">
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvCheckForUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:textFontWeight="500"
+            android:background="@color/activeSelectionRed"
+            android:gravity="center"
+            android:text="@string/check_for_update"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

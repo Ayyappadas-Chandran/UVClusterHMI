@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.features.settings.wifi.WifiFragment">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clWifi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvWifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="22dp"
+            android:text="@string/wifi"
+            android:textFontWeight="400"
+            android:textColor="@color/unSelectedTitle"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/llWifi"
+            android:layout_width="628dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_stroke"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            app:layout_constraintStart_toStartOf="@id/tvWifi"
+            app:layout_constraintTop_toBottomOf="@id/tvWifi">
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvWifiOn"
+                android:layout_width="306dp"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:background="@color/backgroundDeselected"
+                android:gravity="center"
+                android:textFontWeight="500"
+                android:text="@string/on"
+                android:textColor="@color/unSelected"
+                android:textSize="24sp" />
+
+            <ImageView
+                android:id="@+id/ivWifiOnSelected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/wifi_on_select"
+                android:src="@drawable/ic_selection"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/ivWifiOffSelected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/wifi_off_select"
+                android:rotation="180"
+                android:src="@drawable/ic_selection"
+                android:visibility="invisible" />
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvWifiOff"
+                android:layout_width="306dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textFontWeight="500"
+                android:text="@string/off"
+                android:textColor="@color/unSelected"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvSearching"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:text="@string/searching"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textFontWeight="500"
+            android:textSize="20sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/tvWifi"
+            app:layout_constraintEnd_toEndOf="@id/llWifi"
+            app:layout_constraintTop_toTopOf="@id/tvWifi" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvMyNetwork"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/my_network"
+            android:textFontWeight="400"
+            android:textColor="@color/unSelectedTitle"
+            android:textSize="24sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/tvWifi"
+            app:layout_constraintTop_toBottomOf="@id/llWifi" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clMyNetwork"
+            android:layout_width="628dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/bg_stroke"
+            android:padding="8dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/tvWifi"
+            app:layout_constraintTop_toBottomOf="@id/tvMyNetwork">
+
+            <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                android:id="@+id/tvWifiName"
+                android:layout_width="540dp"
+                android:layout_height="64dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingStart="20dp"
+                android:paddingEnd="0dp"
+                android:textFontWeight="500"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="iPhone 13" />
+
+            <ImageView
+                android:id="@+id/ivDeleteWifiNetwork"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@color/activeSelectionRed"
+                android:contentDescription="@string/delete_wifi"
+                android:padding="20dp"
+                android:src="@drawable/ic_delete"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/savedNetworkList"
+            android:layout_width="556dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="visible"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="@id/clMyNetwork"
+            app:layout_constraintTop_toBottomOf="@id/clMyNetwork"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_wifi_device" />
+
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvAvailableDevices"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/available_devices"
+            android:textColor="@color/unSelectedTitle"
+            android:textSize="24sp"
+            android:textFontWeight="400"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/tvWifi"
+            app:layout_constraintTop_toBottomOf="@id/savedNetworkList" />
+
+        <ProgressBar
+            android:id="@+id/wifiAvailableDevicesProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@color/unSelectedTitle"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/tvAvailableDevices"
+            app:layout_constraintEnd_toEndOf="@id/rvAvailableDevices"
+            app:layout_constraintTop_toTopOf="@id/tvAvailableDevices" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAvailableDevices"
+            android:layout_width="556dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="visible"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tvAvailableDevices"
+            app:layout_constraintTop_toBottomOf="@id/tvAvailableDevices"
+            tools:itemCount="5"
+            tools:listitem="@layout/item_wifi_device" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.core.widget.NestedScrollView>
+
+

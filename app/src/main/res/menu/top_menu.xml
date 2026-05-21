@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/sort_az"
+        android:title="Sort A-Z"/>
+
+    <item
+        android:id="@+id/sort_date"
+        android:title="Sort by Date"/>
+
+    <item
+        android:id="@+id/grid_toggle"
+        android:title="Grid View"/>
+
+    <item
+        android:id="@+id/select_all"
+        android:title="Select All"/>
+
+</menu>

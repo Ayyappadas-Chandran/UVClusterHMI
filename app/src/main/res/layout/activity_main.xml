@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/appBackgroundColor"
+    tools:context=".ui.features.MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clToolBar"
+        android:layout_width="1024dp"
+        android:layout_height="70dp"
+        android:background="?attr/bgMode"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivToolbarCenter"
+            android:layout_width="324dp"
+            android:layout_height="69dp"
+            android:contentDescription="@string/tool_bar"
+            android:src="?attr/toolbarCenter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivToolBar"
+            android:layout_width="616dp"
+            android:layout_height="69dp"
+            android:src="@drawable/bg_tool_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/appTextColor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/pbBattery"
+            app:layout_constraintStart_toStartOf="@id/pbBattery"
+            app:layout_constraintTop_toTopOf="@id/ivToolbarCenter" />
+
+        <ImageView
+            android:id="@+id/ivWifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:contentDescription="@string/wi_fi_icon"
+            android:src="@drawable/ic_toolbar_wifi"
+            app:layout_constraintBottom_toBottomOf="@id/tvTime"
+            app:layout_constraintEnd_toStartOf="@id/ivBluetooth"
+            app:layout_constraintTop_toTopOf="@id/tvTime" />
+
+        <ImageView
+            android:id="@+id/ivBluetooth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/bluetooth_icon"
+            android:src="@drawable/ic_toolbar_bluetooth"
+            app:layout_constraintBottom_toBottomOf="@id/ivWifi"
+            app:layout_constraintEnd_toEndOf="@id/pbBattery" />
+
+        <ImageView
+            android:id="@+id/ivNetwork"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="6dp"
+            android:contentDescription="@string/network_icon"
+            android:src="@drawable/ic_toolbar_network"
+            app:layout_constraintBottom_toBottomOf="@id/ivBluetooth"
+            app:layout_constraintEnd_toStartOf="@id/ivWifi"
+            app:layout_constraintTop_toTopOf="@id/ivBluetooth" />
+
+        <ProgressBar
+            android:id="@+id/pbBattery"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="210dp"
+            android:layout_height="8dp"
+            android:layout_marginTop="50dp"
+            android:max="100"
+            android:progressDrawable="@drawable/progress_indicator_green"
+            app:layout_constraintEnd_toEndOf="@id/ivToolbarCenter"
+            app:layout_constraintStart_toStartOf="@id/ivToolbarCenter"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:progress="86" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvBatteryPercent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/green"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvTime"
+            app:layout_constraintEnd_toEndOf="@id/pbBattery"
+            app:layout_constraintStart_toStartOf="@id/pbBattery"
+            app:layout_constraintTop_toTopOf="@id/tvTime"
+            tools:text="86%" />
+
+        <ImageView
+            android:id="@+id/ivLeftIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:contentDescription="@string/left_indicator"
+            android:rotationY="180"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_toolbar_right_indicator"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivLeftWarning4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_camera_record_toolbar"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivLeftWarning3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivLeftWarning3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:visibility="invisible"
+            android:src="@drawable/ic_radar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivLeftWarning2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/ivLeftWarning2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:contentDescription="@string/high_beam_icon"
+            android:src="@drawable/ic_high_beam_toolbar"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivLeftWarning1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivLeftWarning1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_cruse_control"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivLeftIndicator"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="R0"
+            android:letterSpacing="0"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="@id/ivToolBar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="44dp"
+            android:textSize="18sp"
+            android:id="@+id/tvRegen"/>
+
+        <LinearLayout
+            android:layout_width="114dp"
+            android:layout_height="29dp"
+            android:layout_marginStart="40dp"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/ivToolBar"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivRegen"
+                android:layout_width="28dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/ic_regen_malfunction"
+                android:visibility="invisible" />
+
+
+            <ImageView
+                android:id="@+id/ivMode"
+                android:layout_width="28dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:contentDescription="@string/vehicle_driving_mode"
+                android:scaleType="center"
+                android:src="@drawable/ic_ballistic_mode_toolbar"
+                android:visibility="invisible" />
+
+
+            <ImageView
+                android:id="@+id/ivMotorStatus"
+                android:layout_width="28dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:contentDescription="@string/manual_icon"
+                android:scaleType="center"
+                android:src="@drawable/ic_motor_off"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="110dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="-10dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivToolbarCenter"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivHillHold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/hill_hold_icon"
+                android:src="@drawable/ic_hill_hold_malfunction"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/ivTraction"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivTraction"
+                android:layout_width="28dp"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/traction_icon"
+                android:src="@drawable/ic_mtc"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/ivAbs"
+                app:layout_constraintStart_toEndOf="@id/ivHillHold"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivAbs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="@string/abs_icon"
+                android:src="@drawable/ic_abs_malfunction"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <ImageView
+            android:id="@+id/ivRightIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:contentDescription="@string/right_indicator"
+            android:scaleType="center"
+            android:src="@drawable/ic_toolbar_right_indicator"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/ivRightWarning1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/warning_icon"
+            android:src="@drawable/ic_warning_toolbar"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ivRightWarning2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivRightWarning2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/settings_icon"
+            android:scaleType="center"
+            android:src="@drawable/ic_tpms_malfunction"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ivRightWarning3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivRightWarning5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/oil_indicator_icon"
+            android:scaleType="center"
+            android:src="@drawable/ic_domestic_mil"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ivRightIndicator"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivRightWarning3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/regen_icon"
+            android:scaleType="center"
+            android:src="@drawable/ic_motor_temp_orange"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ivRightWarning4"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivRightWarning4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/temperature_icon"
+            android:scaleType="center"
+            android:src="@drawable/ic_toolbar_battery_temperature"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ivRightWarning5"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/clToolBar"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/btnRight"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_right"
+            app:layout_constraintBottom_toBottomOf="@id/btnBottom"
+            app:layout_constraintStart_toEndOf="@id/btnTop"
+            app:layout_constraintTop_toTopOf="@id/btnTop" />
+
+        <ImageView
+            android:id="@+id/btnLeft"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:rotationY="180"
+            android:src="@drawable/ic_right"
+            app:layout_constraintBottom_toBottomOf="@id/btnBottom"
+            app:layout_constraintEnd_toStartOf="@id/btnTop"
+            app:layout_constraintTop_toTopOf="@id/btnTop" />
+
+        <ImageView
+            android:id="@+id/btnBottom"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:rotation="90"
+            android:src="@drawable/ic_right"
+            app:layout_constraintEnd_toEndOf="@id/btnTop"
+            app:layout_constraintStart_toStartOf="@id/btnTop"
+            app:layout_constraintTop_toBottomOf="@id/btnTop" />
+
+        <ImageView
+            android:id="@+id/btnTop"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:rotation="270"
+            android:src="@drawable/ic_right"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btnEnter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_enter"
+            app:layout_constraintBottom_toTopOf="@id/btnTop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back"
+            app:layout_constraintBottom_toBottomOf="@id/btnTop"
+            app:layout_constraintEnd_toEndOf="@id/btnEnter"
+            app:layout_constraintStart_toStartOf="@id/btnEnter"
+            app:layout_constraintTop_toBottomOf="@id/btnEnter" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="1024dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:defaultNavHost="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/clToolBar"
+        app:navGraph="@navigation/main_nav" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/alertCard"
+        android:layout_width="600dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_alert_card"
+        android:elevation="20dp"
+        android:padding="16dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/clToolBar">
+
+        <TextView
+            android:id="@+id/tvAlertHeading"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="HEADING"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/btnAlertClose"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvAlertSubtext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Subtext goes here"
+            android:textColor="#CCCCCC"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAlertHeading" />
+
+        <ImageView
+            android:id="@+id/btnAlertClose"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+

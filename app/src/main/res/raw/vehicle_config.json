@@ -1,0 +1,144 @@
+{
+  "vehicles": {
+    "Default": {
+      "power_save_threshold": 20,
+      "Meter unit": "km/h",
+      "Power unit": "Wh/kh",
+      "limits": {
+        "speed": {
+          "min": 0,
+          "max": 999
+        },
+        "odo": {
+          "min": 0,
+          "max": 999999
+        },
+        "range": {
+          "min": 0,
+          "max": 999
+        },
+        "wh_per_km": {
+          "min": 0,
+          "max": 999
+        },
+        "ride": {
+          "min": 0,
+          "max": 999
+        },
+        "soc": {
+          "min": 0,
+          "max": 100
+        },
+        "eff": {
+          "min": 0,
+          "max": 9
+        }
+      }
+    },
+    "F77 Mach 2": {
+      "power_save_threshold": 20,
+      "Meter unit": "km/h",
+      "Power unit": "Wh/kh",
+      "limits": {
+        "speed": {
+          "min": 0,
+          "max": 999
+        },
+        "odo": {
+          "min": 0,
+          "max": 999999
+        },
+        "range": {
+          "min": 0,
+          "max": 999
+        },
+        "wh_per_km": {
+          "min": 0,
+          "max": 999
+        },
+        "ride": {
+          "min": 0,
+          "max": 999
+        },
+        "soc": {
+          "min": 0,
+          "max": 100
+        },
+        "eff": {
+          "min": 0,
+          "max": 9
+        }
+      }
+    },
+    "F77 SuperStreet": {
+      "power_save_threshold": 20,
+      "Meter unit": "km/h",
+      "Power unit": "Wh/kh",
+      "limits": {
+        "speed": {
+          "min": 0,
+          "max": 999
+        },
+        "odo": {
+          "min": 0,
+          "max": 999999
+        },
+        "range": {
+          "min": 0,
+          "max": 999
+        },
+        "wh_per_km": {
+          "min": 0,
+          "max": 999
+        },
+        "ride": {
+          "min": 0,
+          "max": 999
+        },
+        "soc": {
+          "min": 0,
+          "max": 100
+        },
+        "eff": {
+          "min": 0,
+          "max": 9
+        }
+      }
+    },
+    "X47 Crossover": {
+      "power_save_threshold": 20,
+      "Meter unit": "km/h",
+      "Power unit": "Wh/kh",
+      "limits": {
+        "speed": {
+          "min": 0,
+          "max": 999
+        },
+        "odo": {
+          "min": 0,
+          "max": 999999
+        },
+        "range": {
+          "min": 0,
+          "max": 999
+        },
+        "wh_per_km": {
+          "min": 0,
+          "max": 999
+        },
+        "ride": {
+          "min": 0,
+          "max": 999
+        },
+        "soc": {
+          "min": 0,
+          "max": 100
+        },
+        "eff": {
+          "min": 0,
+          "max": 9
+        }
+      }
+    }
+  }
+}

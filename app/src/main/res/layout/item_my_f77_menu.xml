@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="4dp">
+
+    <ImageView
+        android:id="@+id/ivControls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/item_myf77_image"
+        android:src="@drawable/image_controls"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivSelectionLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/my_f77_left_select"
+        android:src="@drawable/ic_selection_left"
+        android:visibility="visible"
+        android:layout_marginStart="1.5dp"
+        app:layout_constraintBottom_toBottomOf="@id/ivControls"
+        app:layout_constraintStart_toStartOf="@id/ivControls"
+        app:layout_constraintTop_toTopOf="@id/ivControls" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvControlsTitle"
+        android:layout_width="264dp"
+        android:layout_height="54dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/grey"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/ivControls"
+        app:layout_constraintEnd_toEndOf="@id/ivControls"
+        app:layout_constraintStart_toStartOf="@id/ivControls"
+        tools:text="EMERGENCY" />
+
+    <ImageView
+        android:id="@+id/icArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="@string/arrow_icon"
+        android:src="@drawable/ic_enter_arrow"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/tvControlsTitle"
+        app:layout_constraintEnd_toEndOf="@id/tvControlsTitle"
+        app:layout_constraintTop_toTopOf="@id/tvControlsTitle" />
+
+    <ImageView
+        android:id="@+id/ivSelectionRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/my_f77_right_select"
+        android:src="@drawable/ic_selection_right"
+        android:visibility="visible"
+        android:layout_marginEnd="1.5dp"
+        app:layout_constraintBottom_toBottomOf="@id/ivControls"
+        app:layout_constraintEnd_toEndOf="@id/ivControls"
+        app:layout_constraintTop_toTopOf="@id/ivControls" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

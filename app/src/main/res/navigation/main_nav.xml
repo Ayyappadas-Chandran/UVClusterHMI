@@ -1,0 +1,274 @@
+<navigation
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/my_nav"
+app:startDestination="@id/dashboardFragment" >
+<fragment
+    android:id="@+id/settingMenuFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.menus.setting.SettingsFragment"
+    android:label="fragment_setting"
+    tools:layout="@layout/fragment_setting_menu" />
+<fragment
+    android:id="@+id/menuFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.menu.MenuFragment"
+    android:label="fragment_menu"
+    tools:layout="@layout/fragment_menu" >
+
+    <action
+        android:id="@+id/action_menuFragment_to_settingMenuFragment"
+        app:destination="@id/settingMenuFragment" />
+    <action
+        android:id="@+id/action_menuFragment_to_controlFragment"
+        app:destination="@id/controlFragment" />
+    <action
+        android:id="@+id/action_menuFragment_to_batteryFragment"
+        app:destination="@id/batteryFragment" />
+    <action
+        android:id="@+id/action_menuFragment_to_myF77MenuFragment"
+        app:destination="@id/myF77MenuFragment" />
+    <action
+        android:id="@+id/action_menuFragment_to_tpmsFragment"
+        app:destination="@id/tpmsFragment" />
+
+</fragment>
+<fragment
+    android:id="@+id/dashboardFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.dashboard.DashboardFragment"
+    android:label="fragment_dashboard"
+    tools:layout="@layout/fragment_dashboard" >
+
+    <action
+        android:id="@+id/action_dashboardFragment_to_menuFragment"
+        app:destination="@id/menuFragment" />
+    <action
+        android:id="@+id/action_dashboardFragment_to_controlSectionFragment"
+        app:destination="@id/controlSectionFragment" />
+    <action
+        android:id="@+id/action_dashboardFragment_to_musicFragment"
+        app:destination="@id/musicFragment" />
+
+</fragment>
+<fragment
+    android:id="@+id/controlFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.menus.control.ControlMenuFragment"
+    android:label="fragment_control"
+    tools:layout="@layout/fragment_control" />
+<fragment
+    android:id="@+id/batteryFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.menus.battery.BatteryFragment"
+    android:label="fragment_battery"
+    tools:layout="@layout/fragment_battery" >
+
+    <action
+        android:id="@+id/action_batteryFragment_to_winterModeFragment"
+        app:destination="@id/winterModeFragment" />
+
+</fragment>
+<fragment
+    android:id="@+id/myF77MenuFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.menus.myF77.MyF77MenuFragment"
+    android:label="fragment_my_f77_menu"
+    tools:layout="@layout/fragment_my_f77_menu" >
+
+    <action
+        android:id="@+id/action_myF77MenuFragment_to_documentFragment"
+        app:destination="@id/documentMenuFragment" />
+    <action
+        android:id="@+id/action_myF77MenuFragment_to_emergencyFragment"
+        app:destination="@id/emergencyFragment" />
+    <action
+        android:id="@+id/action_myF77MenuFragment_to_infoFragment"
+        app:destination="@id/infoFragment" />
+    <action
+        android:id="@+id/action_myF77MenuFragment_to_tutorialFragment"
+        app:destination="@id/tutorialFragment" />
+
+</fragment>
+<fragment
+    android:id="@+id/documentMenuFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.myF77.document.DocumentMenuFragment"
+    android:label="fragment_menu_document"
+    tools:layout="@layout/fragment_document_menu" >
+
+    <action
+        android:id="@+id/action_documentMenuFragment_to_documentFragment"
+        app:destination="@id/documentFragment" />
+
+</fragment>
+<fragment
+    android:id="@+id/emergencyFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.myF77.EmergencyFragment"
+    android:label="fragment_emergency"
+    tools:layout="@layout/fragment_emergency" />
+<fragment
+    android:id="@+id/infoFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.myF77.InfoFragment"
+    android:label="fragment_info"
+    tools:layout="@layout/fragment_info" />
+<fragment
+    android:id="@+id/documentFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.myF77.document.DocumentFragment"
+    android:label="fragment_document"
+    tools:layout="@layout/fragment_document" />
+<fragment
+    android:id="@+id/winterModeFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.menus.battery.winter.WinterModeFragment"
+    android:label="fragment_winter_mode"
+    tools:layout="@layout/fragment_winter_mode" />
+<fragment
+    android:id="@+id/tpmsFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.menus.tpms.TpmsFragment"
+    android:label="fragment_tpms"
+    tools:layout="@layout/fragment_tpms" />
+<action
+    android:id="@+id/action_tutorialFragment_to_tutorialPlayerFragment"
+    app:destination="@id/tutorialPlayerFragment" />
+<fragment
+    android:id="@+id/lockdownFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.LockdownFragment"
+    android:label="fragment_lockdown"
+    tools:layout="@layout/fragment_lockdown" />
+<fragment
+    android:id="@+id/advancedFeaturesFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.controls.advancedFeatures.AdvancedFeaturesFragment"
+    android:label="fragment_advanced_features"
+    tools:layout="@layout/fragment_advanced_features" />
+<fragment
+    android:id="@+id/violetteFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.controls.violette.VioletteFragment"
+    android:label="fragment_violette"
+    tools:layout="@layout/fragment_violette" />
+<fragment
+    android:id="@+id/tripsFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.controls.trips.TripsFragment"
+    android:label="fragment_trips"
+    tools:layout="@layout/fragment_trips" />
+<fragment
+    android:id="@+id/rideModesFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.controls.rideModes.RideModesFragment"
+    android:label="fragment_ride_modes"
+    tools:layout="@layout/fragment_ride_modes" />
+<fragment
+    android:id="@+id/performanceFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.controls.performance.PerformanceFragment"
+    android:label="fragment_performance"
+    tools:layout="@layout/fragment_performance" />
+<fragment
+    android:id="@+id/tutorialPlayerFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.myF77.tutorial.TutorialPlayerFragment"
+    android:label="fragment_tutorial_player"
+    tools:layout="@layout/fragment_tutorial_player" />
+<fragment
+    android:id="@+id/controlSectionFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.controlSection.ControlSectionFragment"
+    android:label="fragment_control_section"
+    tools:layout="@layout/fragment_control_section" />
+<fragment
+    android:id="@+id/musicFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.MusicFragment"
+    android:label="fragment_music"
+    tools:layout="@layout/fragment_music" />
+<fragment
+    android:id="@+id/updateFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.settings.systemUpdates.UpdateFragment"
+    android:label="fragment_update"
+    tools:layout="@layout/fragment_update" />
+<fragment
+    android:id="@+id/splashFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.SplashFragment"
+    android:label="fragment_splash"
+    tools:layout="@layout/fragment_splash" />
+<fragment
+    android:id="@+id/chargingFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ChargingFragment"
+    android:label="fragment_charging"
+    tools:layout="@layout/fragment_charging" />
+<fragment
+    android:id="@+id/debugFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.settings.debug.DebugFragment"
+    android:label="fragment_debug"
+    tools:layout="@layout/fragment_debug" >
+
+    <action
+        android:id="@+id/action_debugFragment_to_versionFragment"
+        app:destination="@id/versionsFragment" />
+    <action
+        android:id="@+id/action_debugFragment_to_dashBoardFragment"
+        app:destination="@id/dashboardFragment" />
+    <action
+        android:id="@+id/action_debugFragment_to_checkSpeedFragment"
+        app:destination="@id/checkSpeedFragment" />
+
+</fragment>
+<fragment
+    android:id="@+id/checkSpeedFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.settings.debug.CheckSpeedFragment"
+    android:label="fragment_check_speed"
+    tools:layout="@layout/fragment_check_speed" >
+
+    <action
+        android:id="@+id/action_checkSpeedFragment_to_debugFragment"
+        app:destination="@id/debugFragment" />
+
+</fragment>
+<fragment
+    android:id="@+id/versionsFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.settings.versions.fragment_versions"
+    android:label="fragment_versions"
+    tools:layout="@layout/fragment_versions" >
+
+    <action
+        android:id="@+id/action_versionFragment_to_debugFragment"
+        app:destination="@id/debugFragment" />
+    <action
+        android:id="@+id/action_versionFragment_to_dashBoardFragment"
+        app:destination="@id/dashboardFragment" />
+
+</fragment>
+<fragment
+    android:id="@+id/mapFragment"
+    android:name="com.ultraviolette.uvclusterhmi.MapFragment"
+    android:label="fragment_map"
+    tools:layout="@layout/fragment_map" />
+<fragment
+    android:id="@+id/dashCamFragment"
+    android:name="com.ultraviolette.uvclusterhmi.DashCamFragment"
+    android:label="fragment_dash_cam"
+    tools:layout="@layout/fragment_dash_cam" />
+<fragment
+    android:id="@+id/cameraPreviewFragment"
+    android:name="com.ultraviolette.uvclusterhmi.CameraPreviewFragment"
+    android:label="fragment_camera_preview"
+    tools:layout="@layout/fragment_camera_preview" />
+<fragment
+    android:id="@+id/thermalRunawayFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ThermalRunawayFragment"
+    android:label="fragment_thermal_runaway"
+    tools:layout="@layout/fragment_thermal_runaway" />
+<fragment
+    android:id="@+id/parkAssistantFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ParkAssistantFragment"
+    android:label="fragment_park_assistant"
+    tools:layout="@layout/fragment_park_assistant" />
+<fragment
+    android:id="@+id/hoverModeFragment"
+    android:name="com.ultraviolette.uvclusterhmi.HoverModeFragment"
+    android:label="fragment_hover_mode"
+    tools:layout="@layout/fragment_hover_mode" />
+<fragment
+    android:id="@+id/tutorialFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.myF77.tutorial.TutorialFragment"
+    android:label="fragment_tutorial"
+    tools:layout="@layout/fragment_tutorial" />
+    <fragment
+        android:id="@+id/filemanagerFragment"
+        android:name="com.ultraviolette.uvclusterhmi.ui.features.settings.filemanager.FileManagerFragment"
+        android:label="fragment_filemanager"
+        tools:layout="@layout/fragment_file_manager" />
+    <fragment
+        android:id="@+id/habitatresetFragment"
+        android:name="com.ultraviolette.uvclusterhmi.ui.features.settings.HabitatResetFragment.HabitatResetFragment"
+        android:label="fragment_habitatreset"
+        tools:layout="@layout/fragment_habitat_reset" />
+</navigation>

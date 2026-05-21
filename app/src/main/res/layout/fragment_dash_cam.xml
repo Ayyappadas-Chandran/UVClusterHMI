@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DashCamFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clDashCamWithoutBallistic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <SurfaceView
+            android:id="@+id/cameraSurfaceView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/cameraPlaceholder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/image_dash_cam"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/cameraInfoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back Camera"
+            android:textColor="@android:color/white"
+            android:textSize="16dp"
+            android:layout_margin="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvSpeed"
+            android:layout_width="150dp"
+            android:layout_height="90dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="13.47dp"
+            app:cardBackgroundColor="@color/blackTransparent"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="6dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+                    android:id="@+id/tvSpeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:text="000"
+                    android:textColor="@color/white"
+                    android:textSize="36sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+                    android:id="@+id/tvSpeedUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="km/h"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tvSpeed"
+                    app:layout_constraintStart_toEndOf="@id/tvSpeed" />
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+                    android:id="@+id/tvSpeedLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-4dp"
+                    android:text="Speed"
+                    android:textAllCaps="true"
+                    android:textColor="#AAFFFFFF"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/tvSpeed"
+                    app:layout_constraintTop_toBottomOf="@id/tvSpeed" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvRange"
+            android:layout_width="120dp"
+            android:layout_height="90dp"
+            android:layout_marginStart="887dp"
+            android:layout_marginTop="13.47dp"
+            app:cardBackgroundColor="@color/blackTransparent"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="6dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+                    android:id="@+id/tvRange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="19dp"
+                    android:text="000"
+                    android:textColor="@color/white"
+                    android:textSize="36sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+                    android:id="@+id/tvRangeUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:text="km"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tvRange"
+                    app:layout_constraintStart_toEndOf="@id/tvRange" />
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+                    android:id="@+id/tvRangeLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-4dp"
+                    android:text="Range"
+                    android:textAllCaps="true"
+                    android:textColor="#AAFFFFFF"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvRange" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvOdo"
+            android:layout_width="137dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="13.47dp"
+            app:cardBackgroundColor="@color/blackTransparent"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="6dp"
+            app:layout_constraintEnd_toStartOf="@id/cvRange"
+            app:layout_constraintStart_toEndOf="@id/cvSpeed"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+                    android:id="@+id/tvOdo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="4dp"
+                    android:text="000000"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+                    android:id="@+id/tvOdoUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="km"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tvOdo"
+                    app:layout_constraintStart_toEndOf="@id/tvOdo"
+                    app:layout_constraintTop_toTopOf="@id/tvOdo" />
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+                    android:id="@+id/tvOdoLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-6dp"
+                    android:text="Odo"
+                    android:textAllCaps="true"
+                    android:textColor="#AAFFFFFF"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvOdo" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clDashcamWithBallistic"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvDashcam"
+            android:layout_width="630dp"
+            android:layout_height="479dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginTop="23dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/black">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextureView
+                    android:id="@+id/textureView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <!-- <ImageView
+                     android:id="@+id/ivDashcam"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:src="@drawable/image_dash_cam_ballistic" />-->
+
+                <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+                    android:id="@+id/tvFrontBallistic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="66dp"
+                    android:text="FRONT"
+                    android:textColor="@color/white"
+                    android:textSize="32sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivDotIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:src="@drawable/image_dot_indictor"
+                    app:layout_constraintEnd_toEndOf="@id/tvFrontBallistic"
+                    app:layout_constraintStart_toStartOf="@id/tvFrontBallistic"
+                    app:layout_constraintTop_toBottomOf="@id/tvFrontBallistic" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-170dp"
+            android:src="@drawable/bg_ballistic"
+            app:layout_constraintBottom_toBottomOf="@id/tvSpeedBallistic"
+            app:layout_constraintStart_toStartOf="@id/tvSpeedBallistic"
+            app:layout_constraintTop_toTopOf="@id/tvSpeedBallistic" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvWhKmLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/whKm"
+            android:textColor="@color/ballisticRed"
+            app:layout_constraintStart_toEndOf="@id/cvDashcam"
+            app:layout_constraintTop_toTopOf="@id/cvDashcam" />
+
+        <TextView
+            android:id="@+id/tvWhKm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/zen_dots_regular"
+            android:text="42"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="27sp"
+            app:layout_constraintStart_toStartOf="@id/tvWhKmLabel"
+            app:layout_constraintTop_toBottomOf="@id/tvWhKmLabel" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvRec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rec > 45"
+            android:textColor="@color/ballisticGrey"
+            app:layout_constraintStart_toStartOf="@id/tvWhKm"
+            app:layout_constraintTop_toBottomOf="@id/tvWhKm" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvRangeLabelBallistic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="320dp"
+            android:text="@string/range"
+            android:textAllCaps="true"
+            android:textColor="@color/ballisticRed"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvWhKmLabel"
+            app:layout_constraintStart_toEndOf="@id/cvDashcam"
+            app:layout_constraintTop_toTopOf="@id/tvWhKmLabel" />
+
+        <TextView
+            android:id="@+id/tvRangeBallistic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/zen_dots_regular"
+            android:text="123"
+            android:textColor="@color/white"
+            android:textSize="27sp"
+            app:layout_constraintEnd_toEndOf="@id/tvRangeLabelBallistic"
+            app:layout_constraintTop_toBottomOf="@id/tvRangeLabelBallistic" />
+
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvRangeUnitBallistic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="kms"
+            android:textColor="@color/ballisticGrey"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/tvRangeBallistic"
+            app:layout_constraintTop_toBottomOf="@id/tvRangeBallistic"
+            app:textAllCaps="true" />
+
+        <TextView
+            android:id="@+id/tvSpeedBallistic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:fontFamily="@font/aoi_mono_extended"
+            android:text="085"
+            android:textColor="@color/white"
+            android:textSize="92sp"
+            app:layout_constraintBottom_toBottomOf="@id/cvDashcam"
+            app:layout_constraintStart_toEndOf="@id/cvDashcam"
+            app:layout_constraintTop_toTopOf="@id/cvDashcam" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvSpeedUnitBallistic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-36dp"
+            android:text="kmph"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@id/tvSpeedBallistic"
+            app:layout_constraintStart_toStartOf="@id/tvSpeedBallistic"
+            app:layout_constraintTop_toBottomOf="@id/tvSpeedBallistic"
+            app:textAllCaps="false" />
+
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvRide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginBottom="22sp"
+            android:text="85 km"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/cvDashcam"
+            app:layout_constraintStart_toEndOf="@id/cvDashcam"
+            app:textAllCaps="false" />
+
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvRideLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ride"
+            android:textAllCaps="true"
+            android:textColor="@color/ballisticRed"
+            app:layout_constraintEnd_toEndOf="@id/tvRide"
+            app:layout_constraintStart_toStartOf="@id/tvRide"
+            app:layout_constraintTop_toBottomOf="@id/tvRide" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvBallistic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="164dp"
+            android:text="@string/ballistic"
+            android:textAllCaps="true"
+            android:textColor="@color/ballisticRed"
+            app:layout_constraintBottom_toBottomOf="@id/tvRideLabel"
+            app:layout_constraintStart_toEndOf="@id/cvDashcam"
+            app:layout_constraintTop_toTopOf="@id/tvRideLabel" />
+
+
+        <ImageView
+            android:id="@+id/ivBallistic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_ballistic_new"
+            app:layout_constraintBottom_toTopOf="@id/tvBallistic"
+            app:layout_constraintEnd_toEndOf="@id/tvBallistic"
+            app:layout_constraintStart_toStartOf="@id/tvBallistic" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvOdoLAbel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="301dp"
+            android:text="@string/odo"
+            android:textAllCaps="true"
+            android:textColor="@color/ballisticRed"
+            app:layout_constraintBottom_toBottomOf="@id/tvRideLabel"
+            app:layout_constraintStart_toEndOf="@id/cvDashcam"
+            app:layout_constraintTop_toTopOf="@id/tvRideLabel" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvODo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1289 km"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/tvOdoLAbel"
+            app:layout_constraintEnd_toEndOf="@id/tvOdoLAbel"
+            app:layout_constraintStart_toStartOf="@id/tvOdoLAbel"
+            app:textAllCaps="false" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvRegen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="52dp"
+            android:text="R5"
+            android:textColor="@color/ballisticRed"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@id/tvSpeedBallistic"
+            app:layout_constraintStart_toEndOf="@id/cvDashcam"
+            app:layout_constraintStart_toStartOf="@id/tvSpeedBallistic"
+            app:layout_constraintTop_toBottomOf="@id/tvSpeedBallistic" />
+
+        <ImageView
+            android:id="@+id/bgRegen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:src="@drawable/bg_regen"
+            app:layout_constraintBottom_toTopOf="@id/tvRegen"
+            app:layout_constraintEnd_toEndOf="@id/tvRegen"
+            app:layout_constraintStart_toStartOf="@id/tvRegen" />
+
+        <ImageView
+            android:id="@+id/ivRegenLevel1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_regen_level"
+            app:layout_constraintBottom_toBottomOf="@id/bgRegen"
+            app:layout_constraintStart_toStartOf="@id/bgRegen" />
+
+        <ImageView
+            android:id="@+id/ivRegenLevel2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:src="@drawable/ic_regen_level"
+            app:layout_constraintBottom_toBottomOf="@id/bgRegen"
+            app:layout_constraintStart_toEndOf="@id/ivRegenLevel1" />
+
+        <ImageView
+            android:id="@+id/ivRegenLevel3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:src="@drawable/ic_regen_level"
+            app:layout_constraintBottom_toBottomOf="@id/bgRegen"
+            app:layout_constraintStart_toEndOf="@id/ivRegenLevel2" />
+
+        <ImageView
+            android:id="@+id/ivRegenLevel4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:src="@drawable/ic_regen_level"
+            app:layout_constraintBottom_toBottomOf="@id/bgRegen"
+            app:layout_constraintStart_toEndOf="@id/ivRegenLevel3" />
+
+        <ImageView
+            android:id="@+id/ivRegenLevel5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:src="@drawable/ic_regen_level"
+            app:layout_constraintBottom_toBottomOf="@id/bgRegen"
+            app:layout_constraintStart_toEndOf="@id/ivRegenLevel4" />
+
+        <ImageView
+            android:id="@+id/ivRegenLevel6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:src="@drawable/ic_regen_level"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/bgRegen"
+            app:layout_constraintStart_toEndOf="@id/ivRegenLevel5" />
+
+        <ImageView
+            android:id="@+id/ivRegenLevel7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:src="@drawable/ic_regen_level"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/bgRegen"
+            app:layout_constraintStart_toEndOf="@id/ivRegenLevel6" />
+
+
+        <ImageView
+            android:id="@+id/ivRegenLevel8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:src="@drawable/ic_regen_level"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/bgRegen"
+            app:layout_constraintStart_toEndOf="@id/ivRegenLevel7" />
+
+        <ImageView
+            android:id="@+id/ivRegenLevel9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:src="@drawable/ic_regen_level"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/bgRegen"
+            app:layout_constraintStart_toEndOf="@id/ivRegenLevel8" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ImageView
+        android:id="@+id/ivBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:src="@drawable/ic_back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.972"
+        android:visibility="visible"
+        android:layout_marginBottom="65dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

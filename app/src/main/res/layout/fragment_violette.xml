@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.features.controls.violette.VioletteFragment">
+
+    <ImageView
+        android:id="@+id/ivTopBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/top_bar"
+        android:src="@drawable/bg_setting_top_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvViolette"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:gravity="center_vertical"
+        android:textFontWeight="500"
+        android:text="@string/violette"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@id/ivTopBar"
+        app:layout_constraintStart_toStartOf="@id/ivTopBar"
+        app:layout_constraintTop_toTopOf="@id/ivTopBar" />
+
+    <ImageView
+        android:id="@+id/ivBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:src="@drawable/ic_back"
+        app:layout_constraintBottom_toBottomOf="@id/ivTopBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivTopBar" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="270dp"
+        android:layout_height="36dp"
+        app:layout_constraintBottom_toBottomOf="@id/ivTopBar"
+        app:layout_constraintEnd_toEndOf="@id/ivTopBar"
+        app:layout_constraintTop_toTopOf="@id/ivTopBar">
+
+        <TextView
+            android:id="@+id/tvHoldo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="[hold]"
+            android:textAllCaps="true"
+            android:textColor="@color/greyWinterMode"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="toggle"
+            android:textAllCaps="true"
+            android:textColor="@color/greyMediumLight"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@id/tvHoldo"
+            app:layout_constraintTop_toTopOf="@id/tvHoldo" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_o"
+            app:layout_constraintEnd_toEndOf="@id/tvToggle"
+            app:layout_constraintStart_toStartOf="@id/tvHoldo"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tvHoldX"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="19dp"
+            android:fontFamily="sans-serif"
+            android:text="[hold]"
+            android:textAllCaps="true"
+            android:textColor="@color/greyWinterMode"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvToggle" />
+
+        <TextView
+            android:id="@+id/tvToggleX"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="toggle"
+            android:textAllCaps="true"
+            android:textColor="@color/greyMediumLight"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@id/tvHoldX"
+            app:layout_constraintTop_toTopOf="@id/tvHoldX" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/iv_square"
+            app:layout_constraintEnd_toEndOf="@id/tvToggleX"
+            app:layout_constraintStart_toStartOf="@id/tvHoldX"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvNavigate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/navigate"
+            android:textAllCaps="true"
+            android:textColor="@color/greyMediumLight"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvToggleX"
+            app:layout_constraintStart_toEndOf="@id/tvToggleX"
+            app:layout_constraintTop_toTopOf="@id/tvToggleX" />
+
+        <ImageView
+            android:id="@+id/tvExpand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_expand_all"
+            app:layout_constraintEnd_toEndOf="@id/tvNavigate"
+            app:layout_constraintStart_toStartOf="@id/tvNavigate"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvVioletteState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/violette_locked"
+        android:textColor="@color/violette"
+        android:textFontWeight="400"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@id/ivTopBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivTopBar" />
+
+    <ImageView
+        android:id="@+id/ivViolette"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:contentDescription="@string/violette_image"
+        android:src="@drawable/ic_violette"
+        app:layout_constraintEnd_toEndOf="@id/ivTopBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivTopBar" />
+
+    <LinearLayout
+        android:id="@+id/llVioletteDetail"
+        android:layout_width="628dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="348dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/bg_stroke"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@id/ivTopBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivTopBar"
+        app:layout_goneMarginTop="348dp">
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvVioletteApp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textFontWeight="500"
+            android:background="@color/activeSelectionRed"
+            android:gravity="center"
+            android:text="@string/get_violette_in_app"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clVioletteEnable"
+        android:layout_width="393dp"
+        android:layout_height="78dp"
+        android:layout_marginTop="350dp"
+        android:background="@drawable/bg_stroke_ash"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/ivTopBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivTopBar">
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvVioletteEnable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/violette_enabled"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textFontWeight="500"
+            app:layout_constraintBottom_toTopOf="@id/tvVioletteFeature"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvVioletteFeature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/violette_safety_features_always_on"
+            android:textColor="@color/unSelectedTitle"
+            android:textSize="18sp"
+            android:textFontWeight="400"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvVioletteEnable" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ImageView
+        android:id="@+id/ivBgVioletteEnable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-40dp"
+        android:contentDescription="@string/bg_violette_on"
+        android:src="@drawable/bg_violette_enabled"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/ivViolette"
+        app:layout_constraintStart_toStartOf="@id/ivViolette"
+        app:layout_constraintTop_toBottomOf="@id/ivViolette" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvVioletteOn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:text="@string/violette"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:visibility="gone"
+        android:textFontWeight="400"
+        app:layout_constraintBottom_toBottomOf="@id/ivBgVioletteEnable"
+        app:layout_constraintStart_toStartOf="@id/ivBgVioletteEnable"
+        app:layout_constraintTop_toTopOf="@id/ivBgVioletteEnable" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvOn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="91dp"
+        android:text="@string/on"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textFontWeight="500"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/ivBgVioletteEnable"
+        app:layout_constraintEnd_toEndOf="@id/ivBgVioletteEnable"
+        app:layout_constraintTop_toTopOf="@id/ivBgVioletteEnable" />
+
+
+    <ImageView
+        android:id="@+id/ivBgVioletteDisable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-40dp"
+        android:contentDescription="@string/bg_violette_off"
+        android:src="@drawable/bg_violette_disabled"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/ivTopBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivViolette" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvVioletteOff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="82dp"
+        android:text="@string/violette"
+        android:textColor="@color/unSelected"
+        android:textFontWeight="500"
+        android:textSize="24sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/ivBgVioletteDisable"
+        app:layout_constraintStart_toStartOf="@id/ivBgVioletteDisable"
+        app:layout_constraintTop_toTopOf="@id/ivBgVioletteDisable" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvOff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="91dp"
+        android:text="@string/off"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textFontWeight="500"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/ivBgVioletteDisable"
+        app:layout_constraintEnd_toEndOf="@id/ivBgVioletteDisable"
+        app:layout_constraintTop_toTopOf="@id/ivBgVioletteDisable" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

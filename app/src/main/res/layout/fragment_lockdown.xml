@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".ui.features.LockdownFragment">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clVehicleLocked"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/ivTopBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/top_bar"
+            android:src="@drawable/bg_setting_top_bar"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/bg_splash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image_splash_background"
+            android:src="@drawable/image_lockdown_splash"
+            app:layout_constraintBottom_toBottomOf="@id/bg_bike"
+            app:layout_constraintEnd_toEndOf="@id/bg_bike"
+            app:layout_constraintStart_toStartOf="@id/bg_bike"
+            app:layout_constraintTop_toTopOf="@id/bg_bike" />
+
+        <ImageView
+            android:id="@+id/bg_bike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.8"
+            android:contentDescription="@string/bg_bike"
+            android:src="@drawable/bg_lockdown"
+            app:layout_constraintEnd_toEndOf="@id/ivTopBar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivBike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/bike_image"
+            android:src="@drawable/image_bike_lockdown"
+            app:layout_constraintBottom_toBottomOf="@id/bg_bike"
+            app:layout_constraintEnd_toEndOf="@id/bg_bike"
+            app:layout_constraintStart_toStartOf="@id/bg_bike"
+            app:layout_constraintTop_toTopOf="@id/bg_bike" />
+
+        <ImageView
+            android:id="@+id/bgCircleLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/bg_bike"
+            android:src="@drawable/bg_lockdown_left_circle"
+            app:layout_constraintBottom_toBottomOf="@id/bg_bike"
+            app:layout_constraintStart_toStartOf="@id/bg_bike"
+            app:layout_constraintTop_toTopOf="@id/bg_bike" />
+
+        <ImageView
+            android:id="@+id/bgCircleRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/bg_bike"
+            android:src="@drawable/bg_lockdown_right_circle"
+            app:layout_constraintBottom_toBottomOf="@id/bg_bike"
+            app:layout_constraintEnd_toEndOf="@id/bg_bike"
+            app:layout_constraintTop_toTopOf="@id/bg_bike" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvLockdown"
+            android:layout_width="264dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="52.11dp"
+            android:drawableStart="@drawable/ic_lockdown_lock"
+            android:gravity="center"
+            android:text="@string/vehicle_in_lockdown"
+            android:textAllCaps="true"
+            android:textColor="@color/lockdownRed"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/ivBike"
+            app:layout_constraintEnd_toEndOf="@id/bg_bike"
+            app:layout_constraintStart_toStartOf="@id/bg_bike" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvUnlockVehicle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="23dp"
+            android:text="@string/use_uv_app_to_unlock_your_f77"
+            android:textColor="@color/unSelectedTitle"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/bg_bike"
+            app:layout_constraintEnd_toEndOf="@id/bg_bike"
+            app:layout_constraintStart_toStartOf="@id/bg_bike" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/bg_bike"
+            android:src="@drawable/ic_lockdown_line"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintTop_toTopOf="@id/bg_bike"
+            app:layout_constraintBottom_toBottomOf="@id/bg_bike"
+            app:layout_constraintEnd_toStartOf="@id/bgCircleLeft"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/bg_bike"
+            android:src="@drawable/ic_lockdown_line"
+            android:layout_marginStart="20dp"
+            app:layout_constraintTop_toTopOf="@id/bg_bike"
+            app:layout_constraintBottom_toBottomOf="@id/bg_bike"
+            app:layout_constraintStart_toEndOf="@id/bgCircleRight"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clLockdownPark"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/ivTopBarPark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/top_bar"
+            android:src="@drawable/bg_setting_top_bar"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="56dp"
+            android:contentDescription="@string/line"
+            android:src="@drawable/ic_line"
+            app:layout_constraintEnd_toEndOf="@id/ivTopBarPark"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvStep1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/step_1"
+            android:textColor="@color/activeSelectionRed"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="@id/ivLine"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivLine" />
+
+        <ImageView
+            android:id="@+id/ivPark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="72dp"
+            android:layout_marginBottom="42dp"
+            android:contentDescription="@string/image_p_letter"
+            android:src="@drawable/bg_red_stroke"
+            app:layout_constraintBottom_toTopOf="@id/tvPark"
+            app:layout_constraintEnd_toEndOf="@id/ivLine"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvPark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/please_park_f77"
+            android:textColor="@color/activeSelectionRed"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/tvLockdownMessage"
+            app:layout_constraintEnd_toEndOf="@id/ivLine"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvLockdownMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/in_an_isolated_area"
+            android:textColor="@color/lockdownGrey"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/ivLine"
+            app:layout_constraintEnd_toEndOf="@id/ivLine"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvStep2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/step_2"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="@id/ivTopBarPark"
+            app:layout_constraintStart_toStartOf="@id/ivLine"
+            app:layout_constraintTop_toTopOf="@id/ivLine" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvDistanceValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/_20"
+            android:textColor="@color/white"
+            android:textSize="32sp"
+            app:layout_constraintEnd_toEndOf="@id/ivTopBarPark"
+            app:layout_constraintStart_toStartOf="@id/ivLine"
+            app:layout_constraintBottom_toTopOf="@id/ivDistance" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvDistanceUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="6dp"
+            android:text="@string/m"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/tvDistanceValue"
+            app:layout_constraintStart_toEndOf="@id/tvDistanceValue" />
+
+        <ImageView
+            android:id="@+id/ivDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="54dp"
+            android:contentDescription="@string/distance_icon"
+            android:src="@drawable/ic_distance"
+            app:layout_constraintEnd_toEndOf="@id/ivTopBarPark"
+            app:layout_constraintStart_toStartOf="@id/ivLine"
+          app:layout_constraintBottom_toTopOf="@id/tvLockdownDistance" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvLockdownDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/keep_20m_distance"
+            android:textAllCaps="true"
+            android:textColor="@color/activeSelectionRed"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvPark"
+            app:layout_constraintBottom_toTopOf="@id/tvRoadSideAssistance"
+            app:layout_constraintEnd_toEndOf="@id/ivTopBarPark"
+            app:layout_constraintStart_toStartOf="@id/ivLine" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvRoadSideAssistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contact_road_assistance"
+            android:textColor="@color/lockdownGrey"
+            app:layout_constraintBottom_toBottomOf="@id/ivLine"
+            app:layout_constraintEnd_toEndOf="@id/ivTopBarPark"
+            app:layout_constraintStart_toStartOf="@id/ivLine" />
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvBack"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:drawableEnd="@drawable/ic_back"
+            android:text="@string/back"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="@id/ivLine"
+            app:layout_constraintStart_toStartOf="@id/ivLine"
+            app:layout_constraintTop_toBottomOf="@id/ivLine" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

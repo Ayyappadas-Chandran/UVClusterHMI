@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clFactoryReset"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.features.settings.factoryReset.FactoryResetFragment">
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvFactoryReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="22dp"
+        android:text="BUG REPORT"
+        android:textColor="@color/unSelectedTitle"
+        android:textFontWeight="400"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tv_factory_reset_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/unSelected"
+        android:textFontWeight="400"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@id/tvFactoryReset"
+        app:layout_constraintTop_toBottomOf="@id/tvFactoryReset" />
+
+    <LinearLayout
+        android:layout_width="628dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/bg_stroke"
+        android:padding="8dp"
+        app:layout_constraintStart_toStartOf="@id/tv_factory_reset_message"
+        app:layout_constraintTop_toBottomOf="@id/tv_factory_reset_message">
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+            android:id="@+id/tvReset"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/activeSelectionRed"
+            android:gravity="center"
+            android:text="COLLECT LOG"
+            android:textColor="@color/white"
+            android:textFontWeight="500"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

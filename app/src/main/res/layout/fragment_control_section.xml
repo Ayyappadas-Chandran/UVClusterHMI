@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.features.controlSection.ControlSectionFragment">
+
+    <ImageView
+        android:id="@+id/bgTopBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/top_bar"
+        android:src="@drawable/bg_setting_top_bar"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivBgControlCenter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/background_control_section"
+        android:src="@drawable/bg_control_selection"
+        app:layout_constraintEnd_toEndOf="@id/bgTopBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <LinearLayout
+        android:id="@+id/llBgData"
+        android:layout_width="146dp"
+        android:layout_height="146dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="31dp"
+        android:background="@drawable/bg_control_data"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/data_icon"
+            android:src="@drawable/ic_control_network" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/llBgWifi"
+        android:layout_width="146dp"
+        android:layout_height="146dp"
+        android:background="@drawable/bg_control_wifi"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@id/llBgData"
+        app:layout_constraintTop_toTopOf="@id/llBgData">
+
+        <ImageView
+            android:id="@+id/ivWifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/wifi_icon"
+            android:src="@drawable/ic_control_wifi" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/llBgIncognito"
+        android:layout_width="146dp"
+        android:layout_height="146dp"
+        android:background="@drawable/bg_control_incognito"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="@id/llBgWifi"
+        app:layout_constraintTop_toBottomOf="@id/llBgWifi">
+
+        <ImageView
+            android:id="@+id/ivIncognito"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/incognito_icon"
+            android:src="@drawable/ic_control_incognito" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llBgBluetooth"
+        android:layout_width="146dp"
+        android:layout_height="146dp"
+        android:background="@drawable/bg_control_bluetooth"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="@id/llBgData"
+        app:layout_constraintTop_toBottomOf="@id/llBgData">
+
+        <ImageView
+            android:id="@+id/ivBluetooth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/bluetooth_icon"
+            android:src="@drawable/ic_control_bluetooth" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bgCenter"
+        android:layout_width="128dp"
+        android:layout_height="127dp"
+        android:background="@drawable/bg_control_central"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@id/llBgBluetooth"
+        app:layout_constraintEnd_toEndOf="@id/llBgWifi"
+        app:layout_constraintStart_toStartOf="@id/llBgData"
+        app:layout_constraintTop_toTopOf="@id/llBgData">
+
+        <ImageView
+            android:id="@+id/icCenter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/view_holder"
+            android:src="@drawable/ic_control_center" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llBgHillHold"
+        android:layout_width="185dp"
+        android:layout_height="98dp"
+        android:layout_marginStart="27dp"
+        android:background="@drawable/bg_hill_hold"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toEndOf="@id/llBgWifi"
+        app:layout_constraintTop_toTopOf="@id/llBgData">
+
+        <ImageView
+            android:id="@+id/ivHillHold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/hill_hold_icon"
+            android:src="@drawable/ic_control_hill_hold" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/llBgAbs"
+        android:layout_width="185dp"
+        android:layout_height="98dp"
+        android:background="@drawable/bg_abs"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@id/llBgHillHold"
+        app:layout_constraintStart_toStartOf="@id/llBgHillHold"
+        app:layout_constraintTop_toBottomOf="@id/llBgHillHold">
+
+        <ImageView
+            android:id="@+id/ivAbs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/abs_icon"
+            android:src="@drawable/ic_control_abs"
+            app:layout_constraintBottom_toBottomOf="@id/llBgAbs"
+            app:layout_constraintEnd_toEndOf="@id/llBgAbs"
+            app:layout_constraintStart_toStartOf="@id/llBgAbs"
+            app:layout_constraintTop_toTopOf="@id/llBgAbs" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bgCenterControl"
+        android:layout_width="185dp"
+        android:layout_height="97dp"
+        android:background="@drawable/bg_center_control"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="@id/llBgAbs"
+        app:layout_constraintTop_toBottomOf="@id/llBgAbs">
+
+        <ImageView
+            android:id="@+id/ivCenterCentral"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/view_holder"
+            android:src="@drawable/ic_control_center" />
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/bgNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:contentDescription="@string/background_notification"
+        android:src="@drawable/bg_notification"
+        app:layout_constraintStart_toEndOf="@id/llBgHillHold"
+        app:layout_constraintTop_toTopOf="@id/llBgData" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/notification"
+        android:textColor="@color/unSelectedTitle"
+        app:layout_constraintStart_toStartOf="@id/bgNotification"
+        app:layout_constraintTop_toTopOf="@id/bgNotification" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvNotification"
+        android:layout_width="411dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8.5dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/ivCloseAll"
+        app:layout_constraintStart_toStartOf="@id/tvNotification"
+        app:layout_constraintTop_toBottomOf="@id/tvNotification" />
+
+    <ImageView
+        android:id="@+id/ivCloseAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@string/close_all_icon"
+        android:src="@drawable/ic_close_all"
+        app:layout_constraintBottom_toBottomOf="@id/bgNotification"
+        app:layout_constraintEnd_toEndOf="@id/bgNotification"
+        app:layout_constraintStart_toStartOf="@id/bgNotification" />
+
+    <FrameLayout
+        android:id="@+id/flBgAutoBrightness"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="22.5dp"
+        android:background="@drawable/bg_manual_brightness"
+        app:layout_constraintEnd_toEndOf="@id/bgCenterControl"
+        app:layout_constraintTop_toBottomOf="@id/bgCenterControl">
+
+        <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+            android:id="@+id/tvAutoBrightness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/a"
+            android:textColor="@color/white"
+            android:textSize="22sp" />
+
+    </FrameLayout>
+
+    <SeekBar
+        android:id="@+id/sbBrightness"
+        android:layout_width="422dp"
+        android:layout_height="60dp"
+        android:max="100"
+        android:padding="0dp"
+        android:paddingStart="0dp"
+        android:paddingTop="0dp"
+        android:paddingEnd="0dp"
+        android:paddingBottom="0dp"
+        android:progress="10"
+        android:progressDrawable="@drawable/custom_seekbar_progress"
+        android:thumb="@drawable/custom_seekbar_thumb"
+        app:layout_constraintBottom_toBottomOf="@id/flBgAutoBrightness"
+        app:layout_constraintStart_toStartOf="@id/llBgData"
+        app:layout_constraintTop_toTopOf="@id/flBgAutoBrightness" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bgTheme"
+        android:layout_width="208dp"
+        android:layout_height="69dp"
+        android:layout_marginTop="23dp"
+        android:background="@drawable/bg_theme"
+        app:layout_constraintEnd_toEndOf="@id/bgCenterControl"
+        app:layout_constraintTop_toBottomOf="@id/flBgAutoBrightness">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vpTheme"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+            android:id="@+id/dotsIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginBottom="2dp"
+            app:dotsColor="@color/unSelected"
+            app:dotsCornerRadius="8dp"
+            app:dotsSize="6dp"
+            app:dotsSpacing="4dp"
+            app:dotsWidthFactor="2.5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:progressMode="false"
+            app:selectedDotColor="@color/black" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="282dp"
+        android:layout_height="68dp"
+        android:layout_marginEnd="18dp"
+        android:background="@drawable/bg_modes"
+        app:layout_constraintBottom_toBottomOf="@id/bgTheme"
+        app:layout_constraintEnd_toStartOf="@id/bgTheme"
+        app:layout_constraintTop_toTopOf="@id/bgTheme">
+
+        <ImageView
+            android:id="@+id/ivAuto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="4dp"
+            android:contentDescription="@string/auto_mode_icon"
+            android:src="@drawable/ic_auto_mode"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/day_mode_icon"
+            android:src="@drawable/ic_day_mode"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/llNightModeUnselect"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:gravity="end"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivNightUnselect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="41dp"
+                android:contentDescription="@string/mode_unselect_icon"
+                android:src="@drawable/ic_unselect_mode" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/llDayModeUnselect"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivDayUnselect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/mode_unselect_icon"
+                android:src="@drawable/ic_unselect_mode" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llAutoModeUnselect"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:gravity="start"
+            android:orientation="horizontal"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivAutoUnselect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="31dp"
+                android:contentDescription="@string/mode_unselect_icon"
+                android:src="@drawable/ic_unselect_mode" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivNight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="4dp"
+            android:contentDescription="@string/night_mode_icon"
+            android:src="@drawable/ic_night_mode"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

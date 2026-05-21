@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cvVideo"
+        android:layout_width="301dp"
+        android:layout_height="165dp"
+        android:layout_marginStart="20dp"
+        app:cardBackgroundColor="@color/transparent"
+        app:cardCornerRadius="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/unSelected"
+        app:strokeWidth="2dp">
+
+        <ImageView
+            android:id="@+id/ivPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/play_icon"
+            android:src="@drawable/ic_play_music" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvVideoName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/unSelected"
+        android:textFontWeight="500"
+        app:layout_constraintStart_toStartOf="@id/cvVideo"
+        app:layout_constraintTop_toBottomOf="@id/cvVideo"
+        tools:text="Video 1" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.BrutalTypeTextView
+        android:id="@+id/tvVideoTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/_05_04"
+        android:textColor="@color/unSelected"
+        android:textFontWeight="500"
+        app:layout_constraintBottom_toBottomOf="@id/tvVideoName"
+        app:layout_constraintEnd_toEndOf="@id/cvVideo"
+        app:layout_constraintTop_toTopOf="@id/tvVideoName" />
+
+    <ImageView
+        android:id="@+id/ivSelectionLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:contentDescription="@string/tutorial_left_select"
+        android:src="@drawable/ic_tutorial_selection"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/cvVideo"
+        app:layout_constraintEnd_toStartOf="@id/cvVideo"
+        app:layout_constraintTop_toTopOf="@id/cvVideo" />
+
+    <ImageView
+        android:id="@+id/ivSelectionRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:contentDescription="@string/tutorial_right_select"
+        android:rotation="180"
+        android:src="@drawable/ic_tutorial_selection"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/cvVideo"
+        app:layout_constraintStart_toEndOf="@id/cvVideo"
+        app:layout_constraintTop_toTopOf="@id/cvVideo" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

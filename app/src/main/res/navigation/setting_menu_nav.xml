@@ -1,0 +1,77 @@
+<navigation
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/setting_menu_nav"
+app:startDestination="@id/bluetoothFragment" >
+<fragment
+    android:id="@+id/bluetoothFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.settings.bluetooth.BluetoothFragment"
+    android:label="fragment_bluetooth"
+    tools:layout="@layout/fragment_bluetooth" />
+<fragment
+    android:id="@+id/displayFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.settings.display.DisplayFragment"
+    android:label="fragment_display"
+    tools:layout="@layout/fragment_display" />
+<fragment
+    android:id="@+id/soundFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.settings.sound.SoundFragment"
+    android:label="SoundFragment"
+    tools:layout="@layout/fragment_sound" />
+<fragment
+    android:id="@+id/dataFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.settings.data.DataFragment"
+    android:label="fragment_data"
+    tools:layout="@layout/fragment_data" />
+<fragment
+    android:id="@+id/incognitoFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.settings.incognito.IncognitoFragment"
+    android:label="fragment_incognito"
+    tools:layout="@layout/fragment_incognito" />
+<fragment
+    android:id="@+id/systemUpdatesFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.settings.systemUpdates.SystemUpdatesFragment"
+    android:label="fragment_system_updates"
+    tools:layout="@layout/fragment_system_updates" />
+<fragment
+    android:id="@+id/factoryResetFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.settings.factoryReset.FactoryResetFragment"
+    android:label="fragment_factory_reset"
+    tools:layout="@layout/fragment_factory_reset" />
+<fragment
+    android:id="@+id/generalFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.settings.general.GeneralFragment"
+    android:label="fragment_general"
+    tools:layout="@layout/fragment_general" />
+<fragment
+    android:id="@+id/wifiFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.settings.wifi.WifiFragment"
+    android:label="fragment_wifi"
+    tools:layout="@layout/fragment_wifi" />
+<fragment
+    android:id="@+id/versionsFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.settings.versions.fragment_versions"
+    android:label="fragment_versions"
+    tools:layout="@layout/fragment_versions" />
+<fragment
+    android:id="@+id/debugFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.settings.debug.DebugFragment"
+    android:label="fragment_debug"
+    tools:layout="@layout/fragment_debug" />
+<fragment
+    android:id="@+id/locationFragment"
+    android:name="com.ultraviolette.uvclusterhmi.LocationFragment"
+    android:label="fragment_location"
+    tools:layout="@layout/fragment_location" />
+<fragment
+    android:id="@+id/filemanagerFragment"
+    android:name="com.ultraviolette.uvclusterhmi.ui.features.settings.filemanager.FileManagerFragment"
+    android:label="fragment_filemanager"
+    tools:layout="@layout/fragment_file_manager" />
+    <fragment
+        android:id="@+id/habitatresetFragment"
+        android:name="com.ultraviolette.uvclusterhmi.ui.features.settings.HabitatResetFragment.HabitatResetFragment"
+        android:label="fragment_habitatreset"
+        tools:layout="@layout/fragment_habitat_reset" />
+</navigation>

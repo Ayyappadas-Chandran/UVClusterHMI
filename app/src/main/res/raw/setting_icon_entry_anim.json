@@ -1,0 +1,720 @@
+{
+  "v": "5.12.1",
+  "fr": 25,
+  "ip": 0,
+  "op": 21,
+  "w": 1024,
+  "h": 600,
+  "nm": "Comp 1",
+  "ddd": 0,
+  "assets": [
+    {
+      "id": "image_0",
+      "w": 1024,
+      "h": 600,
+      "u": "",
+      "p": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAAAAAJYAgMAAACBfnywAAAAJHpUWHRDcmVhdG9yAAAImXNMyU9KVXBMK0ktUnBNS0tNLikGAEF6Bs5qehXFAAAACXBIWXMAAAABAAAAAQBPJcTWAAAADFBMVEVHcEz///////////8Gn9AKAAAAA3RSTlMAsU0PxWYKAAABx0lEQVR42u3ZIVIDQRAF0AkmBRE47DosRyC3AIlG40NxETSngCMgkTkCgioQhGZnN3ACBFX/PZHo/js73TPbGgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMDfugqvf7G7TS7/pq3qObj+1a4dRwcw1NNQr8EBPNZ7RQdwXpUdwNADeEsPYHd0GRvAWVX2GhjmAL5iA9jMAVRo+QcP+/ordBpe9tov+s86M4DjsfSPdj/2geAesO7rILULDNOzX1TscWgchD/Hv6ptbgBvUy9MDWDZ98B+JEx9BQ7mAM5zr0SGfQBf2QE8xg5C4yAwb4L1GhvA3AZjAxj2g1DsLvgzCqcOAv3Zv/TDUGoAq9/j8FNwAP1W9LrlvgJV8ziYOgpPYifhtnmfAtjGBnByF74CpnNAhX8f93V0k9sFpgCel+ErYLuIvQ2YA1i3m+D622G1cKcNAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgn/gGEtDkhqxRPhsAAAAASUVORK5CYII=",
+      "e": 1
+    },
+    {
+      "id": "image_1",
+      "w": 1024,
+      "h": 600,
+      "u": "",
+      "p": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAAAAAJYAgMAAACBfnywAAAAJHpUWHRDcmVhdG9yAAAImXNMyU9KVXBMK0ktUnBNS0tNLikGAEF6Bs5qehXFAAAACXBIWXMAAAABAAAAAQBPJcTWAAAADFBMVEVHcEz///////////8Gn9AKAAAABHRSTlMA/qA7E8VtjQAAAbtJREFUeNrt2rFRAkEYhuHVG4ObUTNKoAQSR2csgYADHAksgIASaOKKMKMEmqAEczvQvROswMCZ73mCI74X7t/dG0oBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+EvH8Ptv5+X+EHz/Tb8us9fgANfdsky7fXKA7qtLDtB0AwHSAwQvhVfhAT7bMcBz7hrQjwHm2Q9A8ENw9xsgdB24Ge79PXgKzOqtb8qpXne5AfZlWAneYmfAcjwPpAao+8BF/QjeDE+6db32w+8g07TOwFKn4CY7wCR1BAwB5tkBTudHIDVAXQB/huA2NEB7WQZXsSPgshE6xgY4b4VDzwLDaXBbPnIDtOnH4fgXIlfLS4DUjdA4BrvuJfYwVM6vxR9jA4xTIPf7PwdYpQdI/gW0AiyewgNsmugATb8rffKfpMrDsUwOJdttAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+Be+AYG6Yrt43gNBAAAAAElFTkSuQmCC",
+      "e": 1
+    },
+    {
+      "id": "image_2",
+      "w": 1024,
+      "h": 600,
+      "u": "",
+      "p": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAAAAAJYAgMAAACBfnywAAAAJHpUWHRDcmVhdG9yAAAImXNMyU9KVXBMK0ktUnBNS0tNLikGAEF6Bs5qehXFAAAACXBIWXMAAAABAAAAAQBPJcTWAAAACVBMVEVHcEz////////mcEUwAAAAA3RSTlMA/pCARpupAAABoUlEQVR42u3asW2EQBAFUEC6gALsDgjOVbiEC1iEHF3oMmgCyeElluwuDbecK3Bg6b/XwX7tzuwONA0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAX3r5CA+gjAKI1pWp6ZboAEozXIIDaEuZ1yl2+f3tVHaxZ2CY1uwAnkqV2wOr2BrQpQfw2AG5d6E1fQcM2+q/k4vgdgu47q3gFhzA0vQlN4HTfvz3XnCJrQFj7QWpAaxlrr0gNIC+rnyrgnPsUyA7gNUOeASwxAZQi+B77jigtsFrbgD1IvQaGsC5HFfh1ADqRWAIDqA9nsOpNeB3JDSnBzCmBxA/Fo7dAe0RQOo44D4NK+UttwvUAJbzklsDxs/gofj+Gri2wZ9F9jNw/0cmW3wAa/p/cs9fDQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwL/wA1w8WSYOIYckAAAAAElFTkSuQmCC",
+      "e": 1
+    },
+    {
+      "id": "image_3",
+      "w": 1024,
+      "h": 600,
+      "u": "",
+      "p": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAAAAAJYAgMAAACBfnywAAAAJHpUWHRDcmVhdG9yAAAImXNMyU9KVXBMK0ktUnBNS0tNLikGAEF6Bs5qehXFAAAACXBIWXMAAAABAAAAAQBPJcTWAAAADFBMVEVHcEz///////////8Gn9AKAAAAA3RSTlMAp0xkWuNLAAABv0lEQVR42u3ZPU4CURQG0AELYihYgpW1S8BNGCsTehcBGzGU7kJcgo2JpUugmCCFen1mhh1YmHznNNTvy7z78+g6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgL90eRcewEVtsgNY1nV2ALt6Tg/gfXqMPf3kOK06zL5jA5jXY1Wtc8vAVQ1ecgtAeADrMYDYRrAcA4itARdjALFdYDGc/yu4DVbdJn8BLYC3bhtcAxa/Z59VvecG0K7/pBWB0JV4uq7P9tOKQOg61LpgP4xDoQHshpPvkgPYD/NgLwBXIDSAsQiG7sPt2x/a4CF0Djpfj4NQ7CQ4G0fh5/RlaJMawFmbgm8qOIBJ+pvgWfqr8GwMYJ/7HjDoUwM4/TN0TA8gdhCa10c7/n3uo+i0VttWAB66WE/tFvRdtEVuBTyNAvvsAOa5Y+C4DryuOgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgH/hB8zg7OM2PHw1AAAAAElFTkSuQmCC",
+      "e": 1
+    },
+    {
+      "id": "image_4",
+      "w": 1024,
+      "h": 600,
+      "u": "",
+      "p": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAAAAAJYAgMAAACBfnywAAAAJHpUWHRDcmVhdG9yAAAImXNMyU9KVXBMK0ktUnBNS0tNLikGAEF6Bs5qehXFAAAACXBIWXMAAAABAAAAAQBPJcTWAAAACVBMVEVHcEz////////mcEUwAAAAA3RSTlMA/XgFuqIgAAABl0lEQVR42u3asWnDQBQG4JNBhQbQCIKM4RFU5IxKN4ZkCy8hSLo0gWTLnCJ5gxSB//vAdv1+3z096VQKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwF8a3u/ZAfT1nB3AJIBrcvkfZaxz+Yqt/3Qpa13ad+wloN5qbZ97bgPYxbaB8QhgFkD4FogdBfojgNgmOBwBxF4Gu1b8d3IAw9b/1uAt0G+1D8FNcKptCj7VuuTugOf2kzsKjvt/v8YugaPyMTaAcR+Cx+QVMKevgCV9BWQ3welxGbykjoKfxyAUOgb8TkLZo3Cr/WXrgbE3Q/G3w50nQp4JZp8LTM4FnAtkb4GhvmYfjp5q+PF4eWu7YC5PJdiU2wEfo8A1PYBzdgBd+ouSAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADA//EDz59cGV05ieIAAAAASUVORK5CYII=",
+      "e": 1
+    },
+    {
+      "id": "image_5",
+      "w": 1024,
+      "h": 600,
+      "u": "",
+      "p": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAAAAAJYAgMAAACBfnywAAAAJHpUWHRDcmVhdG9yAAAImXNMyU9KVXBMK0ktUnBNS0tNLikGAEF6Bs5qehXFAAAACXBIWXMAAAABAAAAAQBPJcTWAAAADFBMVEVHcEz///////////8Gn9AKAAAAA3RSTlMAnkv0uvtSAAABnElEQVR42u3asU0DQRAF0D1byEIOnBCQOSSkBNMEIoROTAl04FJMCWQQUoIDCxFwDGfd0QEB0n9Psi7eL9/ezO60BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPCXzm5vsgNY1XN2ANf1nh3Aul6Sl//UNnVol7Hrn/WzbX1037EBLOu1qu7rMXcHHMVuA5spgM/0AA7pr0BsKbCYAogtBpdTALFfgfmw+LvhF1wH1FvbVcU2hKvT2hfBe8Cu+ta6098g01XV1/AYNoGHzAD2VcfhsY0tBffjyqccMgM4jAWxALwCNkGfQYVQZjucXQrHN0Px7fA8/UAk/kgs/lB0nX4sHn8xEn819ns5GlsHzPqhITp2fWwdMA1IXLRg4SMyhqSMyZ2nD0oCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/xw+Ps+zUT3IP4QAAAABJRU5ErkJggg==",
+      "e": 1
+    },
+    {
+      "id": "image_6",
+      "w": 1024,
+      "h": 600,
+      "u": "",
+      "p": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAAAAAJYAgMAAACBfnywAAAAJHpUWHRDcmVhdG9yAAAImXNMyU9KVXBMK0ktUnBNS0tNLikGAEF6Bs5qehXFAAAACXBIWXMAAAABAAAAAQBPJcTWAAAADFBMVEVHcEz///////////8Gn9AKAAAAA3RSTlMAnkv0uvtSAAABnElEQVR42u3asU0DQRAF0D1byEIOnBCQOSSkBNMEIoROTAl04FJMCWQQUoIDCxFwDGfd0QEB0n9Psi7eL9/ezO60BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPCXzm5vsgNY1XN2ANf1nh3Aul6Sl//UNnVol7Hrn/WzbX1037EBLOu1qu7rMXcHHMVuA5spgM/0AA7pr0BsKbCYAogtBpdTALFfgfmw+LvhF1wH1FvbVcU2hKvT2hfBe8Cu+ta6098g01XV1/AYNoGHzAD2VcfhsY0tBffjyqccMgM4jAWxALwCNkGfQYVQZjucXQrHN0Px7fA8/UAk/kgs/lB0nX4sHn8xEn819ns5GlsHzPqhITp2fWwdMA1IXLRg4SMyhqSMyZ2nD0oCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/xw+Ps+zUT3IP4QAAAABJRU5ErkJggg==",
+      "e": 1
+    },
+    {
+      "id": "image_7",
+      "w": 1024,
+      "h": 600,
+      "u": "",
+      "p": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAAAAAJYAgMAAACBfnywAAAAJHpUWHRDcmVhdG9yAAAImXNMyU9KVXBMK0ktUnBNS0tNLikGAEF6Bs5qehXFAAAACXBIWXMAAAABAAAAAQBPJcTWAAAADFBMVEVHcEz///////////8Gn9AKAAAAA3RSTlMAnkv0uvtSAAABnElEQVR42u3asU0DQRAF0D1byEIOnBCQOSSkBNMEIoROTAl04FJMCWQQUoIDCxFwDGfd0QEB0n9Psi7eL9/ezO60BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPCXzm5vsgNY1XN2ANf1nh3Aul6Sl//UNnVol7Hrn/WzbX1037EBLOu1qu7rMXcHHMVuA5spgM/0AA7pr0BsKbCYAogtBpdTALFfgfmw+LvhF1wH1FvbVcU2hKvT2hfBe8Cu+ta6098g01XV1/AYNoGHzAD2VcfhsY0tBffjyqccMgM4jAWxALwCNkGfQYVQZjucXQrHN0Px7fA8/UAk/kgs/lB0nX4sHn8xEn819ns5GlsHzPqhITp2fWwdMA1IXLRg4SMyhqSMyZ2nD0oCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/xw+Ps+zUT3IP4QAAAABJRU5ErkJggg==",
+      "e": 1
+    },
+    {
+      "id": "image_8",
+      "w": 1024,
+      "h": 600,
+      "u": "",
+      "p": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAAAAAJYAgMAAACBfnywAAAAJHpUWHRDcmVhdG9yAAAImXNMyU9KVXBMK0ktUnBNS0tNLikGAEF6Bs5qehXFAAAACXBIWXMAAAABAAAAAQBPJcTWAAAADFBMVEVHcEz///////////8Gn9AKAAAAA3RSTlMAnkv0uvtSAAABnElEQVR42u3asU0DQRAF0D1byEIOnBCQOSSkBNMEIoROTAl04FJMCWQQUoIDCxFwDGfd0QEB0n9Psi7eL9/ezO60BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPCXzm5vsgNY1XN2ANf1nh3Aul6Sl//UNnVol7Hrn/WzbX1037EBLOu1qu7rMXcHHMVuA5spgM/0AA7pr0BsKbCYAogtBpdTALFfgfmw+LvhF1wH1FvbVcU2hKvT2hfBe8Cu+ta6098g01XV1/AYNoGHzAD2VcfhsY0tBffjyqccMgM4jAWxALwCNkGfQYVQZjucXQrHN0Px7fA8/UAk/kgs/lB0nX4sHn8xEn819ns5GlsHzPqhITp2fWwdMA1IXLRg4SMyhqSMyZ2nD0oCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/xw+Ps+zUT3IP4QAAAABJRU5ErkJggg==",
+      "e": 1
+    },
+    {
+      "id": "image_9",
+      "w": 1024,
+      "h": 600,
+      "u": "",
+      "p": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAAAAAJYAgMAAACBfnywAAAAJHpUWHRDcmVhdG9yAAAImXNMyU9KVXBMK0ktUnBNS0tNLikGAEF6Bs5qehXFAAAACXBIWXMAAAABAAAAAQBPJcTWAAAADFBMVEVHcEz///////////8Gn9AKAAAAA3RSTlMAnkv0uvtSAAABnElEQVR42u3asU0DQRAF0D1byEIOnBCQOSSkBNMEIoROTAl04FJMCWQQUoIDCxFwDGfd0QEB0n9Psi7eL9/ezO60BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPCXzm5vsgNY1XN2ANf1nh3Aul6Sl//UNnVol7Hrn/WzbX1037EBLOu1qu7rMXcHHMVuA5spgM/0AA7pr0BsKbCYAogtBpdTALFfgfmw+LvhF1wH1FvbVcU2hKvT2hfBe8Cu+ta6098g01XV1/AYNoGHzAD2VcfhsY0tBffjyqccMgM4jAWxALwCNkGfQYVQZjucXQrHN0Px7fA8/UAk/kgs/lB0nX4sHn8xEn819ns5GlsHzPqhITp2fWwdMA1IXLRg4SMyhqSMyZ2nD0oCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/xw+Ps+zUT3IP4QAAAABJRU5ErkJggg==",
+      "e": 1
+    },
+    {
+      "id": "image_10",
+      "w": 1024,
+      "h": 600,
+      "u": "",
+      "p": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAAAAAJYAgMAAACBfnywAAAAJHpUWHRDcmVhdG9yAAAImXNMyU9KVXBMK0ktUnBNS0tNLikGAEF6Bs5qehXFAAAACXBIWXMAAAABAAAAAQBPJcTWAAAADFBMVEVHcEz///////////8Gn9AKAAAAA3RSTlMAnkv0uvtSAAABnElEQVR42u3asU0DQRAF0D1byEIOnBCQOSSkBNMEIoROTAl04FJMCWQQUoIDCxFwDGfd0QEB0n9Psi7eL9/ezO60BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPCXzm5vsgNY1XN2ANf1nh3Aul6Sl//UNnVol7Hrn/WzbX1037EBLOu1qu7rMXcHHMVuA5spgM/0AA7pr0BsKbCYAogtBpdTALFfgfmw+LvhF1wH1FvbVcU2hKvT2hfBe8Cu+ta6098g01XV1/AYNoGHzAD2VcfhsY0tBffjyqccMgM4jAWxALwCNkGfQYVQZjucXQrHN0Px7fA8/UAk/kgs/lB0nX4sHn8xEn819ns5GlsHzPqhITp2fWwdMA1IXLRg4SMyhqSMyZ2nD0oCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/xw+Ps+zUT3IP4QAAAABJRU5ErkJggg==",
+      "e": 1
+    }
+  ],
+  "layers": [
+    {
+      "ddd": 0,
+      "ind": 1,
+      "ty": 2,
+      "nm": "Setting_Icon_00.png",
+      "cl": "png",
+      "refId": "image_0",
+      "sr": 1,
+      "ks": {
+        "o": {
+          "a": 0,
+          "k": 100,
+          "ix": 11
+        },
+        "r": {
+          "a": 0,
+          "k": 0,
+          "ix": 10
+        },
+        "p": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 2,
+          "l": 2
+        },
+        "a": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 1,
+          "l": 2
+        },
+        "s": {
+          "a": 0,
+          "k": [
+            100,
+            100,
+            100
+          ],
+          "ix": 6,
+          "l": 2
+        }
+      },
+      "ao": 0,
+      "ip": 0,
+      "op": 2,
+      "st": 0,
+      "bm": 0
+    },
+    {
+      "ddd": 0,
+      "ind": 2,
+      "ty": 2,
+      "nm": "Setting_Icon_01.png",
+      "cl": "png",
+      "refId": "image_1",
+      "sr": 1,
+      "ks": {
+        "o": {
+          "a": 0,
+          "k": 100,
+          "ix": 11
+        },
+        "r": {
+          "a": 0,
+          "k": 0,
+          "ix": 10
+        },
+        "p": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 2,
+          "l": 2
+        },
+        "a": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 1,
+          "l": 2
+        },
+        "s": {
+          "a": 0,
+          "k": [
+            100,
+            100,
+            100
+          ],
+          "ix": 6,
+          "l": 2
+        }
+      },
+      "ao": 0,
+      "ip": 2,
+      "op": 4,
+      "st": 2,
+      "bm": 0
+    },
+    {
+      "ddd": 0,
+      "ind": 3,
+      "ty": 2,
+      "nm": "Setting_Icon_02.png",
+      "cl": "png",
+      "refId": "image_2",
+      "sr": 1,
+      "ks": {
+        "o": {
+          "a": 0,
+          "k": 100,
+          "ix": 11
+        },
+        "r": {
+          "a": 0,
+          "k": 0,
+          "ix": 10
+        },
+        "p": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 2,
+          "l": 2
+        },
+        "a": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 1,
+          "l": 2
+        },
+        "s": {
+          "a": 0,
+          "k": [
+            100,
+            100,
+            100
+          ],
+          "ix": 6,
+          "l": 2
+        }
+      },
+      "ao": 0,
+      "ip": 4,
+      "op": 6,
+      "st": 4,
+      "bm": 0
+    },
+    {
+      "ddd": 0,
+      "ind": 4,
+      "ty": 2,
+      "nm": "Setting_Icon_03.png",
+      "cl": "png",
+      "refId": "image_3",
+      "sr": 1,
+      "ks": {
+        "o": {
+          "a": 0,
+          "k": 100,
+          "ix": 11
+        },
+        "r": {
+          "a": 0,
+          "k": 0,
+          "ix": 10
+        },
+        "p": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 2,
+          "l": 2
+        },
+        "a": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 1,
+          "l": 2
+        },
+        "s": {
+          "a": 0,
+          "k": [
+            100,
+            100,
+            100
+          ],
+          "ix": 6,
+          "l": 2
+        }
+      },
+      "ao": 0,
+      "ip": 6,
+      "op": 8,
+      "st": 6,
+      "bm": 0
+    },
+    {
+      "ddd": 0,
+      "ind": 5,
+      "ty": 2,
+      "nm": "Setting_Icon_04.png",
+      "cl": "png",
+      "refId": "image_4",
+      "sr": 1,
+      "ks": {
+        "o": {
+          "a": 0,
+          "k": 100,
+          "ix": 11
+        },
+        "r": {
+          "a": 0,
+          "k": 0,
+          "ix": 10
+        },
+        "p": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 2,
+          "l": 2
+        },
+        "a": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 1,
+          "l": 2
+        },
+        "s": {
+          "a": 0,
+          "k": [
+            100,
+            100,
+            100
+          ],
+          "ix": 6,
+          "l": 2
+        }
+      },
+      "ao": 0,
+      "ip": 8,
+      "op": 10,
+      "st": 8,
+      "bm": 0
+    },
+    {
+      "ddd": 0,
+      "ind": 6,
+      "ty": 2,
+      "nm": "Setting_Icon_05.png",
+      "cl": "png",
+      "refId": "image_5",
+      "sr": 1,
+      "ks": {
+        "o": {
+          "a": 0,
+          "k": 100,
+          "ix": 11
+        },
+        "r": {
+          "a": 0,
+          "k": 0,
+          "ix": 10
+        },
+        "p": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 2,
+          "l": 2
+        },
+        "a": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 1,
+          "l": 2
+        },
+        "s": {
+          "a": 0,
+          "k": [
+            100,
+            100,
+            100
+          ],
+          "ix": 6,
+          "l": 2
+        }
+      },
+      "ao": 0,
+      "ip": 10,
+      "op": 12,
+      "st": 10,
+      "bm": 0
+    },
+    {
+      "ddd": 0,
+      "ind": 7,
+      "ty": 2,
+      "nm": "Setting_Icon_06.png",
+      "cl": "png",
+      "refId": "image_6",
+      "sr": 1,
+      "ks": {
+        "o": {
+          "a": 0,
+          "k": 100,
+          "ix": 11
+        },
+        "r": {
+          "a": 0,
+          "k": 0,
+          "ix": 10
+        },
+        "p": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 2,
+          "l": 2
+        },
+        "a": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 1,
+          "l": 2
+        },
+        "s": {
+          "a": 0,
+          "k": [
+            100,
+            100,
+            100
+          ],
+          "ix": 6,
+          "l": 2
+        }
+      },
+      "ao": 0,
+      "ip": 12,
+      "op": 14,
+      "st": 12,
+      "bm": 0
+    },
+    {
+      "ddd": 0,
+      "ind": 8,
+      "ty": 2,
+      "nm": "Setting_Icon_07.png",
+      "cl": "png",
+      "refId": "image_7",
+      "sr": 1,
+      "ks": {
+        "o": {
+          "a": 0,
+          "k": 100,
+          "ix": 11
+        },
+        "r": {
+          "a": 0,
+          "k": 0,
+          "ix": 10
+        },
+        "p": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 2,
+          "l": 2
+        },
+        "a": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 1,
+          "l": 2
+        },
+        "s": {
+          "a": 0,
+          "k": [
+            100,
+            100,
+            100
+          ],
+          "ix": 6,
+          "l": 2
+        }
+      },
+      "ao": 0,
+      "ip": 14,
+      "op": 16,
+      "st": 14,
+      "bm": 0
+    },
+    {
+      "ddd": 0,
+      "ind": 9,
+      "ty": 2,
+      "nm": "Setting_Icon_08.png",
+      "cl": "png",
+      "refId": "image_8",
+      "sr": 1,
+      "ks": {
+        "o": {
+          "a": 0,
+          "k": 100,
+          "ix": 11
+        },
+        "r": {
+          "a": 0,
+          "k": 0,
+          "ix": 10
+        },
+        "p": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 2,
+          "l": 2
+        },
+        "a": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 1,
+          "l": 2
+        },
+        "s": {
+          "a": 0,
+          "k": [
+            100,
+            100,
+            100
+          ],
+          "ix": 6,
+          "l": 2
+        }
+      },
+      "ao": 0,
+      "ip": 16,
+      "op": 18,
+      "st": 16,
+      "bm": 0
+    },
+    {
+      "ddd": 0,
+      "ind": 10,
+      "ty": 2,
+      "nm": "Setting_Icon_09.png",
+      "cl": "png",
+      "refId": "image_9",
+      "sr": 1,
+      "ks": {
+        "o": {
+          "a": 0,
+          "k": 100,
+          "ix": 11
+        },
+        "r": {
+          "a": 0,
+          "k": 0,
+          "ix": 10
+        },
+        "p": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 2,
+          "l": 2
+        },
+        "a": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 1,
+          "l": 2
+        },
+        "s": {
+          "a": 0,
+          "k": [
+            100,
+            100,
+            100
+          ],
+          "ix": 6,
+          "l": 2
+        }
+      },
+      "ao": 0,
+      "ip": 18,
+      "op": 20,
+      "st": 18,
+      "bm": 0
+    },
+    {
+      "ddd": 0,
+      "ind": 11,
+      "ty": 2,
+      "nm": "Setting_Icon_10.png",
+      "cl": "png",
+      "refId": "image_10",
+      "sr": 1,
+      "ks": {
+        "o": {
+          "a": 0,
+          "k": 100,
+          "ix": 11
+        },
+        "r": {
+          "a": 0,
+          "k": 0,
+          "ix": 10
+        },
+        "p": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 2,
+          "l": 2
+        },
+        "a": {
+          "a": 0,
+          "k": [
+            512,
+            300,
+            0
+          ],
+          "ix": 1,
+          "l": 2
+        },
+        "s": {
+          "a": 0,
+          "k": [
+            100,
+            100,
+            100
+          ],
+          "ix": 6,
+          "l": 2
+        }
+      },
+      "ao": 0,
+      "ip": 20,
+      "op": 22,
+      "st": 20,
+      "bm": 0
+    }
+  ],
+  "markers": [],
+  "props": {}
+}

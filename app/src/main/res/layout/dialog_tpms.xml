@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/clTpmsDetails"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background">
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+        android:id="@+id/tvRecommendedTyrePressure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/recommended_tyre_pressure"
+        android:textColor="@color/unSelectedTitle"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+        android:id="@+id/tvFrontTyrePressure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="41dp"
+        android:text="@string/f_29psi"
+        android:textColor="@color/white"
+        android:textSize="32sp"
+        app:layout_constraintStart_toStartOf="@id/tvRecommendedTyrePressure"
+        app:layout_constraintTop_toBottomOf="@id/tvRecommendedTyrePressure" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+        android:id="@+id/tvRearTyrePressure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/r_33psi"
+        android:textColor="@color/white"
+        android:textSize="32sp"
+        app:layout_constraintBottom_toBottomOf="@id/tvFrontTyrePressure"
+        app:layout_constraintEnd_toEndOf="@id/tvRecommendedTyrePressure"
+        app:layout_constraintTop_toTopOf="@id/tvFrontTyrePressure" />
+
+    <com.ultraviolette.uvclusterhmi.ui.customWidget.SairaRegularTextView
+        android:id="@+id/tvTpmsInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="32dp"
+        android:text="@string/tpms_warning_message"
+        android:textColor="@color/unSelectedTitle"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@id/tvRecommendedTyrePressure"
+        app:layout_constraintStart_toStartOf="@id/tvRecommendedTyrePressure"
+        app:layout_constraintTop_toBottomOf="@id/tvFrontTyrePressure" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

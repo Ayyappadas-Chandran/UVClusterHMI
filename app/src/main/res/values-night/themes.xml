@@ -1,0 +1,51 @@
+<resources>
+
+    <style name="Base.Theme.UVCluster" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/background</item>
+        <item name="primaryColor">@color/black</item>
+        <item name="secondaryColor">@color/white</item>
+        <item name="appBackgroundColor">@color/background</item>
+        <item name="appTextColor">@color/white</item>
+        <item name="bgSide">@color/bgSideDark</item>
+        <item name="bgMode">@color/bgSideDark</item>
+        <item name="toolbarIcon">@color/lightGrey</item>
+        <item name="toolbarCenter">@drawable/toolbar_center_dark</item>
+        <item name="levelColor">@color/motorArmedGreyNight</item>
+        <item name ="pbBgColor">@color/grey</item>
+        <item name ="bdpowerbar">@color/greyDarkMedium</item>
+        <item name="regen4level">@color/levelGreyDark</item>
+    </style>
+
+    <style name="Theme.Launcher" parent="Base.Theme.UVCluster" />
+
+    <style name="Theme.Launcher.AppTrayActivity" parent="Theme.Launcher" />
+
+    <style name="Theme.Ballistic" parent="Base.Theme.UVCluster">
+        <item name="modeColor">@color/ballisticRed</item>
+    </style>
+
+
+    <style name="Theme.Combat" parent="Base.Theme.UVCluster">
+        <item name="modeColor">@color/combatBlue</item>
+
+    </style>
+
+    <style name="Theme.Glide" parent="Base.Theme.UVCluster">
+        <item name="modeColor">@color/glideGreen</item>
+    </style>
+
+    <style name="Theme.MotorArmed" parent="Base.Theme.UVCluster">
+        <item name="modeColor">@color/levelGreyDark</item>
+    </style>
+
+    <style name="RegenSegment">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@color/transparent</item>
+    </style>
+
+
+</resources>
+
+
