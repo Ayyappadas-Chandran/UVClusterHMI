@@ -2,7 +2,6 @@ package com.ultraviolette.clusterdatabus
 
 import android.util.Log
 import com.ultraviolette.cluster.aidl.BtState
-import com.ultraviolette.cluster.aidl.VehicleData
 import com.ultraviolette.cluster.aidl.VehicleSnapshot
 import com.ultraviolette.cluster.aidl.WifiState
 
@@ -19,15 +18,6 @@ class SignalManager(
     private val persistenceHelper: PersistenceHelper
 ) {
     private val tag = "ClusterBus.SignalManager"
-
-    fun onVehicleData(incoming: VehicleData) {
-        threadDispatcher.post {
-            if (!changeDetector.hasChanged(incoming, stateManager.vehicleData)) return@post
-            stateManager.update(incoming)
-            subscriptionManager.broadcastVehicleData(incoming)
-            Log.d(tag, "VehicleData broadcast: speed=${incoming.speed} soc=${incoming.soc}")
-        }
-    }
 
     fun onVehicleSnapshot(incoming: VehicleSnapshot) {
         threadDispatcher.post {
@@ -55,6 +45,17 @@ class SignalManager(
             persistenceHelper.saveWifiState(incoming)
             subscriptionManager.broadcastWifiState(incoming)
             Log.d(tag, "WifiState broadcast: enabled=${incoming.isEnabled} ssid=${incoming.connectedSsid}")
+        }
+    }
+
+    /**
+     * Handlebar / swift-button press received from CarPropertyService.
+     * Always forwarded — no change-detection (repeated presses of the same button are valid).
+     */
+    fun onHandlebarButton(button: Int) {
+        threadDispatcher.post {
+            subscriptionManager.broadcastHandlebarButton(button)
+            Log.d(tag, "HandlebarButton broadcast: button=$button")
         }
     }
 }

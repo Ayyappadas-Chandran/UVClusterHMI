@@ -124,11 +124,7 @@ app:startDestination="@id/dashboardFragment" >
 <action
     android:id="@+id/action_tutorialFragment_to_tutorialPlayerFragment"
     app:destination="@id/tutorialPlayerFragment" />
-<fragment
-    android:id="@+id/lockdownFragment"
-    android:name="com.ultraviolette.uvclusterhmi.ui.features.LockdownFragment"
-    android:label="fragment_lockdown"
-    tools:layout="@layout/fragment_lockdown" />
+<!-- lockdownFragment removed: replaced by Compose LockdownScreen via ClusterNavHost -->
 <fragment
     android:id="@+id/advancedFeaturesFragment"
     android:name="com.ultraviolette.uvclusterhmi.ui.features.controls.advancedFeatures.AdvancedFeaturesFragment"
@@ -174,16 +170,8 @@ app:startDestination="@id/dashboardFragment" >
     android:name="com.ultraviolette.uvclusterhmi.ui.features.settings.systemUpdates.UpdateFragment"
     android:label="fragment_update"
     tools:layout="@layout/fragment_update" />
-<fragment
-    android:id="@+id/splashFragment"
-    android:name="com.ultraviolette.uvclusterhmi.ui.features.SplashFragment"
-    android:label="fragment_splash"
-    tools:layout="@layout/fragment_splash" />
-<fragment
-    android:id="@+id/chargingFragment"
-    android:name="com.ultraviolette.uvclusterhmi.ChargingFragment"
-    android:label="fragment_charging"
-    tools:layout="@layout/fragment_charging" />
+<!-- splashFragment removed: replaced by Compose SplashScreen overlay in MainActivity -->
+<!-- chargingFragment removed: replaced by Compose ChargingScreen via ScreenMode.Charging in ClusterNavHost -->
 <fragment
     android:id="@+id/debugFragment"
     android:name="com.ultraviolette.uvclusterhmi.ui.features.settings.debug.DebugFragment"
@@ -241,21 +229,13 @@ app:startDestination="@id/dashboardFragment" >
     android:name="com.ultraviolette.uvclusterhmi.CameraPreviewFragment"
     android:label="fragment_camera_preview"
     tools:layout="@layout/fragment_camera_preview" />
-<fragment
-    android:id="@+id/thermalRunawayFragment"
-    android:name="com.ultraviolette.uvclusterhmi.ThermalRunawayFragment"
-    android:label="fragment_thermal_runaway"
-    tools:layout="@layout/fragment_thermal_runaway" />
+<!-- thermalRunawayFragment removed: replaced by Compose ThermalRunawayScreen via ClusterNavHost -->
 <fragment
     android:id="@+id/parkAssistantFragment"
     android:name="com.ultraviolette.uvclusterhmi.ParkAssistantFragment"
     android:label="fragment_park_assistant"
     tools:layout="@layout/fragment_park_assistant" />
-<fragment
-    android:id="@+id/hoverModeFragment"
-    android:name="com.ultraviolette.uvclusterhmi.HoverModeFragment"
-    android:label="fragment_hover_mode"
-    tools:layout="@layout/fragment_hover_mode" />
+<!-- hoverModeFragment removed: replaced by Compose HoverModeScreen via ClusterNavHost -->
 <fragment
     android:id="@+id/tutorialFragment"
     android:name="com.ultraviolette.uvclusterhmi.ui.features.myF77.tutorial.TutorialFragment"

@@ -87,62 +87,12 @@ class RideModesFragment : Fragment() {
                         handleButtonNavigation(button.ordinal)
                     }
                 }
-                launch {
-                    carViewModel.absMode.collect { state ->
-                        d("ABS_FROM_VCU", "state:$state")
-                        val isMono = state == 77
-                        /* viewModel.onCustomSubScreenChanged(CustomModeSubScreen.ABS)
-                         viewModel.saveCustomAbs(isMono)
-                         viewModel.onCustomModeAbsSelected(isMono)*/
-                    }
-                }
-                launch {
-                    carViewModel.mtcMode.collect { state ->
-                        d("MTC_FROM_VCU", "state:$state")
-                        /*viewModel.onCustomSubScreenChanged(CustomModeSubScreen.TractionControl)
-                        viewModel.onTractionControlSelected(state.toString())*/
-
-                    }
-                }
-                launch {
-                    carViewModel.tellTales.collect { tellTales ->
-                        val absMode = tellTales.absMode
-                        val mtcMode = tellTales.mtcMode
-                        d("RideModes", "ABS $absMode")
-                        d("RideModes", "MTC $mtcMode")
-                        /*  viewModel.saveCustomAbs(absMode == 0)
-                          if (absMode == 0) {
-                              viewModel.onCustomSubScreenChanged(CustomModeSubScreen.ABS)
-
-                              viewModel.onCustomModeAbsSelected(false)
-                          } else {
-                              viewModel.onCustomSubScreenChanged(CustomModeSubScreen.ABS)
-                              viewModel.onCustomModeAbsSelected(true)
-                          }
-                          when (mtcMode) {
-                              2 -> {
-                                  viewModel.onCustomSubScreenChanged(CustomModeSubScreen.TractionControl)
-                                  viewModel.onTractionControlSelected("tc1")
-                              }
-
-                              3 -> {
-                                  viewModel.onCustomSubScreenChanged(CustomModeSubScreen.TractionControl)
-                                  viewModel.onTractionControlSelected("tc2")
-                              }
-
-                              4 -> {
-                                  viewModel.onCustomSubScreenChanged(CustomModeSubScreen.TractionControl)
-                                  viewModel.onTractionControlSelected("tc3")
-                              }
-
-                              else -> {
-                                  viewModel.onCustomSubScreenChanged(CustomModeSubScreen.TractionControl)
-                                  viewModel.onTractionControlSelected("off")
-                              }
-                          }*/
-
-                    }
-                }
+                // VCU absMode / mtcMode / tellTales are no longer consumed here —
+                // ABS and traction state are written to SharedPreferences by the user
+                // action handlers (writeAbsToVcu / writeTractionToVcu) and loaded back
+                // via RideModesViewModel.init. If live VCU feedback is required in the
+                // future, read active.toolbar.absMode / active.toolbar.mtcMode from
+                // ClusterViewModel instead of from CarViewModel.
             }
         }
     }

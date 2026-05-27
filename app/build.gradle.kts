@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
-    //alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
+    //alias(libs.plugins.kotlin.android)  // not needed: AGP 9 handles Kotlin compilation
 }
 
 android {
@@ -32,19 +33,17 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    buildFeatures {
+        compose = true
+        viewBinding = false
+    }
 }
 
 
 dependencies {
-    /*implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)*/
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-
-    //implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
 
     // AndroidX
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -55,6 +54,24 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
+
+    // ── Jetpack Compose ──────────────────────────────────────────────────────
+    val composeBom = platform("androidx.compose:compose-bom:2024.12.01")
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.foundation:foundation")
+    implementation("androidx.compose.animation:animation")
+    implementation("androidx.compose.material3:material3")
+    implementation("androidx.activity:activity-compose:1.9.3")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    // ─────────────────────────────────────────────────────────────────────────
 
     // Car UI (non-system stub usable in Studio)
     implementation("androidx.car.app:app:1.4.0")
@@ -87,15 +104,10 @@ dependencies {
 
     // WorkManager Kotlin + coroutines
     implementation("androidx.work:work-runtime-ktx:$workVersion")
-
-    // Optional: Tooling for testing WorkManager
     androidTestImplementation("androidx.work:work-testing:$workVersion")
 
     //excluding profileinstaller, for emulator
     configurations.all {
         exclude(group = "androidx.profileinstaller", module = "profileinstaller")
     }
-    /*    implementation(files("lib/lottie-3.4.0.aar"))
-        implementation(files("lib/gson-2.10.1.jar"))
-        implementation(files("lib/okio-1.17.5.jar"))*/
 }

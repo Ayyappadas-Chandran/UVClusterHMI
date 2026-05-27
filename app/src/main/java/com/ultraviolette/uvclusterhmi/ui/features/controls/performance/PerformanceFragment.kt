@@ -20,9 +20,12 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.ultraviolette.uvclusterhmi.ClusterApplication
 import com.ultraviolette.uvclusterhmi.R
 import com.ultraviolette.uvclusterhmi.domain.ennumerate.ButtonNavigation
+import com.ultraviolette.uvclusterhmi.domain.model.ClusterUiState
 import com.ultraviolette.uvclusterhmi.ui.viewModel.CarViewModel
+import com.ultraviolette.uvclusterhmi.ui.viewModel.ClusterViewModel
 import com.ultraviolette.uvclusterhmi.ui.viewModel.SharedViewModel
 import com.ultraviolette.uvclusterhmi.utils.Utilities
 import com.ultraviolette.uvclusterhmi.utils.Utilities.getRegenValueForLevel4
@@ -82,6 +85,9 @@ class PerformanceFragment : Fragment() {
     private val viewModel by viewModels<PerformanceViewModel> { ViewModelFactory(context = requireContext()) }
     private val carViewModel by activityViewModels<CarViewModel> { ViewModelFactory(context = requireContext()) }
     private val sharedViewModel by activityViewModels<SharedViewModel> { ViewModelFactory(context = requireContext()) }
+    private val clusterViewModel: ClusterViewModel by activityViewModels {
+        ClusterViewModel.Factory(requireActivity().application as ClusterApplication)
+    }
     private val segmentIds = listOf(
         R.id.vRegenLevel1,
         R.id.vRegenLevel2,
@@ -122,38 +128,16 @@ class PerformanceFragment : Fragment() {
                         handleButtonNavigation(button.ordinal)
                     }
                 }
+                // Observe VCU-reported ballisticPlus state from ClusterViewModel.
+                // All other vehicle reads (hillHold, tellTales, cruise) are loaded
+                // from SharedPreferences via PerformanceViewModel.init and no longer
+                // need live VCU updates here.
                 launch {
-                    carViewModel.hillHoldState.collect { state ->
-                        val isStateOn = state == 0xc1
-                        //viewModel.saveHillHold(isStateOn)
-                        d("HILL_HOLD_FROM_VCU", "state:$state")
+                    clusterViewModel.uiState.collect { uiState ->
+                        val active = uiState as? ClusterUiState.Active ?: return@collect
+                        viewModel.saveBallisticPlus(active.dashboard.drive.isBallisticPlus)
                     }
                 }
-                launch {
-                    carViewModel.ballisticPlus.collect { state ->
-                        val isStateOn = state
-                        viewModel.saveBallisticPlus(isStateOn)
-                        d("SURGE_MODE_FROM_VCU", "state:$state")
-                    }
-                }
-                launch {
-                    carViewModel.tellTales.collect { tellTales ->
-                        val hillHold = tellTales.hillHold
-                        val regenLevel = if (tellTales.regenLevel >= 9) 9 else tellTales.regenLevel
-                        //viewModel.saveRegenValue(regenLevel)
-                        /*if (hillHold == 2 || hillHold == 3)
-                            viewModel.saveHillHold(true)
-                        else
-                            viewModel.saveHillHold(false)*/
-                    }
-                }
-                /*launch {
-                    carViewModel.cruise.collect { cruise ->
-                        d("CRUISE", "Cruise value : $cruise")
-                        val isCruise = cruise == 1
-                        viewModel.saveCruise(isCruise)
-                    }
-                }*/
             }
         }
     }

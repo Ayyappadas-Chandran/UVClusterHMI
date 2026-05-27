@@ -93,9 +93,9 @@
         tools:ignore="ProtectedPermissions" />
     <uses-feature android:name="android.hardware.usb.host" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <queries>
+    <!--<queries>
         <package android:name="com.ultraviolette.clusterdatabus" />
-    </queries>
+    </queries>-->
     <application
         android:name=".ClusterApplication"
         android:allowBackup="true"

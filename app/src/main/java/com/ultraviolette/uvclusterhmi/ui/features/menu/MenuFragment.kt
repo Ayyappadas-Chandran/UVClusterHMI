@@ -28,14 +28,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.airbnb.lottie.LottieAnimationView
 import com.ultraviolette.uvclusterhmi.R
-import com.ultraviolette.uvclusterhmi.domain.dataModel.vcuData.TellTales
 import com.ultraviolette.uvclusterhmi.domain.ennumerate.ButtonNavigation
 import com.ultraviolette.uvclusterhmi.ui.features.MainActivity
 import com.ultraviolette.uvclusterhmi.ui.viewModel.CarViewModel
 import com.ultraviolette.uvclusterhmi.ui.viewModel.SharedViewModel
 import com.ultraviolette.uvclusterhmi.utils.Utilities
 import com.ultraviolette.uvclusterhmi.utils.Utilities.ARG_BALLISTIC_PLUS
-import com.ultraviolette.uvclusterhmi.utils.Utilities.applyMinMax
 import com.ultraviolette.uvclusterhmi.utils.Utilities.setOnSoundClickListener
 import com.ultraviolette.uvclusterhmi.utils.ViewModelFactory
 import kotlinx.coroutines.CoroutineScope
@@ -160,6 +158,11 @@ class MenuFragment : Fragment() {
     private val carViewModel by activityViewModels<CarViewModel> { ViewModelFactory(context = requireContext()) }
     private val sharedViewModel by activityViewModels<SharedViewModel> { ViewModelFactory(context = requireContext()) }
     private val viewModel by activityViewModels<MenuViewModel> { ViewModelFactory(context = requireContext()) }
+    private val clusterViewModel: com.ultraviolette.uvclusterhmi.ui.viewModel.ClusterViewModel by activityViewModels {
+        com.ultraviolette.uvclusterhmi.ui.viewModel.ClusterViewModel.Factory(
+            requireActivity().application as com.ultraviolette.uvclusterhmi.ClusterApplication
+        )
+    }
 
     private var currentPosition = 0
     private var isBallistic = false
@@ -334,19 +337,16 @@ class MenuFragment : Fragment() {
                 // -------------------------------------------------------------
 		
 
-                // Observe ride mode to track ballistic state
+                // Track ballistic state and battery SOC from ClusterViewModel.
                 launch {
-                    carViewModel.tellTales.collect { telltale ->
-                        isBallistic = telltale.rideMode == 3
-                    }
-                }
-
-                // Update battery SOC progress bar
-                launch {
-                    carViewModel.imxDbgMsg.collect { imxDbgMsg ->
-                        val batterySoc = (imxDbgMsg.soc.toInt() and 0xFF)
-                        pbBattery.progress = batterySoc
-                        tvBatteryPercent.text = batterySoc.toString()
+                    clusterViewModel.uiState.collect { uiState ->
+                        val active = uiState as? com.ultraviolette.uvclusterhmi.domain.model.ClusterUiState.Active
+                            ?: return@collect
+                        isBallistic = active.dashboard.drive.rideMode ==
+                            com.ultraviolette.uvclusterhmi.domain.model.RideMode.Ballistic
+                        val soc = active.toolbar.batterySoc
+                        pbBattery.progress = soc
+                        tvBatteryPercent.text = soc.toString()
                     }
                 }
             }
@@ -711,35 +711,6 @@ class MenuFragment : Fragment() {
         tvAbsValue.text = if (absState) getString(R.string.mono) else getString(R.string.dual)
         tvRegenValue.text = "R$regenValue"
         tvTractionValue.text = tractionLevelValue
-    }
-
-    private fun updateAbs(telltale: TellTales) {
-        val abs = telltale.absMode
-        val absWarning = telltale.absWarningLamp
-        if (absWarning == 0x00) {
-            if (abs == 0x00) tvAbsValue.text = getString(R.string.dual)
-            else tvAbsValue.text = getString(R.string.mono)
-        } else {
-            tvAbsValue.text = getString(R.string.off)
-        }
-    }
-
-    private fun updateTractionControl(t: TellTales) {
-        val (value, _) = when (t.mtcMode) {
-            0x01 -> "OFF" to R.string.triple_hypen
-            0x02 -> "T1" to R.string.sport
-            0x03 -> "T2" to R.string.street
-            0x04 -> "T3" to R.string.rain
-            else -> "OFF" to R.string.triple_hypen
-        }
-        tvTractionValue.text = value
-    }
-
-    private fun updateBatteryValue(tellTale: TellTales) {
-        val batteryLevel = tellTale.batterySoc
-        val finalBatteryLevel = batteryLevel.applyMinMax(sharedViewModel.socLimit)
-        pbBattery.progress = finalBatteryLevel
-        tvBatteryPercent.text = finalBatteryLevel.toString()
     }
 
     // ==================================================================================

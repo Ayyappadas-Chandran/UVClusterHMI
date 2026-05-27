@@ -4,7 +4,6 @@ import android.os.RemoteCallbackList
 import android.util.Log
 import com.ultraviolette.cluster.aidl.BtState
 import com.ultraviolette.cluster.aidl.ISharedSignalCallback
-import com.ultraviolette.cluster.aidl.VehicleData
 import com.ultraviolette.cluster.aidl.VehicleSnapshot
 import com.ultraviolette.cluster.aidl.WifiState
 
@@ -22,10 +21,6 @@ class SubscriptionManager {
         cb?.let { callbacks.unregister(it) }
     }
 
-    fun broadcastVehicleData(data: VehicleData) {
-        broadcast("onVehicleData") { it.onVehicleData(data) }
-    }
-
     fun broadcastVehicleSnapshot(snapshot: VehicleSnapshot) {
         broadcast("onVehicleSnapshot") { it.onVehicleSnapshot(snapshot) }
     }
@@ -36,6 +31,10 @@ class SubscriptionManager {
 
     fun broadcastWifiState(state: WifiState) {
         broadcast("onWifiState") { it.onWifiState(state) }
+    }
+
+    fun broadcastHandlebarButton(button: Int) {
+        broadcast("onHandlebarButton") { it.onHandlebarButton(button) }
     }
 
     fun kill() {

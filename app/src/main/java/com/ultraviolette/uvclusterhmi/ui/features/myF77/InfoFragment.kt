@@ -11,9 +11,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.ultraviolette.uvclusterhmi.ClusterApplication
 import com.ultraviolette.uvclusterhmi.R
 import com.ultraviolette.uvclusterhmi.domain.ennumerate.ButtonNavigation
+import com.ultraviolette.uvclusterhmi.domain.model.ClusterUiState
 import com.ultraviolette.uvclusterhmi.ui.viewModel.CarViewModel
+import com.ultraviolette.uvclusterhmi.ui.viewModel.ClusterViewModel
+import com.ultraviolette.uvclusterhmi.ui.viewModel.SharedViewModel
 import com.ultraviolette.uvclusterhmi.utils.Utilities
 import com.ultraviolette.uvclusterhmi.utils.Utilities.setOnSoundClickListener
 import com.ultraviolette.uvclusterhmi.utils.ViewModelFactory
@@ -23,9 +27,6 @@ import android.telephony.TelephonyManager
 import android.util.Log.d
 import android.widget.ImageView
 import androidx.annotation.RequiresPermission
-import com.ultraviolette.uvclusterhmi.domain.dataModel.vcuData.VcuInfoMsg
-import com.ultraviolette.uvclusterhmi.ui.viewModel.SharedViewModel
-import com.ultraviolette.uvclusterhmi.utils.Utilities.applyMinMax
 import kotlin.math.roundToInt
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -49,6 +50,9 @@ class InfoFragment : Fragment() {
 
     private val carViewModel by activityViewModels<CarViewModel> { ViewModelFactory(context = requireContext()) }
     private val sharedViewModel by activityViewModels<SharedViewModel> { ViewModelFactory(context = requireContext()) }
+    private val clusterViewModel: ClusterViewModel by activityViewModels {
+        ClusterViewModel.Factory(requireActivity().application as ClusterApplication)
+    }
 
     private lateinit var vinTextView: TextView
     private lateinit var vinEditText: EditText
@@ -94,9 +98,9 @@ class InfoFragment : Fragment() {
                     }
                 }
                 launch {
-                    carViewModel.vcuInfoMsg.collect { vcuInfo ->
-                        d("InfoFragment", "vcuInfo:$vcuInfo")
-                        updateVcuMsg(vcuInfo)
+                    clusterViewModel.uiState.collect { uiState ->
+                        val active = uiState as? ClusterUiState.Active ?: return@collect
+                        updateOdometer(active.dashboard.odo.odoDisplay, active.prefs.distanceUnit)
                     }
                 }
             }
@@ -217,33 +221,20 @@ class InfoFragment : Fragment() {
         imm.hideSoftInputFromWindow(vinEditText.windowToken, 0)
     }
 
-    fun updateVcuMsg(vcuInfoMsg: VcuInfoMsg) {
-
-
-        // Raw values from VCU (always KM)
-        val rawOdometerKm = vcuInfoMsg.odometer.toInt()
-
-        // Apply limits in KM
-        val finalOdoKm = rawOdometerKm.applyMinMax(sharedViewModel.odoLimit)
-        // Convert ONLY for display
-        val displayOdo =
-            if (unit == "miles") {
-                (finalOdoKm * 0.621371).roundToInt()
-
-            } else
-                finalOdoKm
-         tvOdoMeter.text=displayOdo.toString()
-         tvOdoMeterUnit.text=unit
-        // Update UI
-
-
+    /**
+     * Updates the odometer display from the already-converted ClusterViewModel value.
+     * Unit conversion and limit clamping are done once inside ClusterViewModel.
+     */
+    private fun updateOdometer(odoDisplay: Int, unit: String) {
+        tvOdoMeter.text = odoDisplay.toString()
+        tvOdoMeterUnit.text = unit
     }
     private fun sendThermalRunawayToVcu() {
         d("InfoFragment", "Sent Thermal runaway")
         val value=1.toByte()
         val packet = byteArrayOf(value)
         carViewModel.sendByteArrayProperty(0x217002F0, packet)
-        findNavController().navigate(R.id.thermalRunawayFragment)
+        // thermalRunawayFragment removed — ThermalRunaway now shows via Compose ClusterNavHost
 
     }
 

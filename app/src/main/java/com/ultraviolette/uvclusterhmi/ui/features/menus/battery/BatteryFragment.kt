@@ -17,9 +17,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.ultraviolette.uvclusterhmi.ClusterApplication
 import com.ultraviolette.uvclusterhmi.R
 import com.ultraviolette.uvclusterhmi.domain.ennumerate.ButtonNavigation
+import com.ultraviolette.uvclusterhmi.domain.model.ClusterUiState
 import com.ultraviolette.uvclusterhmi.ui.viewModel.CarViewModel
+import com.ultraviolette.uvclusterhmi.ui.viewModel.ClusterViewModel
 import com.ultraviolette.uvclusterhmi.ui.viewModel.SharedViewModel
 import com.ultraviolette.uvclusterhmi.utils.Utilities
 import com.ultraviolette.uvclusterhmi.utils.Utilities.applyMinMax
@@ -39,6 +42,9 @@ class BatteryFragment : Fragment() {
     private val sharedViewModel by activityViewModels<SharedViewModel> { ViewModelFactory(context = requireContext()) }
     private val viewModel: BatteryViewModel by viewModels{ ViewModelFactory(context = requireContext()) }
     private val carViewModel by activityViewModels<CarViewModel> { ViewModelFactory(context = requireContext()) }
+    private val clusterViewModel: ClusterViewModel by activityViewModels {
+        ClusterViewModel.Factory(requireActivity().application as ClusterApplication)
+    }
 
 
     override fun onCreateView(
@@ -70,20 +76,12 @@ class BatteryFragment : Fragment() {
                         renderUi(it)
                     }
                 }
-                /*launch {
-                    carViewModel.tellTales.collect {
-                        val tellTales = it.batterySoc
-                        val finalBatterValue = tellTales.applyMinMax(sharedViewModel.socLimit)
-                        tvBatterPercent.text = "$finalBatterValue%"
-                        pbBatteryLevel.progress = finalBatterValue
-                    }
-                }*/
-
                 launch {
-                    carViewModel.imxDbgMsg.collect { imxDbgMsg ->
-                        val batterySoc = (imxDbgMsg.soc.toInt() and 0xFF)
-                        tvBatterPercent.text = "$batterySoc %"
-                        pbBatteryLevel.progress = batterySoc
+                    clusterViewModel.uiState.collect { uiState ->
+                        val active = uiState as? ClusterUiState.Active ?: return@collect
+                        val soc = active.toolbar.batterySoc
+                        tvBatterPercent.text = "$soc %"
+                        pbBatteryLevel.progress = soc
                     }
                 }
 

@@ -12,7 +12,6 @@ import com.ultraviolette.cluster.aidl.IConfigCallback
 import com.ultraviolette.cluster.aidl.IConfigService
 import com.ultraviolette.cluster.aidl.ISharedSignalCallback
 import com.ultraviolette.cluster.aidl.ISharedSignalService
-import com.ultraviolette.cluster.aidl.VehicleData
 import com.ultraviolette.cluster.aidl.VehicleSnapshot
 import com.ultraviolette.cluster.aidl.WifiState
 import com.ultraviolette.clusterdatabus.config.ConfigManager
@@ -38,7 +37,6 @@ class SharedSignalService : Service() {
         override fun unregisterCallback(cb: ISharedSignalCallback?) {
             subscriptionManager.unregister(cb)
         }
-        override fun getLastVehicleData(): VehicleData = stateManager.vehicleData
         override fun getLastVehicleSnapshot(): VehicleSnapshot = stateManager.vehicleSnapshot
         override fun getLastBtState(): BtState = stateManager.btState
         override fun getLastWifiState(): WifiState = stateManager.wifiState

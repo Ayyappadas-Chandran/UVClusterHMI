@@ -15,12 +15,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.ultraviolette.uvclusterhmi.ClusterApplication
 import com.ultraviolette.uvclusterhmi.R
 import com.ultraviolette.uvclusterhmi.domain.dataModel.vcuData.ChargerCtxObc
 import com.ultraviolette.uvclusterhmi.domain.dataModel.vcuData.ImxDbgMsg
 import com.ultraviolette.uvclusterhmi.domain.dataModel.vcuData.ImxFwVersionMsg
-import com.ultraviolette.uvclusterhmi.domain.dataModel.vcuData.TellTales
+import com.ultraviolette.uvclusterhmi.domain.model.ClusterUiState
 import com.ultraviolette.uvclusterhmi.ui.viewModel.CarViewModel
+import com.ultraviolette.uvclusterhmi.ui.viewModel.ClusterViewModel
 import com.ultraviolette.uvclusterhmi.ui.viewModel.SharedViewModel
 import com.ultraviolette.uvclusterhmi.utils.ViewModelFactory
 import kotlinx.coroutines.launch
@@ -89,6 +91,10 @@ class fragment_versions : Fragment() {
 
     private val sharedViewModel by activityViewModels<SharedViewModel> {
         ViewModelFactory(context = requireContext())
+    }
+
+    private val clusterViewModel: ClusterViewModel by activityViewModels {
+        ClusterViewModel.Factory(requireActivity().application as ClusterApplication)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -243,21 +249,19 @@ class fragment_versions : Fragment() {
                     }
                 }
                 launch {
-                    carViewModel.tellTales.collect { tellTales ->
-                        d("VersionFragment", "tellTales:$tellTales")
-                        handleTellTales(tellTales)
+                    clusterViewModel.uiState.collect { uiState ->
+                        val active = uiState as? ClusterUiState.Active ?: return@collect
+                        isHover     = active.toolbar.isHoverMode
+                        isCHarging  = active.toolbar.chargerPlugged
+                        tvBatteryPercent.text = "${active.toolbar.batterySoc}%"
                     }
                 }
                 launch {
                     carViewModel.swiftButton.collect { swiftButton ->
                         val button = Utilities.getButtonState(swiftButton)
                         if (ButtonNavigation.Enter == button) {
-                            val destination = when {
-                                isHover -> R.id.hoverModeFragment
-                                isCHarging -> R.id.chargingFragment
-                                else -> R.id.dashboardFragment
-                            }
-                            findNavController().navigate(destination)
+                            // chargingFragment removed — ChargingScreen now shows via ScreenMode.Charging.
+                            findNavController().navigate(R.id.dashboardFragment)
                         }
                         if (ButtonNavigation.Left == button) {
                             findNavController().navigate(R.id.action_versionFragment_to_debugFragment)
@@ -275,14 +279,6 @@ class fragment_versions : Fragment() {
         d("UI Update", "soc: $soc, ${viewModel.socLimit}")
 
         //tvBatteryPercent.text = "$soc%"
-    }
-
-    private fun handleTellTales(tellTales: TellTales) {
-        val soc = tellTales.batterySoc
-	isHover= tellTales.modeHover==1
-        isCHarging = tellTales.charger == 1 || tellTales.charger == 2
-        d("UI Update handleTellTales", "batterySoc soc: $soc, ${viewModel.socLimit}")
-        tvBatteryPercent.text = "$soc%"
     }
 
     private fun handleImxFwVersions(imxFwVersionMsg: ImxFwVersionMsg) {

@@ -113,6 +113,19 @@ import java.time.ZoneId
 import com.ultraviolette.uvclusterhmi.MyViewModelProvider
 import com.ultraviolette.uvclusterhmi.ui.features.controls.performance.PerformanceViewModel
 import kotlinx.coroutines.flow.drop
+// ── Compose host bridge ───────────────────────────────────────────────────────
+import android.view.KeyEvent
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.ComposeView
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.ultraviolette.uvclusterhmi.ClusterApplication
+import com.ultraviolette.uvclusterhmi.domain.model.ClusterUiState
+import com.ultraviolette.uvclusterhmi.domain.model.MenuPosition
+import com.ultraviolette.uvclusterhmi.domain.model.ScreenMode
+import com.ultraviolette.uvclusterhmi.ui.composable.screen.SplashScreen
+import com.ultraviolette.uvclusterhmi.ui.viewModel.ClusterViewModel
+import com.ultraviolette.uvclusterhmi.domain.model.RideMode
+import com.ultraviolette.uvclusterhmi.domain.model.ToolbarUiState
 
 class MainActivity : AppCompatActivity() { 
 
@@ -172,12 +185,17 @@ class MainActivity : AppCompatActivity() {
     private var heartbeatCounter: Long = 0L
     @Volatile private var isHeartbeatEnabled: Boolean = true
     private val MSG_ID_USB_HEARTBEAT_IMX_S32 = 0x2170030F
-    private val bluetoothViewModel by viewModels<BluetoothViewModel> { ViewModelFactory(context = this) }
-    private val wifiViewModel by viewModels<WifiViewModel> { ViewModelFactory(context = this) }
+    //private val bluetoothViewModel by viewModels<BluetoothViewModel> { ViewModelFactory(context = this) }
+    //private val wifiViewModel by viewModels<WifiViewModel> { ViewModelFactory(context = this) }
     private val dataViewModel by viewModels<DataViewModel> { ViewModelFactory(context = this) }
     private val carViewModel by viewModels<CarViewModel> { ViewModelFactory(context = this) }
     private val viewModel by viewModels<SharedViewModel> { ViewModelFactory(context = this) }
     private val performanceViewModel by viewModels<PerformanceViewModel> { ViewModelFactory(context = this) }
+    /** New architecture ViewModel — reads from ClusterRepository + PreferenceManager only. */
+    private val clusterViewModel: ClusterViewModel by viewModels {
+        ClusterViewModel.Factory(application as ClusterApplication)
+    }
+    private lateinit var composeSplash: ComposeView
     private var haveDashcam = false
     private lateinit var fotaReceiver: FotaReceiver
     private val timeHandler = Handler(Looper.getMainLooper()) // rtc v1.4(rtc)
@@ -269,6 +287,51 @@ class MainActivity : AppCompatActivity() {
 
 
 	initViews()
+
+        // ── Permanent Compose host ────────────────────────────────────────────
+        // composeSplash is the single ComposeView that hosts the entire Compose UI:
+        //   Phase 1 (splashDone=false): shows SplashScreen
+        //   Phase 2 (splashDone=true):  shows ClusterNavHost (routes by ScreenMode)
+        //     - For Compose-migrated screens: full-screen Compose UI
+        //     - For pending screens: returns Unit → Fragment nav shows underneath
+        val splashMode = (application as ClusterApplication).preferenceManager.mode
+        composeSplash.setContent {
+            val uiState by clusterViewModel.uiState
+                .collectAsStateWithLifecycle()
+            val splashDone = (uiState as? com.ultraviolette.uvclusterhmi.domain.model.ClusterUiState.Active)
+                ?.splashDone ?: false
+
+            if (!splashDone) {
+                SplashScreen(
+                    mode = splashMode,
+                    onComplete = { clusterViewModel.onSplashComplete() },
+                )
+            } else {
+                val active = uiState as? com.ultraviolette.uvclusterhmi.domain.model.ClusterUiState.Active
+                if (active != null) {
+                    com.ultraviolette.uvclusterhmi.ui.composable.ClusterNavHost(
+                        uiState       = active,
+                        onMenuTileTap = { position ->
+                            clusterViewModel.onMenuTileTapped(position)
+                        },
+                        onMenuDismiss = { clusterViewModel.dismissMenu() },
+                    )
+                }
+            }
+        }
+        // ─────────────────────────────────────────────────────────────────────
+
+        // ── Menu navigation event bridge ──────────────────────────────────────
+        // When a Compose Menu tile is tapped (or Enter pressed on it via handlebar),
+        // ClusterViewModel emits a MenuPosition. We collect it here and navigate the
+        // Fragment nav controller to the appropriate sub-screen.
+        lifecycleScope.launch {
+            clusterViewModel.menuNavEvent.collect { position ->
+                navigateToMenuTarget(position)
+            }
+        }
+        // ─────────────────────────────────────────────────────────────────────
+
         requestPermission()
         hideSystemUI()
         initNavController()
@@ -321,8 +384,8 @@ class MainActivity : AppCompatActivity() {
         hideSystemUI()
         //initNavController()
         //initClickListener()
-        bluetoothViewModel.bluetoothStateChange()
-        wifiViewModel.wifiStateChange()
+        //bluetoothViewModel.bluetoothStateChange()
+        //wifiViewModel.wifiStateChange()
         wifiAutoConnector = WifiAutoConnector(this)
         wifiAutoConnector.startAutoConnectLoop()
 
@@ -337,12 +400,173 @@ class MainActivity : AppCompatActivity() {
 	NotificationManager.init(applicationContext, carViewModel, viewModel)
     }
 
+    /**
+     * Handlebar button dispatch — routes MENU/BACK to [clusterViewModel] first;
+     * falls through to the Fragment-hosted navigation for all other keys.
+     * Rule 6: both touch and handlebar paths converge on the same ViewModel action.
+     */
+    override fun dispatchKeyEvent(e: KeyEvent): Boolean {
+        if (e.action == KeyEvent.ACTION_DOWN &&
+            clusterViewModel.handleHandlebarButton(e.keyCode)) {
+            return true
+        }
+        return super.dispatchKeyEvent(e)
+    }
+
     override fun onStart() {
         super.onStart()
-        bluetoothViewModel.registerBluetoothActionReceiver()
-        wifiViewModel.registerWifiStateChangeReceiver()
+        //bluetoothViewModel.registerBluetoothActionReceiver()
+        //wifiViewModel.registerWifiStateChangeReceiver()
         dataViewModel.registerReceiver()
 	dataViewModel.getNetworkSignalLevel()
+    }
+
+    fun initObserver() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                // ── Brightness ──────────────────────────────────────────────────
+                // Previously from carViewModel.displayBrightness; now flows through
+                // VehicleSnapshot.brightnessLevel/brightnessAuto via ClusterViewModel.
+                launch {
+                    clusterViewModel.uiState.collect { uiState ->
+                        val active = uiState as? ClusterUiState.Active ?: return@collect
+                        val brightness = active.brightness
+                        viewModel.saveBrightnessState(brightness.isAuto)
+                        viewModel.saveBrightness(brightness.level)
+                        if (brightness.level > 0) {
+                            checkSettingAndBrightness(brightness.level)
+                        }
+                    }
+                }
+
+                // ── Toolbar icons ───────────────────────────────────────────────
+                // Previously from carViewModel.tellTales; now flows through
+                // ClusterViewModel.uiState.toolbar.
+                launch {
+                    clusterViewModel.uiState.collect { uiState ->
+                        val active = uiState as? ClusterUiState.Active ?: return@collect
+                        handleToolbarFromUiState(active.toolbar)
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Drives every toolbar icon from [ToolbarUiState] — the single source of truth
+     * built by [ClusterViewModel] from [VehicleSnapshot].
+     *
+     * Replaces the old carViewModel.tellTales → handleTellTales(TellTales) path.
+     */
+    private fun handleToolbarFromUiState(toolbar: ToolbarUiState) {
+        // ── SOC ───────────────────────────────────────────────────────────────
+        handleSoc(toolbar.batterySoc)
+
+        // ── Motor arm/disarm ─────────────────────────────────────────────────
+        motorState(toolbar.motorArmed)
+
+        // ── Motor temperature ─────────────────────────────────────────────────
+        when (toolbar.motorTempIcon) {
+            2 -> {
+                ivRightWarning4.setImageDrawable(getDrawable(this, R.drawable.ic_motor_temp_orange))
+                ivRightWarning4.visibility = View.VISIBLE
+            }
+            3 -> {
+                ivRightWarning4.setImageDrawable(getDrawable(this, R.drawable.ic_motor_temp_red))
+                ivRightWarning4.visibility = View.VISIBLE
+            }
+            else -> ivRightWarning4.visibility = View.INVISIBLE
+        }
+
+        // ── Battery error / over-temp ─────────────────────────────────────────
+        when {
+            toolbar.batteryOverTemp -> {
+                ivRightWarning3.setImageDrawable(
+                    getDrawable(this, R.drawable.ic_toolbar_battery_temperature)
+                )
+                ivRightWarning3.visibility = View.VISIBLE
+            }
+            toolbar.batteryError -> {
+                ivRightWarning3.setImageDrawable(getDrawable(this, R.drawable.ic_battery_error))
+                ivRightWarning3.visibility = View.VISIBLE
+            }
+            else -> ivRightWarning3.visibility = View.INVISIBLE
+        }
+
+        // ── Critical malfunction ──────────────────────────────────────────────
+        if (toolbar.criticalMalfunction) {
+            ivRightWarning1.visibility = View.VISIBLE
+            ivRightWarning1.setImageDrawable(getDrawable(this, R.drawable.ic_warning_toolbar))
+        } else {
+            ivRightWarning1.visibility = View.INVISIBLE
+        }
+
+        // ── MIL (malfunction indicator lamp) ─────────────────────────────────
+        if (toolbar.milIcon == 1) {
+            when (toolbar.milState) {
+                1 -> {
+                    ivRightWarning5.setImageDrawable(getDrawable(R.drawable.ic_international_mil))
+                    ivRightWarning5.visibility = View.VISIBLE
+                }
+                2 -> {
+                    ivRightWarning5.setImageDrawable(getDrawable(R.drawable.ic_domestic_mil))
+                    ivRightWarning5.visibility = View.VISIBLE
+                }
+                else -> ivRightWarning5.visibility = View.INVISIBLE
+            }
+        } else {
+            ivRightWarning5.visibility = View.INVISIBLE
+        }
+
+        // ── High beam ─────────────────────────────────────────────────────────
+        if (toolbar.highBeam) {
+            ivLeftWarning2.setImageDrawable(getDrawable(this, R.drawable.ic_high_beam_toolbar))
+            ivLeftWarning2.visibility = View.VISIBLE
+        } else {
+            ivLeftWarning2.visibility = View.INVISIBLE
+        }
+
+        // ── Hill hold ─────────────────────────────────────────────────────────
+        updateHillHold(toolbar.hillHoldState)
+
+        // ── MTC / Traction control ────────────────────────────────────────────
+        handleMtcControl(toolbar.mtcState, toolbar.mtcMode)
+
+        // ── Ride mode icon ────────────────────────────────────────────────────
+        val rideModeInt = when (toolbar.rideMode) {
+            RideMode.Glide    -> 1
+            RideMode.Combat   -> 2
+            RideMode.Ballistic -> 3
+        }
+        isBallistic = toolbar.rideMode == RideMode.Ballistic
+        handleRideMode(rideModeInt)
+
+        // ── ABS ───────────────────────────────────────────────────────────────
+        handleAbs(toolbar.absMode, toolbar.absWarning)
+
+        // ── Regen ────────────────────────────────────────────────────────────
+        if (toolbar.regenUnavailable) {
+            ivRegen.visibility = View.VISIBLE
+            tvRegen.visibility = View.INVISIBLE
+        } else {
+            handleRegen(toolbar.regenLevel)
+        }
+
+        // ── Radar ─────────────────────────────────────────────────────────────
+        handleRadarTelltales(toolbar.radarState)
+
+        // ── Indicators & hazard ───────────────────────────────────────────────
+        onHazardUpdate(toolbar.hazardActive)
+        val indicatorInt = when {
+            toolbar.rightIndicatorOn -> 1
+            toolbar.leftIndicatorOn  -> 2
+            else                     -> 0
+        }
+        onIndicatorUpdate(indicatorInt)
+
+        // ── Charging navigation ───────────────────────────────────────────────
+        // Charging screen is now owned by ScreenMode.Charging → ClusterNavHost →
+        // ChargingScreen (Compose). No Fragment nav needed here.
     }
 
     /**
@@ -511,355 +735,6 @@ class MainActivity : AppCompatActivity() {
     /**
      * Initialize the observer for the CarViewModel.
      */
-    private fun initObserver() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    carViewModel.regen.collect { value ->
-                        d("Faizuuuuu", "regen: ${value.joinToString()}")
-                        if (value.size < 3) {
-                            return@collect
-                        }
-                        //viewModel.saveRegenValue(value[0])
-                        //tvRegen.text = "R${value[0]}"
-
-                    }
-                }
-                launch {
-                    wifiViewModel.currentSignalLevel.collect { level ->
-
-                        val iconRes = when (level) {
-                            0 -> R.drawable.ic_signal_wifi_0_bar
-                            1 -> R.drawable.ic_signal_wifi_1_bar
-                            2 -> R.drawable.ic_signal_wifi_2_bar
-                            3 -> R.drawable.ic_signal_wifi_3_bar
-                            4 -> R.drawable.ic_signal_wifi_4_bar
-                            5 -> R.drawable.ic_signal_wifi_full_bar
-                            else -> R.drawable.ic_signal_wifi_0_bar
-                        }
-
-                        ivWifi.setImageResource(iconRes)
-                    }
-                }
-		launch {
-                    dataViewModel.currentNetworkSignalLevel.collect { level ->
-			d("LTESignal","init obser : $level")
-                        val iconRes = when (level) {
-                            0 -> R.drawable.signal_cellular_0_bar
-                            1 -> R.drawable.signal_cellular_1_bar
-                            2 -> R.drawable.signal_cellular_2_bar
-                            3 -> R.drawable.signal_cellular_3_bar
-                            4 -> R.drawable.signal_cellular_4_bar
-                            else -> R.drawable.signal_cellular_0_bar
-                        }
-
-                        ivNetwork.setImageResource(iconRes)
-                    }
-                }
-
-                 launch {
-                    carViewModel.chargerEvt.collect { evt ->
-
-                        d("ChargingEvent", "chargerEvt: $evt")
-
-                        when (evt) {
-
-                            192 -> {   // CHARGER_REMOVED
-                                if (navController?.currentDestination?.id == R.id.chargingFragment) {
-                                    navController?.navigate(R.id.dashboardFragment)
-                                }
-                            }
-
-                            193, 194, 195, 196 -> {  // charging states
-                                if (navController?.currentDestination?.id != R.id.chargingFragment) {
-                                    navController?.navigate(R.id.chargingFragment)
-                                }
-                            }
-                        }
-                    }
-                }
-
-                launch {
-                    bluetoothViewModel.onBluetoothStateChange.collect { state ->
-                        d("BluetoothState", "bluetoothState: $state")
-                        ivBluetooth.visibility =
-                            if (state) View.VISIBLE else View.INVISIBLE
-                    }
-                }
-
-                launch {
-                    wifiViewModel.onWifiStateChange.collect { state ->
-                        d("WifiState", "wifiState: $state")
-                        ivWifi.visibility = if (state) View.VISIBLE else View.INVISIBLE
-                    }
-                }
-
-               // launch {
-                 //   dataViewModel.onDataStateChange.collect { (state) ->
-                   //     d("DataState", "MainActivity DataState: $state")
-                     //   ivNetwork.visibility = if (state) View.VISIBLE else View.INVISIBLE
-                   // }
-               // }
-
-                launch {
-                    carViewModel.absMode.collect { value ->
-                        d("UI Update", "ABS : $value")
-                        //viewModel.saveCustomModeAbs(value != 0x44)
-                    }
-                }
-
-                launch {
-                    carViewModel.absModeStatus.collect {
-                        d("Faizuuuuu", "Hill Hold state: $it")
-                        val isEnable = it == 0xD1
-                        //ivAbsState.visibility = if (isEnable) View.VISIBLE else View.INVISIBLE
-                    }
-
-                }
-
-                launch {
-                    carViewModel.hillHoldState.collect {
-                        d("Faizuuuuu", "Hill Hold state: $it")
-                        val isEnable = it == 0xc1
-                        /*viewModel.saveHillHold(isEnable)
-                        ivHillHold.visibility = if (isEnable) View.VISIBLE else View.INVISIBLE*/
-                    }
-                }
-
-                launch {
-                    carViewModel.hillHoldIcon.collect { hillHold ->
-                        d("Faizuuuuu", "hillHoldIcon: $hillHold")
-                        //updateHillHold(hillHold)
-                    }
-                }
-
-                launch {
-                    carViewModel.displayBrightness.collect { value ->
-                        d("Faizuuuuu", "displayBrightness: ${value.contentToString()}")
-                        if (value.isEmpty()) return@collect
-                        if (value.size < 2) {
-                            return@collect
-                        }
-                        handleDisplayBrightness(value)
-                    }
-                }
-
-                launch {
-                    carViewModel.screenModes.collect { value ->
-                        // if (!viewModel.hasThemeConfigChanged) handleScreenModes(value)
-                    }
-                }
-
-                launch {
-                    carViewModel.fotaUpdate.collect { value ->
-                        d("Faizuuuuu", "fotaUpdate: $value")
-                        if (value.isEmpty()) return@collect
-                        if (value.size < 2) {
-                            return@collect
-                        }
-                        val isUpdating = value[0] == 0x00
-                        //  ivOta.visibility = if (isUpdating) View.VISIBLE else View.INVISIBLE
-                    }
-                }
-
-                launch {
-                    carViewModel.indicator.collect { indicator ->
-                        d("Faizuuuuu", "indicator: $indicator")
-                        onIndicatorUpdate(indicator)
-                    }
-                }
-
-		launch {
-                    carViewModel.highBeamTellTale.collect { highBeamTellTale ->
-                        d("Faizuuuuu", "highBeamTellTale: $highBeamTellTale")
-                        onhighBeamTellTaleUpdate(highBeamTellTale)
-                    }
-                }
-
-		launch {
-                    carViewModel.hazardLightTellTale.collect { hazardLightTellTale ->
-                        d("Faizuuuuu", "hazardLightTellTale: $hazardLightTellTale")
-                        onhazardLightTellTaleUpdate(hazardLightTellTale)
-                    }
-                }
-
-                launch {
-                    carViewModel.motorArmDisarmTellTale.collect { motorArmDisarmTellTale ->
-                        d("Faizuuuuu", "motorArmDisarmTellTale: $motorArmDisarmTellTale")
-                        onmotorArmDisarmTellTaleUpdate(motorArmDisarmTellTale)
-                    }
-                }
-
-		launch {
-                    carViewModel.heartBeatstatus.collect { heartBeatstatus ->
-                        d("Faizuuuuu", "heartBeatstatus: $heartBeatstatus")
-                        if (!isClusterReady) return@collect
-                        handleHeartbeatControlFromVcu(heartBeatstatus)
-                    }
-                }
-
-		launch {
-            carViewModel.vehicleInfoRequest.collect {
-                d("Faizuuuuu", "vehicleInfoRequest cmd received, calling sendVehicleInfo")
-                sendVehicleInfo()
-            }
-        }
-
-                launch {
-                    carViewModel.lockdown.collect { value ->
-                        d("Faizuuuuu", "lockdown: $value")
-                        val bundle = Bundle()
-                        bundle.putBoolean("isEnteringLockdown", value == 0x5f)
-                        when (value) {
-                            0x00 -> if (navController?.currentDestination?.id == R.id.lockdownFragment) {
-                                navController?.navigate(R.id.dashboardFragment)
-                            }
-
-                            0x01, 0x5f -> navController?.navigate(R.id.lockdownFragment, bundle)
-                        }
-                    }
-                }
-                launch {
-                    carViewModel.mcThermal.collect { value ->
-                        d("Faizuuuuu", "mcThermal: ${value.joinToString()}")
-                    }
-                }
-                launch {
-                    carViewModel.mcNoArm.collect { value ->
-                        d("Faizuuuuu", "mcNoArm: ${value.joinToString()}")
-                    }
-                }
-                launch {
-                    carViewModel.swiftButton.collect { swiftButton ->
-                        d(
-                            "ButtonNavigation_Main",
-                            "button: ${Utilities.getButtonState(swiftButton)}"
-                        )
-                    }
-                }
-
-                launch {
-                    carViewModel.imxDbgMsg.collect { imxDbgMsg ->
-                        val batterySoc = (imxDbgMsg.soc.toInt() and 0xFF)
-                        d("BatteryValue", "imxDbgMsg soc: $batterySoc, ${viewModel.socLimit}")
-                        tvBatteryPercent.text = "$batterySoc %"
-                        pbBattery.progress = batterySoc
-                    }
-                }
-
-                launch {
-                    carViewModel.vehicleValue.collect { value ->
-                        if (value.isEmpty()) return@collect
-                        if (value.size < 4) {
-                            return@collect
-                        }
-                        val rawSpeed = value.getOrNull(0)?.toInt()
-                        val finalSpeed = rawSpeed?.applyMinMax(viewModel.speedLimit) ?: 0
-                        if (finalSpeed > 0) {
-                            if (
-                                navController?.currentDestination?.id != R.id.dashboardFragment &&
-                                navController?.currentDestination?.id != R.id.debugFragment &&
-                                navController?.currentDestination?.id != R.id.parkAssistantFragment &&
-                                navController?.currentDestination?.id != R.id.versionsFragment &&
-                                navController?.currentDestination?.id != R.id.hoverModeFragment &&
-                                navController?.currentDestination?.id != R.id.chargingFragment &&
-                                navController?.currentDestination?.id != R.id.thermalRunawayFragment &&
-				navController?.currentDestination?.id != R.id.mapFragment &&
-                                navController?.currentDestination?.id != R.id.dashCamFragment
-                            ) {
-                                navController?.navigate(R.id.dashboardFragment)
-                            }
-                        }
-                    }
-                }
-                launch {
-                    carViewModel.paEntry
-                        .collectLatest { entryState ->
-                            val currentDest = navController?.currentDestination?.id
-                            if (entryState && currentDest != R.id.parkAssistantFragment) {
-                                navController?.navigate(R.id.parkAssistantFragment)
-                            } else if (!entryState && currentDest == R.id.parkAssistantFragment) {
-                                navController?.popBackStack()
-                            }
-                        }
-                }
-
-                //skipping the first value. Because vcu is sending ccOff false everytime after keycycle.
-                launch {
-                    carViewModel.ccOff.drop(1).collect { value ->
-                        d("Cruise", "cc off: $value")
-                        isCCOff = value
-                        ivLeftWarning1.visibility = View.INVISIBLE
-                    }
-                }
-
-
-                launch {
-                    carViewModel.ccSTBY.collect { value ->
-                        d("Cruise", "standby: $value")
-                        if (value) {
-                            ivLeftWarning1.setImageDrawable(getDrawable(R.drawable.ic_cruse_control))
-                            ivLeftWarning1.visibility = View.VISIBLE
-                        }
-                    }
-                }
-                launch {
-                    carViewModel.ccError.collect { value ->
-                        d("Cruise", "cc Error: $value")
-                        if (value) {
-                            ivLeftWarning1.setImageDrawable(getDrawable(R.drawable.ic_cc_error))
-                            ivLeftWarning1.visibility = View.VISIBLE
-                        }
-                        //because the cc off will show true even if cruise control is disabled. And made isCCOff as true initially
-                        else {
-                            if (isCCOff) {
-                                ivLeftWarning1.visibility = View.INVISIBLE
-                            }
-                            else
-                            {
-                                ivLeftWarning1.visibility = View.VISIBLE
-                            }
-                        }
-
-                    }
-                }
-                launch {
-                    carViewModel.ccActive.collect { value ->
-                        d("Cruise", "cc active: $value")
-                        if (value) {
-                            ivLeftWarning1.setImageDrawable(getDrawable(R.drawable.ic_cc_active))
-                            ivLeftWarning1.visibility = View.VISIBLE
-                        }
-
-                    }
-                }
-                launch {
-                    carViewModel.tellTales.collect { tellTales ->
-                        d("Faizu", "TellTales: $tellTales")
-                        handleTellTales(tellTales)
-                    }
-                }
-            
-                launch {
-                    viewModel.isHillHold.collect { state ->
-                        if (state == null) return@collect  // skip until real value loaded
-                        d("isHillHold", "State:$state")
-                        ivHillHold.visibility = View.VISIBLE
-                        //ivHillHold.visibility = if (state) View.VISIBLE else View.INVISIBLE
-                    }
-                }
-                launch {
-                    carViewModel.cruise.collect { cruise ->
-                        d("CRUISE", "Cruise value : $cruise")
-                        val isCruise = cruise == 1
-                        performanceViewModel.saveCruise(isCruise)
-                    }
-                }
-
-            }
-
-        }
-    }
 
     private fun handleRadarTelltales(radarTelltaleState: Int) {
         when (radarTelltaleState) {
@@ -974,6 +849,7 @@ class MainActivity : AppCompatActivity() {
 
         ivTraction = findViewById(R.id.ivTraction)
         ivMode = findViewById(R.id.ivMode)
+        composeSplash = findViewById(R.id.composeSplash)
         val alertCard = findViewById<ConstraintLayout>(R.id.alertCard)
         val tvHeading = findViewById<TextView>(R.id.tvAlertHeading)
         val tvSubtext = findViewById<TextView>(R.id.tvAlertSubtext)
@@ -1038,53 +914,25 @@ class MainActivity : AppCompatActivity() {
             handleButtonNavigation(ButtonNavigation.Back.ordinal)
 
         }
-        /*  ivWifi.setOnClickListener {
-  //            alertManager.show(
-  //                titleText = "ABS Warning",
-  //                messageText = "ABS malfunction detected"
-
-              //)
-
-
-              d("Muthuuu", "wifi clicked")
-              navController?.navigate(R.id.hoverModeFragment)
-          }*/
-        /* ivAbsState.setOnClickListener {
- //            alertManager.show(
- //                titleText = "ABS Warning",
- //                messageText = "ABS malfunction detected"
-
-             //)
-
-
-             d("AD", "Debug")
-             navController?.navigate(R.id.debugFragment)
-         }
-
-         ivWifi.setOnSoundClickListener(this) {
-             haveDashcam = false
-             val bundle = Bundle()
-             bundle.putBoolean(ARG_DASH_CAM, haveDashcam)
-             navController?.navigate(R.id.parkAssistantFragment, bundle)
-         }
-
-         tvBatteryPercent.setOnSoundClickListener(this) {
-             haveDashcam = true
-             val bundle = Bundle()
-             bundle.putBoolean(ARG_DASH_CAM, haveDashcam)
-             navController?.navigate(R.id.parkAssistantFragment, bundle)
-         }
-
-         ivLeftWarning1.setOnSoundClickListener(this) {
-             val bundle = Bundle()
-             bundle.putBoolean(ARG_BALLISTIC_PLUS, isBallistic)
-             navController?.navigate(R.id.dashboardFragment, bundle)
-         }*/
 
     }
 
     private fun handleButtonNavigation(button: Int) {
         d("Button Navigation", "${Utilities.getButtonState(button).name}")
+
+        // Intercept for Compose-managed screens before Fragment dispatch.
+        val activeState = clusterViewModel.uiState.value as? ClusterUiState.Active
+        when (activeState?.screenMode) {
+            ScreenMode.HoverMode -> {
+                when (button) {
+                    ButtonNavigation.Left.ordinal  -> adjustRegen(-1)
+                    ButtonNavigation.Right.ordinal -> adjustRegen(+1)
+                }
+                return
+            }
+            else -> { /* Fall through to Fragment dispatch. */ }
+        }
+
         val primaryFragment = navHostFragment?.childFragmentManager?.primaryNavigationFragment
         when (primaryFragment) {
             is MenuFragment -> primaryFragment.handleButtonNavigation(button)
@@ -1109,19 +957,63 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Navigate the Fragment nav controller to the sub-screen for a confirmed [MenuPosition].
+     *
+     * Called after ClusterViewModel emits [menuNavEvent] (tile tap or handlebar Enter).
+     * The ViewModel has already set [_menuVisible] = false before emitting, so ScreenMode
+     * transitions away from Menu before this navigate call resolves.
+     *
+     * Fragment destination IDs match the actions used in the old MenuFragment.
+     */
+    private fun navigateToMenuTarget(position: MenuPosition) {
+        val destId = when (position) {
+            MenuPosition.MyF77    -> R.id.myF77MenuFragment
+            MenuPosition.Battery  -> R.id.batteryFragment
+            MenuPosition.Setting  -> R.id.settingMenuFragment
+            MenuPosition.Music    -> R.id.musicFragment
+            MenuPosition.Controls -> R.id.controlFragment
+            MenuPosition.Tpms     -> R.id.tpmsFragment
+            MenuPosition.Navigate -> R.id.mapFragment
+            MenuPosition.Enter    -> return   // sentinel — no navigation
+        }
+        try {
+            navController?.navigate(destId)
+        } catch (e: IllegalArgumentException) {
+            d(tag, "navigateToMenuTarget: failed for $position — ${e.message}")
+        }
+    }
+
+    /**
+     * Adjust regen level by [delta] (+1 or -1 step).
+     * Called from [handleButtonNavigation] when [ScreenMode.HoverMode] is active.
+     * Write path intentionally goes through CarViewModel until ClusterRepository supports writes.
+     */
+    private fun adjustRegen(delta: Int) {
+        val is10Levels = (clusterViewModel.uiState.value as? com.ultraviolette.uvclusterhmi.domain.model.ClusterUiState.Active)
+            ?.dashboard?.regen?.is10Levels ?: true
+        val step = if (is10Levels) 1 else 3
+        var current = viewModel.regenValue
+        if (!is10Levels) current = (current / 3) * 3
+        val newLevel = (current + delta * step).coerceIn(0, 9)
+        viewModel.saveRegenValue(newLevel)
+        carViewModel.sendByteArrayProperty(0x2170039F, byteArrayOf(newLevel.toByte()))
+        d("HoverRegen", "Regen adjusted to $newLevel (is10=$is10Levels)")
+    }
+
     override fun onResume() {
          super.onResume()
 
     // Ensure WiFi ON
-            if (!wifiViewModel.isWifiEnabled()) {
+            /*if (!wifiViewModel.isWifiEnabled()) {
         wifiViewModel.enableWifi(true)
-    }
+    }*/
 
    
 
             
-           wifiViewModel.scanResult()
-           wifiViewModel.startSignalMonitoring()
+           //wifiViewModel.scanResult()
+           //wifiViewModel.startSignalMonitoring()
 	   dataViewModel.getNetworkSignalLevel()
 
           d("MainActivityLifeCycle", "onResume is called")
@@ -1206,31 +1098,6 @@ class MainActivity : AppCompatActivity() {
         d(tag, "VehicleInfo sent")
     }
 
-
-//    private fun startHeartbeat() {
-//        if (heartbeatJob?.isActive == true) {
-//            d(tag, "Heartbeat: already running, skipping restart")
-//            return
-//        }
-//
-//    heartbeatCounter = 0L
-//    isHeartbeatEnabled = true
-//
-//    heartbeatJob = lifecycleScope.launch(Dispatchers.IO) {
-//        d(tag, "Heartbeat: started")
-//        while (isActive) {
-//            if (isHeartbeatEnabled) {
-//                val payload = buildHeartbeatPayload()
-//                sendByteArray(MSG_ID_USB_HEARTBEAT_IMX_S32, payload)
-//                d(tag, "Heartbeat sent | counter=${heartbeatCounter - 1} epoch=${System.currentTimeMillis() / 1000}")
-//            } else {
-//                d(tag, "Heartbeat suppressed | enabled=$isHeartbeatEnabled")
-//            }
-//            delay(1000L)
-//        }
-//        d(tag, "Heartbeat: stopped")
-//    }
-//}
 
     private fun stopHeartbeat() {
         heartbeatJob?.cancel()
@@ -1421,8 +1288,8 @@ class MainActivity : AppCompatActivity() {
         rightIndicatorBlinkJob?.cancel()
         sensorManager.unregisterListener(ambientSensorListener)
         wifiAutoConnector.stopAutoConnectLoop()
-        bluetoothViewModel.unregisterBluetoothActionReceiver()
-        wifiViewModel.unregisterWifiStateChangeReceiver()
+        //bluetoothViewModel.unregisterBluetoothActionReceiver()
+        //wifiViewModel.unregisterWifiStateChangeReceiver()
         dataViewModel.unregisterReceiver()
 	dataViewModel.stopSignalUpdates()
 	//stopHeartbeat()
@@ -1645,10 +1512,7 @@ class MainActivity : AppCompatActivity() {
         //val isHoverMode=true
         isBallistic = tellTales.rideMode == 3
         d("UUVV", "Telltales modeHover :${tellTales.modeHover}  , isHoverMode:$isHoverMode ")
-        if (navController?.currentDestination?.id != R.id.hoverModeFragment && isHoverMode && navController?.currentDestination?.id != R.id.debugFragment &&
-         navController?.currentDestination?.id != R.id.chargingFragment && navController?.currentDestination?.id != R.id.versionsFragment) {
-            navController?.navigate(R.id.hoverModeFragment)
-        }
+        // hoverModeFragment removed: ScreenMode.HoverMode now handled by ClusterViewModel → ClusterNavHost.
 
 
         val hillHold = tellTales.hillHold
@@ -1682,9 +1546,9 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        val chargeState = tellTales.charger
-        d("ChargingDebug", "TellTales charger: $chargeState")
-        navigateChargingScreen(chargeState)
+        // chargeState / navigateChargingScreen removed: ChargingScreen is now driven
+        // by ScreenMode.Charging via ClusterViewModel → ClusterNavHost.
+        @Suppress("UNUSED_VARIABLE") val chargeState = tellTales.charger
         val absState = tellTales.absMode
         val absWarningLamp = tellTales.absWarningLamp
 
@@ -1697,9 +1561,8 @@ class MainActivity : AppCompatActivity() {
        val radarState = tellTales.radarIndicator
         d("RadarState", "Telltales radar :$radarState")
         handleRadarTelltales(radarState)
-         if(tellTales.thermalRunway==1){
-            navController?.navigate(R.id.thermalRunawayFragment)
-        }
+         // thermalRunaway now handled by ClusterViewModel → ScreenMode.ThermalRunaway → ClusterNavHost.
+        // Fragment navigation for thermalRunawayFragment removed.
 
         val indicator=if(tellTales.indicatorRight==1)
         {
@@ -1777,15 +1640,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun navigateChargingScreen(chargingStatus: Int) {
-        if (chargingStatus == 1 || chargingStatus == 2) {
-            if (navController?.currentDestination?.id != R.id.chargingFragment) {
-                val bundle = Bundle()
-                bundle.putBoolean(ARG_CHARGING_STATUS, chargingStatus == 2)
-                navController?.navigate(R.id.chargingFragment, bundle)
-            }
-        }
-    }
+    // navigateChargingScreen removed: charging is now handled by
+    // ScreenMode.Charging → ClusterNavHost → ChargingScreen (Compose).
+    // ChargingFragment and R.id.chargingFragment have been removed from the nav graph.
 
     private fun handleMtcControl(mtcState: Int, mtcMode: Int) {
         ivTraction.visibility = View.VISIBLE
@@ -2079,22 +1936,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    /*private fun sendClusterReady() {
-        lifecycleScope.launch {
-            d(tag, "Entering delay")
-            // Wait 1 second (1000 milliseconds) for the CarService to connect
-            delay(1000)
-
-            val CLUSTER_TO_VCU_CLUSTER_READY = 0x2170036F
-            val dataVal: Byte = 1
-            val packet = byteArrayOf(dataVal)
-            d("Cluster_ready", "Sending CLUSTER READY to VCU")
-            sendByteArray(CLUSTER_TO_VCU_CLUSTER_READY, packet)
-            startAlsJob()
-
-        }
-    }*/
 
     private fun sendClusterReady() {
     lifecycleScope.launch {

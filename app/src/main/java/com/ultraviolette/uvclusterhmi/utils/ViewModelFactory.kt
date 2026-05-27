@@ -6,13 +6,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.ultraviolette.uvclusterhmi.DataRepoImpl
 import com.ultraviolette.uvclusterhmi.DataWrapperManager
 import com.ultraviolette.uvclusterhmi.HapticViewModel
-import com.ultraviolette.uvclusterhmi.data.dataSource.BluetoothManagerWrapper
+import com.ultraviolette.uvclusterhmi.data.dataSource.CarServiceWrapper
+/*import com.ultraviolette.uvclusterhmi.data.dataSource.BluetoothManagerWrapper
 import com.ultraviolette.uvclusterhmi.data.dataSource.CarServiceWrapper
 import com.ultraviolette.uvclusterhmi.data.dataSource.WifiManagerWrapper
-import com.ultraviolette.uvclusterhmi.data.repository.BluetoothRepoImpl
+import com.ultraviolette.uvclusterhmi.data.repository.BluetoothRepoImpl*/
 import com.ultraviolette.uvclusterhmi.data.repository.CarRepoImpl
 import com.ultraviolette.uvclusterhmi.data.repository.SharedPreferenceRepoImpl
-import com.ultraviolette.uvclusterhmi.data.repository.WifiRepoImpl
 import com.ultraviolette.uvclusterhmi.domain.manager.PreferenceManager
 import com.ultraviolette.uvclusterhmi.domain.repository.BluetoothRepository
 import com.ultraviolette.uvclusterhmi.domain.repository.CarRepository
@@ -63,14 +63,14 @@ class ViewModelFactory(
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
-            modelClass.isAssignableFrom(BluetoothViewModel::class.java) -> {
+            /*modelClass.isAssignableFrom(BluetoothViewModel::class.java) -> {
                 val bluetoothRepositoryImpl = BluetoothRepoImpl(BluetoothManagerWrapper(context!!))
                 BluetoothViewModel(bluetoothRepositoryImpl) as T
             }
             modelClass.isAssignableFrom(WifiViewModel::class.java) -> {
                 val wifiRepositoryImpl = WifiRepoImpl(WifiManagerWrapper(context!!))
                 WifiViewModel(wifiRepositoryImpl) as T
-            }
+            }*/
             modelClass.isAssignableFrom(CarViewModel::class.java) -> {
                 val carRepositoryImpl = CarRepoImpl(CarServiceWrapper(context!!))
                 CarViewModel(carRepositoryImpl) as T

@@ -21,18 +21,19 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.ultraviolette.uvclusterhmi.ClusterApplication
 import com.ultraviolette.uvclusterhmi.R
-import com.ultraviolette.uvclusterhmi.domain.dataModel.vcuData.TripMeterDisp
 import com.ultraviolette.uvclusterhmi.domain.ennumerate.ButtonNavigation
+import com.ultraviolette.uvclusterhmi.domain.model.ClusterUiState
+import com.ultraviolette.uvclusterhmi.domain.model.TripsVehicleUiState
 import com.ultraviolette.uvclusterhmi.ui.viewModel.CarViewModel
+import com.ultraviolette.uvclusterhmi.ui.viewModel.ClusterViewModel
 import com.ultraviolette.uvclusterhmi.ui.viewModel.SharedViewModel
 import com.ultraviolette.uvclusterhmi.utils.Utilities
 import com.ultraviolette.uvclusterhmi.utils.Utilities.PROP_ID_CUSTOM
 import com.ultraviolette.uvclusterhmi.utils.Utilities.setOnSoundClickListener
 import com.ultraviolette.uvclusterhmi.utils.ViewModelFactory
 import kotlinx.coroutines.launch
-import kotlin.math.min
-import kotlin.math.roundToInt
 
 class TripsFragment : Fragment() {
     private lateinit var ivBack: ImageView
@@ -52,6 +53,9 @@ class TripsFragment : Fragment() {
     private val viewModel by viewModels<TripsViewModel> { ViewModelFactory(context = requireContext()) }
     private val carViewModel by activityViewModels<CarViewModel> { ViewModelFactory(context = requireContext()) }
     private val sharedViewModel by activityViewModels<SharedViewModel> { ViewModelFactory(context = requireContext()) }
+    private val clusterViewModel: ClusterViewModel by activityViewModels {
+        ClusterViewModel.Factory(requireActivity().application as ClusterApplication)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -82,53 +86,24 @@ class TripsFragment : Fragment() {
                     }
                 }
                 launch {
-                    carViewModel.tripMeter.collect { trips ->
-                        d("Tripss", "Trip value :$trips")
-                        handleTrips(trips)
+                    clusterViewModel.uiState.collect { uiState ->
+                        val active = uiState as? ClusterUiState.Active ?: return@collect
+                        handleTrips(active.trips)
                     }
                 }
             }
         }
     }
 
-    private fun handleTrips(tripMeterDisp: TripMeterDisp) {
-        if (tripMeterDisp.trip.isEmpty()) {
-            tvTripDistanceValue.text = "---"
-            tvTripDurationValue.text = "---"
-            tvAverageSpeedValue.text = "---"
-                return
+    private fun handleTrips(trips: TripsVehicleUiState) {
+        val entry = when (viewModel.getTrips()) {
+            1    -> trips.trip1
+            2    -> trips.trip2
+            else -> trips.trip3
         }
-        val trip = tripMeterDisp.trip[viewModel.getTrips() - 1]
-        d("Ttripss", "currentTrip :${viewModel.getTrips()} value :$trip")
-        val distanceInKm = trip.distance.toInt()
-
-        val isMiles =
-            sharedViewModel.distanceUnit.equals("miles", ignoreCase = true)
-
-        val displayDistance =
-            if (isMiles) "${(distanceInKm * 0.621371).roundToInt()} miles" else "$distanceInKm km"
-
-        val avgSpeed = trip.averageSpeed.toInt()
-
-        val displayAvgSpeed = if (isMiles)
-            "${(avgSpeed * 0.6211371).roundToInt()} mph"
-        else
-            "$avgSpeed km/h"
-
-        tvTripDistanceValue.text = displayDistance
-        val durationInSecs = trip.tripDuration
-        val hours = (durationInSecs / 3600).toInt()
-        val minutes = ((durationInSecs % 3600) / 60).toInt()
-        d("Ttripss", "Hours :$hours minutes :$minutes")
-
-        tvTripDurationValue.text = buildString {
-            append(hours)
-            append(" Hrs ")
-            append(minutes)
-            append(" Mins")
-        }
-        tvAverageSpeedValue.text = displayAvgSpeed
-
+        tvTripDistanceValue.text = entry.distanceDisplay
+        tvTripDurationValue.text = entry.durationDisplay
+        tvAverageSpeedValue.text = entry.avgSpeedDisplay
     }
 
     private fun render(uiState: TripsUiState) {

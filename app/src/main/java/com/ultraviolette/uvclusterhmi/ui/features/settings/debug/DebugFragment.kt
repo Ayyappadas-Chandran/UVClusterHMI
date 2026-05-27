@@ -683,12 +683,9 @@ class DebugFragment : Fragment() {
                 }
 
                 override fun onDoubleTap(e: MotionEvent): Boolean {
-                    val destination = when {
-                        isHover -> R.id.hoverModeFragment
-                        isCHarging -> R.id.chargingFragment
-                        else -> R.id.dashboardFragment
-                    }
-                    findNavController().navigate(destination)
+                    // chargingFragment removed — ChargingScreen now shows via ScreenMode.Charging
+                    // in ClusterNavHost; always navigate to dashboard here.
+                    findNavController().navigate(R.id.dashboardFragment)
                     return true
                 }
             }
@@ -968,12 +965,8 @@ class DebugFragment : Fragment() {
                     carViewModel.swiftButton.collect { swiftButton ->
                         val button = Utilities.getButtonState(swiftButton)
                          if (ButtonNavigation.Enter == button) {
-                            val destination = when {
-                                 isHover -> R.id.hoverModeFragment
-                                 isCHarging -> R.id.chargingFragment
-                                 else -> R.id.dashboardFragment
-                             }
-                             findNavController().navigate(destination)
+                            // chargingFragment removed — ChargingScreen now shows via ScreenMode.Charging.
+                            findNavController().navigate(R.id.dashboardFragment)
                         }
                         if (ButtonNavigation.Right == button) {
                             findNavController().navigate(R.id.action_debugFragment_to_versionFragment)

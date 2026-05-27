@@ -25,7 +25,6 @@ import androidx.core.app.ActivityCompat
 import com.ultraviolette.cluster.aidl.BtState
 import com.ultraviolette.cluster.aidl.ICarPropertyCallback
 import com.ultraviolette.cluster.aidl.ICarPropertyService
-import com.ultraviolette.cluster.aidl.VehicleData
 import com.ultraviolette.cluster.aidl.VehicleSnapshot
 import com.ultraviolette.cluster.aidl.WifiState
 
@@ -47,8 +46,47 @@ class ConnectionManager(
     private var carService: ICarPropertyService? = null
 
     private val carCallback = object : ICarPropertyCallback.Stub() {
-        override fun onVehicleData(data: VehicleData) { signalManager.onVehicleData(data) }
-        override fun onVehicleSnapshot(snapshot: VehicleSnapshot) { signalManager.onVehicleSnapshot(snapshot) }
+        override fun onVehicleSnapshot(snapshot: VehicleSnapshot) {
+            signalManager.onVehicleSnapshot(snapshot)
+        }
+
+        override fun onHandlebarButton(button: Int) {
+            // Forward to all ISharedSignalCallback subscribers (HMI app etc.)
+            signalManager.onHandlebarButton(button)
+        }
+
+        override fun onChargerEvent(code: Int) {
+            // Charger connect/disconnect events — reflected in VehicleSnapshot.charger;
+            // no additional fan-out needed at this time.
+            Log.d(tag, "onChargerEvent: code=$code")
+        }
+
+        override fun onMotorNoArmEvent(reason: IntArray?) {
+            // Motor arm-failure reasons — carried via VehicleSnapshot fields;
+            // no additional fan-out needed at this time.
+            Log.d(tag, "onMotorNoArmEvent: reason=${reason?.toList()}")
+        }
+
+        override fun onVehicleInfoRequest() {
+            // VCU requests vehicle identification info (VIN, firmware version etc.).
+            // Not yet handled; CarPropertyService responds directly.
+            Log.d(tag, "onVehicleInfoRequest")
+        }
+
+        override fun onHeartbeatControl(value: Int) {
+            // Periodic liveness ping from VCU — acknowledged by CarPropertyService.
+            Log.d(tag, "onHeartbeatControl: value=$value")
+        }
+
+        override fun onFotaProgress(progress: IntArray?) {
+            // FOTA update progress percentage array — no fan-out at this time.
+            Log.d(tag, "onFotaProgress: progress=${progress?.toList()}")
+        }
+
+        override fun onSleepWake(value: Int) {
+            // VCU sleep/wake state change — no fan-out at this time.
+            Log.d(tag, "onSleepWake: value=$value")
+        }
     }
 
     private val carConnection = object : ServiceConnection {

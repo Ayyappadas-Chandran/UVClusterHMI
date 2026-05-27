@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
-import com.ultraviolette.uvclusterhmi.data.repository.SharedPreferenceRepoImpl
 import com.ultraviolette.uvclusterhmi.domain.manager.PreferenceManager
 
 class BootReceiver : BroadcastReceiver() {

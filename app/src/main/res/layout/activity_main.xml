@@ -433,6 +433,18 @@
         app:layout_constraintTop_toBottomOf="@id/clToolBar"
         app:navGraph="@navigation/main_nav" />
 
+    <!-- Compose SplashScreen overlay — covers entire screen during intro + update videos.
+         Visibility set to GONE by MainActivity once onSplashComplete() fires. -->
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/composeSplash"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/alertCard"
         android:layout_width="600dp"
