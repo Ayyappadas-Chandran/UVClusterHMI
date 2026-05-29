@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.ServiceConnection
+import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
 import android.os.DeadObjectException
 import android.os.IBinder
@@ -28,11 +29,19 @@ class BusDataSource(private val context: Context) {
     private val tag = "HMI/BusDataSource"
 
     // ── Local WiFi scan receiver ───────────────────────────────────────────────
-    // ClusterDataBus is a background service and cannot hold runtime location
-    // permissions.  The HMI app (this process) has ACCESS_FINE_LOCATION granted,
-    // so we read WifiManager.scanResults here and push them into the same flow
-    // that the AIDL callback uses.  ClusterDataBus still calls wifiStartScan() to
-    // trigger the scan; both processes receive SCAN_RESULTS_AVAILABLE_ACTION.
+    // This process (HMI app) holds ACCESS_FINE_LOCATION; ClusterDataBus (background
+    // service) cannot hold it at runtime so its scan results are always empty.
+    //
+    // We NEVER call wm.startScan() ourselves — the OS schedules periodic scans
+    // automatically when WiFi is on, and fires SCAN_RESULTS_AVAILABLE_ACTION when
+    // each completes.  Calling wm.startScan() consumes the 4-scans-per-2-minute
+    // foreground budget; a throttled call fires an immediate SCAN_RESULTS_AVAILABLE
+    // with EXTRA_RESULTS_UPDATED=false and wm.scanResults EMPTY, blocking the UI for
+    // the entire ~19-second OS passive-scan interval.  The old WifiManagerWrapper
+    // never called wm.startScan() either — it only ever read from the cache.
+    //
+    // Strategy: register for many broadcast actions (matching old WifiManagerWrapper)
+    // so we catch the OS-scan result the moment it arrives.
 
     private val wifiScanReceiver = object : BroadcastReceiver() {
         override fun onReceive(ctx: Context?, intent: Intent?) {
@@ -42,15 +51,43 @@ class BusDataSource(private val context: Context) {
                     Log.d(tag, "wifiScanReceiver: SCAN_RESULTS_AVAILABLE succeeded=$succeeded")
                     readLocalWifiScanResults()
                 }
+                WifiManager.NETWORK_STATE_CHANGED_ACTION -> {
+                    Log.d(tag, "wifiScanReceiver: NETWORK_STATE_CHANGED — reading cache")
+                    readLocalWifiScanResults()
+                }
+                WifiManager.SUPPLICANT_STATE_CHANGED_ACTION -> {
+                    // Fires frequently during WiFi association; wm.scanResults is often
+                    // populated at this point from the OS scan that ran during init.
+                    Log.d(tag, "wifiScanReceiver: SUPPLICANT_STATE_CHANGED — reading cache")
+                    readLocalWifiScanResults()
+                }
+                WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION -> {
+                    Log.d(tag, "wifiScanReceiver: SUPPLICANT_CONNECTION_CHANGE — reading cache")
+                    readLocalWifiScanResults()
+                }
+                @Suppress("DEPRECATION")
+                ConnectivityManager.CONNECTIVITY_ACTION -> {
+                    Log.d(tag, "wifiScanReceiver: CONNECTIVITY_ACTION — reading cache")
+                    readLocalWifiScanResults()
+                }
                 WifiManager.WIFI_STATE_CHANGED_ACTION -> {
                     val state = intent.getIntExtra(
                         WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN
                     )
                     Log.d(tag, "wifiScanReceiver: WIFI_STATE_CHANGED state=$state")
-                    // Auto-trigger a scan when the adapter turns on so the available-devices
-                    // list populates immediately without waiting for ClusterDataBus.
-                    if (state == WifiManager.WIFI_STATE_ENABLED) {
-                        triggerLocalScan()
+                    when (state) {
+                        WifiManager.WIFI_STATE_DISABLED -> {
+                            // Adapter turned off — clear stale cache so the list doesn't
+                            // show old networks while WiFi is off.
+                            _wifiScanResults.tryEmit(emptyList())
+                            Log.d(tag, "wifiScanReceiver: WiFi disabled — scan cache cleared")
+                        }
+                        WifiManager.WIFI_STATE_ENABLED -> {
+                            // Read any residual OS cache immediately — some devices retain
+                            // the last scan results across a brief WiFi toggle so this can
+                            // populate the list without waiting for the first OS scan.
+                            readLocalWifiScanResults()
+                        }
                     }
                 }
             }
@@ -80,6 +117,9 @@ class BusDataSource(private val context: Context) {
 
             val results = scanList
                 .filter { it.SSID?.isNotBlank() == true }
+                // Sort strongest signal first so distinctBy keeps the best AP for each SSID
+                // (mesh / multi-AP networks share the same SSID across multiple APs).
+                .sortedByDescending { it.level }
                 .distinctBy { it.SSID }
                 .map { sr ->
                     WifiScanResult(
@@ -92,6 +132,15 @@ class BusDataSource(private val context: Context) {
                         isSaved   = sr.SSID in savedSsids
                     )
                 }
+
+            // Never emit an empty list from scan results — wm.scanResults can be transiently
+            // empty while a scan is in progress (cache cleared before new results arrive) or
+            // when the OS throttles startScan().  Emitting empty would blank the UI.
+            // The only legitimate empty emit is from WIFI_STATE_DISABLED above.
+            if (results.isEmpty()) {
+                Log.d(tag, "readLocalWifiScanResults: skipping empty result — keeping current list")
+                return
+            }
             _wifiScanResults.tryEmit(results)
             Log.d(tag, "readLocalWifiScanResults: pushed ${results.size} network(s) " +
                 "(raw=${scanList.size}, saved=${savedSsids.size})")
@@ -100,17 +149,6 @@ class BusDataSource(private val context: Context) {
         }
     }
 
-    @SuppressLint("MissingPermission")
-    private fun triggerLocalScan() {
-        try {
-            val wm = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-            @Suppress("DEPRECATION")
-            wm.startScan()
-            Log.d(tag, "triggerLocalScan: scan requested from HMI process")
-        } catch (e: Exception) {
-            Log.w(tag, "triggerLocalScan failed (non-fatal): ${e.message}")
-        }
-    }
 
 
     private val _vehicleSnapshot = MutableSharedFlow<VehicleSnapshot>(replay = 1)
@@ -218,8 +256,10 @@ class BusDataSource(private val context: Context) {
                     // If WiFi is already enabled, read any cached scan results immediately
                     // and trigger a fresh scan so the available-devices list isn't empty.
                     if (state.isEnabled) {
+                        // Only read cached OS results on connect — do NOT trigger a new scan
+                        // here.  The fragment's scan loop (scanRunnable) is the sole scan
+                        // trigger to avoid exhausting the 4-scans-per-2-minutes budget.
                         readLocalWifiScanResults()
-                        triggerLocalScan()
                     }
                 }
             } catch (e: Exception) {
@@ -246,6 +286,11 @@ class BusDataSource(private val context: Context) {
             val filter = IntentFilter().apply {
                 addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
                 addAction(WifiManager.WIFI_STATE_CHANGED_ACTION)
+                addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION)
+                addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION)
+                addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION)
+                @Suppress("DEPRECATION")
+                addAction(ConnectivityManager.CONNECTIVITY_ACTION)
             }
             context.registerReceiver(wifiScanReceiver, filter)
             wifiScanReceiverRegistered = true
@@ -324,11 +369,14 @@ class BusDataSource(private val context: Context) {
     }
 
     fun wifiStartScan() {
-        // Trigger through ClusterDataBus (AIDL) so the service process also has fresh data,
-        // and also trigger locally so this process's wifiScanReceiver fires promptly.
-        try { service?.wifiStartScan() } catch (e: Exception) {
-            Log.e(tag, "wifiStartScan (aidl) failed", e)
-        }
-        triggerLocalScan()
+        // Read whatever the OS currently has in wm.scanResults.  We deliberately do NOT
+        // call wm.startScan() here — the OS scans automatically on a ~15-20 s interval
+        // and fires SCAN_RESULTS_AVAILABLE_ACTION when each scan completes.  Calling
+        // startScan() consumes the 4-scans-per-2-minute foreground budget; when throttled
+        // (which happens almost immediately given multiple concurrent callers), Android fires
+        // SCAN_RESULTS_AVAILABLE with EXTRA_RESULTS_UPDATED=false and wm.scanResults EMPTY,
+        // delaying visible results by the full ~19 s passive-scan interval.  The old
+        // WifiManagerWrapper used the same read-only strategy and showed results in 2-5 s.
+        readLocalWifiScanResults()
     }
 }

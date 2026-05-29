@@ -584,9 +584,46 @@ class MainActivity : AppCompatActivity() {
         }
         onIndicatorUpdate(indicatorInt)
 
+        // ── WiFi icon ─────────────────────────────────────────────────────────
+        handleWifiIcon(toolbar.wifiEnabled, toolbar.wifiConnected, toolbar.wifiSignalLevel)
+
         // ── Charging navigation ───────────────────────────────────────────────
         // Charging screen is now owned by ScreenMode.Charging → ClusterNavHost →
         // ChargingScreen (Compose). No Fragment nav needed here.
+    }
+
+    /**
+     * Updates [ivWifi] to reflect the current WiFi adapter + connection state.
+     *
+     * Icon mapping:
+     *   disabled            → invisible
+     *   enabled, no network → ic_signal_wifi_0_bar  (outline only)
+     *   connected, 1 bar    → ic_signal_wifi_1_bar
+     *   connected, 2 bars   → ic_signal_wifi_2_bar
+     *   connected, 3 bars   → ic_signal_wifi_3_bar
+     *   connected, 4 bars   → ic_signal_wifi_4_bar
+     *   connected, 5 bars   → ic_signal_wifi_full_bar
+     */
+    private fun handleWifiIcon(enabled: Boolean, connected: Boolean, signalLevel: Int) {
+        if (!enabled) {
+            ivWifi.visibility = View.INVISIBLE
+            return
+        }
+        ivWifi.visibility = View.VISIBLE
+        val wifiRes = if (!connected || signalLevel == 0) {
+            R.drawable.ic_signal_wifi_0_bar
+        } else {
+            when (signalLevel) {
+                1    -> R.drawable.ic_signal_wifi_1_bar
+                2    -> R.drawable.ic_signal_wifi_2_bar
+                3    -> R.drawable.ic_signal_wifi_3_bar
+                4    -> R.drawable.ic_signal_wifi_4_bar
+                else -> R.drawable.ic_signal_wifi_full_bar   // level >= 5
+            }
+        }
+        ivWifi.setImageDrawable(getDrawable(this, wifiRes))
+        val colorRes = if (isDashboard) resolveAttr(R.attr.appTextColor) else R.color.white
+        ivWifi.setColorFilter(ContextCompat.getColor(this, colorRes))
     }
 
     /**

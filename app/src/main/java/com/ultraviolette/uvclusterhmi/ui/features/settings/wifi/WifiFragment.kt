@@ -146,9 +146,10 @@ class WifiFragment : Fragment() {
     }
 
     private fun initObserver() {
-        // wifiConnected() fires an initial wifiStartScan so results populate as soon as
-        // the service is bound. wifiReconnectRequest() is a no-op in the new architecture.
-        wifiViewModel.wifiConnected()
+        // Scan lifecycle is owned entirely by the isEnabled collector below (startRepeatingScan /
+        // stopRepeatingScan).  wifiConnected() was removed because it fired wifiStartScan()
+        // immediately at fragment create, racing with scanRunnable's first run and wasting
+        // one of the 4-scans-per-2-minutes budget Android allows foreground apps.
         wifiViewModel.wifiReconnectRequest()
 
         lifecycleScope.launch {
@@ -165,15 +166,15 @@ class WifiFragment : Fragment() {
                         Log.d(TAG, "initObserver: isEnabled changed :: $isOn")
                         handleWifiStateUi(isOn)
                         if (isOn) {
-                            // Adapter just turned on — kick off scan immediately so the
-                            // available-devices list populates without waiting for the
-                            // connection-state callback.
-                            Log.d(TAG, "initObserver: WiFi enabled — starting scan")
-                            wifiViewModel.startScan()
+                            // Start the repeating scan loop — first iteration fires immediately
+                            // (handler.post) so the list populates without delay.
+                            Log.d(TAG, "initObserver: WiFi enabled — starting scan loop")
+                            startRepeatingScan()
                         } else {
                             // Clear stale results so the list doesn't show old networks
                             // after the adapter is turned off.
                             wifiDeviceAdapter.submitList(emptyList())
+                            wifiSavedNetworkAdapter.submitList(emptyList())
                             stopRepeatingScan()
                         }
                     }
@@ -185,7 +186,9 @@ class WifiFragment : Fragment() {
                         Log.d(TAG, "initObserver: connectionState changed :: $isConnected")
                         // Re-read isEnabled so button highlights stay consistent.
                         handleWifiStateUi(wifiViewModel.isWifiEnabled())
-                        if (isConnected) startRepeatingScan() else stopRepeatingScan()
+                        // Scan loop lifecycle is owned by the isEnabled collector.
+                        // Do NOT stop scanning on disconnect — the user needs the
+                        // available-devices list to pick a new network to connect to.
                     }
                 }
 
@@ -301,24 +304,32 @@ class WifiFragment : Fragment() {
     }
 
 
+    // Scan every 15 s. Android allows 4 scans per 2 minutes for foreground processes;
+    // every other call may be throttled, but the OS still fires SCAN_RESULTS_AVAILABLE_ACTION
+    // with the cached results so the list stays up to date.
+    private val SCAN_INTERVAL_MS = 15_000L
+
     private val scanRunnable = object : Runnable {
         override fun run() {
             if (!isScanning) return
 
-            // Show for 2 seconds
+            // Trigger a scan. wifiStartScan() reads the OS cache immediately so the list
+            // updates straight away, then a fresh scan result arrives via broadcast.
+            wifiViewModel.startScan()
+
+            // Show the progress spinner briefly while the scan is in flight.
             wifiAvailableDevicesProgressBar.isVisible = true
             handler.postDelayed({
                 wifiAvailableDevicesProgressBar.isVisible = false
-
-                // After hiding for 3 seconds, restart the cycle
-                handler.postDelayed(this, 3000)
-            }, 2000)
+                handler.postDelayed(this, SCAN_INTERVAL_MS)
+            }, 1_000L)
         }
     }
 
     fun startRepeatingScan() {
         if (isScanning) return
         isScanning = true
+        // post() fires on the next main-thread loop — immediate first scan.
         handler.post(scanRunnable)
     }
 

@@ -23,6 +23,8 @@ data class ToolbarUiState(
     // ── Connectivity ──────────────────────────────────────────────────────────
     val btEnabled: Boolean = false,
     val wifiEnabled: Boolean = false,
+    /** True when the WiFi adapter is connected to a network (SSID obtained). */
+    val wifiConnected: Boolean = false,
     /** 0–5 signal bars; 0 = no signal or disabled. */
     val wifiSignalLevel: Int = 0,
     /** 0–4 cellular signal bars (from TelephonyManager, not VCU). */

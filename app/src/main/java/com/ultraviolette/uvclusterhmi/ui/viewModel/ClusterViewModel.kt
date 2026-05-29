@@ -340,6 +340,7 @@ class ClusterViewModel(
             batterySoc = snap.batterySoc,
             btEnabled = bt.isEnabled,
             wifiEnabled = wifi.isEnabled,
+            wifiConnected = wifi.isConnected,
             wifiSignalLevel = wifi.signalLevel,
             cellularSignalLevel = cellularSignal,
             leftIndicatorOn = snap.indicator == 2,
