@@ -14,13 +14,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.ultraviolette.uvclusterhmi.ClusterApplication
 import com.ultraviolette.uvclusterhmi.R
 import com.ultraviolette.uvclusterhmi.domain.ennumerate.ButtonNavigation
 import com.ultraviolette.uvclusterhmi.ui.adapter.MyF77MenuAdapter
-import com.ultraviolette.uvclusterhmi.ui.viewModel.CarViewModel
+import com.ultraviolette.uvclusterhmi.ui.viewModel.ClusterViewModel
 import com.ultraviolette.uvclusterhmi.utils.Utilities
 import com.ultraviolette.uvclusterhmi.utils.Utilities.setOnSoundClickListener
-import com.ultraviolette.uvclusterhmi.utils.ViewModelFactory
 import kotlinx.coroutines.launch
 
 class MyF77MenuFragment : Fragment() {
@@ -28,7 +28,9 @@ class MyF77MenuFragment : Fragment() {
     private lateinit var rvMyF77: RecyclerView
     private var myF77MenuAdapter: MyF77MenuAdapter? = null
     private val viewModel: MyF77ViewModel by viewModels()
-    private val carViewModel by activityViewModels<CarViewModel> { ViewModelFactory(context = requireContext()) }
+    private val clusterViewModel: ClusterViewModel by activityViewModels {
+        ClusterViewModel.Factory(requireActivity().application as ClusterApplication)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -102,7 +104,8 @@ class MyF77MenuFragment : Fragment() {
                     }
                 }
                 launch {
-                    carViewModel.swiftButton.collect { swiftButton ->
+                    // Handlebar events via ClusterDataBus (replaces carViewModel.swiftButton)
+                    clusterViewModel.handlebarButton.collect { swiftButton ->
                         val button = Utilities.getButtonState(swiftButton)
                         if (button == ButtonNavigation.None) return@collect
                         handleButtonNavigation(button.ordinal)

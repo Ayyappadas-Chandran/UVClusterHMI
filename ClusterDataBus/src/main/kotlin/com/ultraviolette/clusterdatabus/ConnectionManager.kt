@@ -22,10 +22,12 @@ import android.os.IBinder
 import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.core.app.ActivityCompat
+import com.ultraviolette.cluster.aidl.BtScanResult
 import com.ultraviolette.cluster.aidl.BtState
 import com.ultraviolette.cluster.aidl.ICarPropertyCallback
 import com.ultraviolette.cluster.aidl.ICarPropertyService
 import com.ultraviolette.cluster.aidl.VehicleSnapshot
+import com.ultraviolette.cluster.aidl.WifiScanResult
 import com.ultraviolette.cluster.aidl.WifiState
 
 /**
@@ -110,6 +112,9 @@ class ConnectionManager(
 
     @Volatile private var currentBtState = BtState()
 
+    /** Accumulates devices found during the current discovery cycle. Cleared on each new startDiscovery. */
+    private val discoveredDevices = mutableListOf<BtScanResult>()
+
     private val bluetoothReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
@@ -162,8 +167,28 @@ class ConnectionManager(
                     pushBtState()
                 }
 
+                BluetoothDevice.ACTION_FOUND -> {
+                    val device = intent.getParcelableExtra(
+                        BluetoothDevice.EXTRA_DEVICE, BluetoothDevice::class.java
+                    ) ?: return
+                    val name = deviceName(device)
+                    val result = BtScanResult(
+                        name      = name,
+                        address   = device.address,
+                        bondState = device.bondState
+                    )
+                    synchronized(discoveredDevices) {
+                        if (discoveredDevices.none { it.address == result.address }) {
+                            discoveredDevices.add(result)
+                        }
+                    }
+                    signalManager.onBluetoothScanResult(discoveredDevices.toList())
+                    Log.d(tag, "BT device found: $name (${device.address})")
+                }
+
                 BluetoothAdapter.ACTION_DISCOVERY_FINISHED -> {
-                    Log.d(tag, "BT discovery finished")
+                    Log.d(tag, "BT discovery finished — ${discoveredDevices.size} device(s) found")
+                    signalManager.onBluetoothScanResult(discoveredDevices.toList())
                 }
             }
         }
@@ -186,9 +211,47 @@ class ConnectionManager(
 
     private fun pushBtState() = signalManager.onBtState(currentBtState)
 
+    @SuppressLint("MissingPermission")
+    fun enableBluetooth() {
+        try {
+            bluetoothAdapter?.enable()
+            Log.d(tag, "bluetoothEnable requested")
+        } catch (e: Exception) {
+            Log.e(tag, "bluetoothEnable failed", e)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun disableBluetooth() {
+        try {
+            bluetoothAdapter?.disable()
+            Log.d(tag, "bluetoothDisable requested")
+        } catch (e: Exception) {
+            Log.e(tag, "bluetoothDisable failed", e)
+        }
+    }
+
+    fun startDiscoveryFromService() {
+        Log.d(tag, "startDiscoveryFromService requested")
+        startDiscovery()
+    }
+
+    @SuppressLint("MissingPermission")
+    fun createBond(address: String) {
+        try {
+            val device = bluetoothAdapter?.getRemoteDevice(address)
+            device?.createBond()
+            Log.d(tag, "createBond requested for $address")
+        } catch (e: Exception) {
+            Log.e(tag, "createBond failed for $address", e)
+        }
+    }
+
     private fun startDiscovery() {
         val adapter = bluetoothAdapter ?: return
         if (!hasScanPermission()) return
+        synchronized(discoveredDevices) { discoveredDevices.clear() }
+        signalManager.onBluetoothScanResult(emptyList())  // clear on HMI side immediately
         if (adapter.isDiscovering) adapter.cancelDiscovery()
         adapter.startDiscovery()
     }
@@ -197,7 +260,32 @@ class ConnectionManager(
 
     private val wifiReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            signalManager.onWifiState(currentWifiState())
+            when (intent?.action) {
+                WifiManager.SCAN_RESULTS_AVAILABLE_ACTION -> {
+                    val succeeded = intent.getBooleanExtra(
+                        WifiManager.EXTRA_RESULTS_UPDATED, false
+                    )
+                    Log.d(tag, "SCAN_RESULTS_AVAILABLE: succeeded=$succeeded")
+                    // Always push — even throttled/stale results are better than nothing.
+                    pushWifiScanResults()
+                }
+                WifiManager.WIFI_STATE_CHANGED_ACTION -> {
+                    val state = intent.getIntExtra(
+                        WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN
+                    )
+                    Log.d(tag, "WIFI_STATE_CHANGED: state=$state")
+                    signalManager.onWifiState(currentWifiState())
+                    // Auto-scan when adapter turns on so available-devices list populates.
+                    if (state == WifiManager.WIFI_STATE_ENABLED) {
+                        pushWifiScanResults()
+                        wifiStartScan()
+                        Log.d(tag, "WiFi turned ON — pushed cache and started scan")
+                    }
+                }
+                else -> {
+                    signalManager.onWifiState(currentWifiState())
+                }
+            }
         }
     }
 
@@ -205,17 +293,195 @@ class ConnectionManager(
     private fun currentWifiState(): WifiState {
         val wm = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val caps = cm.activeNetwork?.let { cm.getNetworkCapabilities(it) }
+
+        val activeNetwork  = cm.activeNetwork
+        val caps           = activeNetwork?.let { cm.getNetworkCapabilities(it) }
         val isWifiConnected = caps?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true
-        val ssid   = if (isWifiConnected) wm.connectionInfo?.ssid?.trim('"') ?: "" else ""
-        val signal = if (isWifiConnected)
-            WifiManager.calculateSignalLevel(wm.connectionInfo?.rssi ?: -100, 6) else 0
+
+        // On API 31+, WifiInfo from NetworkCapabilities respects NEARBY_WIFI_DEVICES and
+        // doesn't redact SSID the way deprecated getConnectionInfo() does.
+        // On API 29–30 fall back to getConnectionInfo(); SSID may be "<unknown ssid>"
+        // if ACCESS_FINE_LOCATION hasn't been granted.
+        val ssid: String
+        val rssi: Int
+        if (isWifiConnected) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                val wifiInfo = caps?.transportInfo as? android.net.wifi.WifiInfo
+                val rawSsid = wifiInfo?.ssid?.trim('"') ?: ""
+                ssid = if (rawSsid == "<unknown ssid>") "" else rawSsid
+                rssi = wifiInfo?.rssi ?: -100
+            } else {
+                @Suppress("DEPRECATION")
+                val connInfo = wm.connectionInfo
+                val rawSsid = connInfo?.ssid?.trim('"') ?: ""
+                ssid = if (rawSsid == "<unknown ssid>") "" else rawSsid
+                rssi = connInfo?.rssi ?: -100
+            }
+        } else {
+            ssid = ""
+            rssi = -100
+        }
+
+        val signal = if (isWifiConnected) WifiManager.calculateSignalLevel(rssi, 6) else 0
+
         return WifiState(
             isEnabled     = wm.isWifiEnabled,
             connectedSsid = ssid,
             signalLevel   = signal,
             isConnected   = isWifiConnected
         )
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun pushWifiScanResults() {
+        // getScanResults() silently returns an empty list when ACCESS_FINE_LOCATION /
+        // NEARBY_WIFI_DEVICES is not granted.  ClusterDataBus is a background service
+        // without a UI, so it cannot request runtime permissions itself.  If permission
+        // is missing here the HMI app process reads scan results via its own receiver
+        // (BusDataSource.wifiScanReceiver) and pushes them through the existing flow.
+        if (!permissionManager.canReadWifiScanResults()) {
+            Log.w(tag, "pushWifiScanResults: location permission not granted to ClusterDataBus " +
+                "— scan results will be provided by the HMI app process instead.")
+            return
+        }
+        try {
+            val wm = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
+            val scanList = wm.scanResults ?: run {
+                Log.w(tag, "pushWifiScanResults: wm.scanResults returned null")
+                return
+            }
+            Log.d(tag, "pushWifiScanResults: raw scan list size = ${scanList.size}")
+
+            @Suppress("DEPRECATION")
+            val savedSsids: Set<String> = try {
+                wm.configuredNetworks
+                    ?.mapNotNull { it.SSID?.trim('"')?.takeIf { s -> s.isNotBlank() } }
+                    ?.toSet()
+                    ?: emptySet()
+            } catch (e: Exception) {
+                Log.w(tag, "getConfiguredNetworks failed (non-fatal): ${e.message}")
+                emptySet()
+            }
+
+            val connectedSsid = currentWifiState().connectedSsid
+
+            val results = scanList
+                .filter { it.SSID?.isNotBlank() == true }
+                .distinctBy { it.SSID }
+                .map { sr ->
+                    WifiScanResult(
+                        ssid      = sr.SSID,
+                        level     = WifiManager.calculateSignalLevel(sr.level, 6),
+                        isSecured = sr.capabilities.contains("WEP") ||
+                            sr.capabilities.contains("WPA") ||
+                            sr.capabilities.contains("WPA2") ||
+                            sr.capabilities.contains("WPA3"),
+                        isSaved   = sr.SSID in savedSsids || sr.SSID == connectedSsid
+                    )
+                }
+            signalManager.onWifiScanResult(results)
+            Log.d(tag, "WiFi scan results pushed: ${results.size} network(s) " +
+                "(raw=${scanList.size}, saved=${savedSsids.size})")
+        } catch (e: Exception) {
+            Log.e(tag, "pushWifiScanResults failed", e)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun wifiEnable() {
+        try {
+            val wm = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
+            @Suppress("DEPRECATION")
+            wm.isWifiEnabled = true
+            Log.d(tag, "wifiEnable requested")
+        } catch (e: Exception) {
+            Log.e(tag, "wifiEnable failed", e)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun wifiDisable() {
+        try {
+            val wm = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
+            @Suppress("DEPRECATION")
+            wm.isWifiEnabled = false
+            Log.d(tag, "wifiDisable requested")
+        } catch (e: Exception) {
+            Log.e(tag, "wifiDisable failed", e)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun wifiConnect(ssid: String, password: String) {
+        try {
+            val wm = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
+            @Suppress("DEPRECATION")
+            val config = android.net.wifi.WifiConfiguration().apply {
+                SSID = "\"$ssid\""
+                preSharedKey = "\"$password\""
+            }
+            @Suppress("DEPRECATION")
+            val networkId = wm.addNetwork(config)
+            if (networkId != -1) {
+                wm.disconnect()
+                wm.enableNetwork(networkId, true)
+                wm.reconnect()
+                Log.d(tag, "wifiConnect: connecting to $ssid (networkId=$networkId)")
+            } else {
+                Log.w(tag, "wifiConnect: addNetwork returned -1 for $ssid")
+            }
+        } catch (e: Exception) {
+            Log.e(tag, "wifiConnect failed for $ssid", e)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun wifiConnectToSaved(ssid: String) {
+        try {
+            val wm = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
+            @Suppress("DEPRECATION")
+            val network = wm.configuredNetworks?.find { it.SSID?.trim('"') == ssid }
+            if (network != null) {
+                wm.disconnect()
+                wm.enableNetwork(network.networkId, true)
+                wm.reconnect()
+                Log.d(tag, "wifiConnectToSaved: connecting to saved network $ssid")
+            } else {
+                Log.w(tag, "wifiConnectToSaved: no configured network found for $ssid")
+            }
+        } catch (e: Exception) {
+            Log.e(tag, "wifiConnectToSaved failed for $ssid", e)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun wifiForget() {
+        try {
+            val wm = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
+            @Suppress("DEPRECATION")
+            val networkId = wm.connectionInfo?.networkId ?: -1
+            if (networkId != -1) {
+                wm.removeNetwork(networkId)
+                wm.disconnect()
+                Log.d(tag, "wifiForget: removed networkId=$networkId")
+            } else {
+                Log.w(tag, "wifiForget: no active connection to forget")
+            }
+        } catch (e: Exception) {
+            Log.e(tag, "wifiForget failed", e)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun wifiStartScan() {
+        try {
+            val wm = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
+            @Suppress("DEPRECATION")
+            val started = wm.startScan()
+            Log.d(tag, "wifiStartScan requested (started=$started)")
+        } catch (e: Exception) {
+            Log.e(tag, "wifiStartScan failed", e)
+        }
     }
 
     // ── Lifecycle ─────────────────────────────────────────────────────────────
@@ -260,6 +526,7 @@ class ConnectionManager(
             addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED)
             addAction(BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED)
             addAction(BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED)
+            addAction(BluetoothDevice.ACTION_FOUND)
             addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)
             addAction(TelephonyManager.ACTION_PHONE_STATE_CHANGED)
         }
@@ -277,9 +544,21 @@ class ConnectionManager(
             addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION)
             addAction(ConnectivityManager.CONNECTIVITY_ACTION)
             addAction(WifiManager.RSSI_CHANGED_ACTION)
+            addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
         }
         context.registerReceiver(wifiReceiver, filter)
-        signalManager.onWifiState(currentWifiState())
+
+        val currentState = currentWifiState()
+        signalManager.onWifiState(currentState)
+
+        // If WiFi is already enabled on service start, seed any cached scan results
+        // immediately (so HMI gets them without waiting for the next broadcast) and
+        // also kick off a fresh scan.
+        if (currentState.isEnabled) {
+            pushWifiScanResults()   // publish stale cache, if any
+            wifiStartScan()         // start a fresh scan in the background
+            Log.d(tag, "setupWifi: WiFi already enabled — seeded scan cache and started fresh scan")
+        }
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────

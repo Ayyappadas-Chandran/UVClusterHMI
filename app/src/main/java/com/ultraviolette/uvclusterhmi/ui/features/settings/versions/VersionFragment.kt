@@ -257,17 +257,17 @@ class fragment_versions : Fragment() {
                     }
                 }
                 launch {
-                    carViewModel.swiftButton.collect { swiftButton ->
+                    // Handlebar events via ClusterDataBus (replaces carViewModel.swiftButton)
+                    clusterViewModel.handlebarButton.collect { swiftButton ->
                         val button = Utilities.getButtonState(swiftButton)
                         if (ButtonNavigation.Enter == button) {
-                            // chargingFragment removed — ChargingScreen now shows via ScreenMode.Charging.
+                            // ChargingScreen shown via ScreenMode.Charging; navigate to dashboard.
                             findNavController().navigate(R.id.dashboardFragment)
                         }
                         if (ButtonNavigation.Left == button) {
                             findNavController().navigate(R.id.action_versionFragment_to_debugFragment)
                         }
                     }
-
                 }
 
             }

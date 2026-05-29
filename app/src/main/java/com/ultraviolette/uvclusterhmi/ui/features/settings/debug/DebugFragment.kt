@@ -25,6 +25,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ultraviolette.uvclusterhmi.ClusterApplication
 import com.ultraviolette.uvclusterhmi.R
 import com.ultraviolette.uvclusterhmi.domain.dataModel.FaultItem
 import com.ultraviolette.uvclusterhmi.domain.dataModel.Severity
@@ -40,6 +41,7 @@ import com.ultraviolette.uvclusterhmi.ui.adapter.FaultAdapter
 import com.ultraviolette.uvclusterhmi.ui.adapter.StatusAdapter
 import com.ultraviolette.uvclusterhmi.ui.adapter.TelemetryAdapter
 import com.ultraviolette.uvclusterhmi.ui.viewModel.CarViewModel
+import com.ultraviolette.uvclusterhmi.ui.viewModel.ClusterViewModel
 import com.ultraviolette.uvclusterhmi.ui.viewModel.SharedViewModel
 import com.ultraviolette.uvclusterhmi.utils.Utilities
 import com.ultraviolette.uvclusterhmi.utils.Utilities.frameworkStartTime
@@ -96,6 +98,9 @@ class DebugFragment : Fragment() {
         ViewModelFactory(context = requireContext())
     }
     private val sharedViewModel by activityViewModels<SharedViewModel> { ViewModelFactory(context = requireContext()) }
+    private val clusterViewModel: ClusterViewModel by activityViewModels {
+        ClusterViewModel.Factory(requireActivity().application as ClusterApplication)
+    }
 
     // ---------------- FLAGS ----------------
 
@@ -962,7 +967,7 @@ class DebugFragment : Fragment() {
                 }
 
                 launch {
-                    carViewModel.swiftButton.collect { swiftButton ->
+                    clusterViewModel.handlebarButton.collect { swiftButton ->
                         val button = Utilities.getButtonState(swiftButton)
                          if (ButtonNavigation.Enter == button) {
                             // chargingFragment removed — ChargingScreen now shows via ScreenMode.Charging.

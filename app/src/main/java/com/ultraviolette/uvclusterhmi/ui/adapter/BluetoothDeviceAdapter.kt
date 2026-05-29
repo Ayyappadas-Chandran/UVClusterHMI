@@ -1,64 +1,43 @@
 package com.ultraviolette.uvclusterhmi.ui.adapter
 
-import android.Manifest
-import android.bluetooth.BluetoothDevice
 import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.ultraviolette.cluster.aidl.BtScanResult
 import com.ultraviolette.uvclusterhmi.R
 import com.ultraviolette.uvclusterhmi.utils.Utilities.setOnSoundClickListener
 
-class BluetoothDeviceAdapter(private val onDeviceSelected: (BluetoothDevice) -> Unit) :
-    ListAdapter<BluetoothDevice, BluetoothDeviceAdapter.ViewHolder>(DiffCallback) {
+/**
+ * RecyclerView adapter for Bluetooth scan results received from ClusterDataBus.
+ * Items are [BtScanResult] parcelables; device name is already resolved on the bus side.
+ */
+class BluetoothDeviceAdapter(private val onDeviceSelected: (BtScanResult) -> Unit) :
+    ListAdapter<BtScanResult, BluetoothDeviceAdapter.ViewHolder>(DiffCallback) {
+
     private var selectedPosition = -1
     private var isItemClicked = false
 
-    /**
-     * Resets the selection state when triggered from the fragment.
-     * This ensures all items are updated with a non-clicked (default) appearance.
-     */
+    /** Resets the selection state when triggered from the parent fragment. */
     fun handleParentClick() {
         isItemClicked = false
         notifyDataSetChanged()
     }
 
-    /**
-     * ViewHolder for binding a single [BluetoothDevice] to the layout.
-     **/
-    inner class ViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val tvDevice = itemView.findViewById<TextView>(R.id.tvDevice)
 
-        /**
-         * Binds the data from a [BluetoothDevice] to the views.
-         *
-         * @param item The item to bind.
-         */
-        fun bind(item: BluetoothDevice, position: Int) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                if (ActivityCompat.checkSelfPermission(
-                        itemView.context,
-                        Manifest.permission.BLUETOOTH_CONNECT
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    return
-                }
-            }
-
-            tvDevice.text = item.name?.takeIf { it.isNotEmpty() }
+        fun bind(item: BtScanResult, position: Int) {
+            tvDevice.text = item.name.takeIf { it.isNotEmpty() }
                 ?: itemView.context.getString(R.string.unknown)
             itemView.setOnSoundClickListener(itemView.context) {
                 isItemClicked = true
-                onDeviceSelected.invoke(item)
+                onDeviceSelected(item)
                 val previousPosition = selectedPosition
                 selectedPosition = position
                 notifyItemChanged(previousPosition)
@@ -67,9 +46,6 @@ class BluetoothDeviceAdapter(private val onDeviceSelected: (BluetoothDevice) -> 
             updateItemSelection(position, itemView.context)
         }
 
-        /**
-         * Updates the selection state of the item.
-         */
         private fun updateItemSelection(position: Int, context: Context) {
             if (isItemClicked && position == selectedPosition) {
                 tvDevice.apply {
@@ -92,10 +68,7 @@ class BluetoothDeviceAdapter(private val onDeviceSelected: (BluetoothDevice) -> 
         }
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_bluetooth_device, parent, false)
         return ViewHolder(view)
@@ -105,18 +78,10 @@ class BluetoothDeviceAdapter(private val onDeviceSelected: (BluetoothDevice) -> 
         holder.bind(getItem(position), position)
     }
 
-    /**
-     * [DiffUtil.ItemCallback] implementation to efficiently update the list.
-     */
-    companion object DiffCallback : DiffUtil.ItemCallback<BluetoothDevice>() {
-        override fun areItemsTheSame(
-            oldItem: BluetoothDevice,
-            newItem: BluetoothDevice
-        ): Boolean = oldItem == newItem
-
-        override fun areContentsTheSame(
-            oldItem: BluetoothDevice,
-            newItem: BluetoothDevice
-        ): Boolean = oldItem.address == newItem.address
+    companion object DiffCallback : DiffUtil.ItemCallback<BtScanResult>() {
+        override fun areItemsTheSame(oldItem: BtScanResult, newItem: BtScanResult): Boolean =
+            oldItem.address == newItem.address
+        override fun areContentsTheSame(oldItem: BtScanResult, newItem: BtScanResult): Boolean =
+            oldItem == newItem
     }
 }

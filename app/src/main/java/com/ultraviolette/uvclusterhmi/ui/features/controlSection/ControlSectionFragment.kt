@@ -32,6 +32,7 @@ import com.ultraviolette.uvclusterhmi.domain.dataModel.Notification
 import com.ultraviolette.uvclusterhmi.ui.adapter.NotificationAdapter
 import com.ultraviolette.uvclusterhmi.ui.adapter.ThemePagerAdapter
 import com.ultraviolette.uvclusterhmi.ui.features.MainActivity
+import com.ultraviolette.uvclusterhmi.ClusterApplication
 import com.ultraviolette.uvclusterhmi.ui.features.settings.bluetooth.BluetoothViewModel
 import com.ultraviolette.uvclusterhmi.ui.features.settings.data.DataViewModel
 import com.ultraviolette.uvclusterhmi.ui.features.settings.wifi.WifiViewModel
@@ -70,11 +71,11 @@ class ControlSectionFragment : Fragment() {
     private lateinit var rvNotification: RecyclerView
     private lateinit var vpAdapter: ThemePagerAdapter
     private val sharedViewModel by activityViewModels<SharedViewModel> { ViewModelFactory(context = requireContext()) }
-    private val wifiViewModel by activityViewModels<WifiViewModel> { ViewModelFactory(context = requireContext()) }
+    private val wifiViewModel by activityViewModels<WifiViewModel> {
+        WifiViewModel.Factory(requireActivity().application)
+    }
     private val bluetoothViewModel by activityViewModels<BluetoothViewModel> {
-        ViewModelFactory(
-            context = requireContext()
-        )
+        BluetoothViewModel.Factory(requireActivity().application)
     }
     private val dataViewModel by activityViewModels<DataViewModel> { ViewModelFactory(context = requireContext()) }
     private lateinit var gestureDetector: GestureDetector
@@ -172,7 +173,7 @@ class ControlSectionFragment : Fragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    bluetoothViewModel.onBluetoothStateChange.collect {
+                    bluetoothViewModel.isEnabled.collect {
                         handleBluetooth()
                     }
                 }

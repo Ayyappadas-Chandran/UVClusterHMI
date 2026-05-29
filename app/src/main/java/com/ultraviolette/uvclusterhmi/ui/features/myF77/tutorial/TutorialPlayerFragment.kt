@@ -17,19 +17,21 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import androidx.navigation.fragment.findNavController
+import com.ultraviolette.uvclusterhmi.ClusterApplication
 import com.ultraviolette.uvclusterhmi.R
 import com.ultraviolette.uvclusterhmi.domain.ennumerate.ButtonNavigation
-import com.ultraviolette.uvclusterhmi.ui.viewModel.CarViewModel
+import com.ultraviolette.uvclusterhmi.ui.viewModel.ClusterViewModel
 import com.ultraviolette.uvclusterhmi.utils.Utilities
 import com.ultraviolette.uvclusterhmi.utils.Utilities.setOnSoundClickListener
-import com.ultraviolette.uvclusterhmi.utils.ViewModelFactory
 import kotlinx.coroutines.launch
 
 class TutorialPlayerFragment : Fragment() {
     private lateinit var tvVideoPlayBack: TextView
     private lateinit var playerView: PlayerView
     private var player: ExoPlayer? = null
-    private val carViewModel by activityViewModels<CarViewModel> { ViewModelFactory(context = requireContext()) }
+    private val clusterViewModel: ClusterViewModel by activityViewModels {
+        ClusterViewModel.Factory(requireActivity().application as ClusterApplication)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,7 +79,7 @@ class TutorialPlayerFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    carViewModel.swiftButton.collect { swiftButton ->
+                    clusterViewModel.handlebarButton.collect { swiftButton ->
                         val button = Utilities.getButtonState(swiftButton)
                         if(button == ButtonNavigation.None) return@collect
                         handleButtonNavigation(button.ordinal)

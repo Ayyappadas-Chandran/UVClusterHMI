@@ -14,11 +14,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.ultraviolette.uvclusterhmi.ClusterApplication
 import com.ultraviolette.uvclusterhmi.R
 import com.ultraviolette.uvclusterhmi.domain.dataModel.TutorialVideoInfo
 import com.ultraviolette.uvclusterhmi.domain.ennumerate.ButtonNavigation
 import com.ultraviolette.uvclusterhmi.ui.adapter.TutorialAdapter
-import com.ultraviolette.uvclusterhmi.ui.viewModel.CarViewModel
+import com.ultraviolette.uvclusterhmi.ui.viewModel.ClusterViewModel
 import com.ultraviolette.uvclusterhmi.utils.Utilities
 import com.ultraviolette.uvclusterhmi.utils.Utilities.setOnSoundClickListener
 import com.ultraviolette.uvclusterhmi.utils.ViewModelFactory
@@ -30,7 +31,9 @@ class TutorialFragment : Fragment() {
     private val viewModel by activityViewModels<TutorialViewModel>{ ViewModelFactory(context = requireContext()) }
     private var tutorialAdapter: TutorialAdapter? = null
     private var adapterPosition = 0
-    private val carViewModel by activityViewModels<CarViewModel> { ViewModelFactory(context = requireContext()) }
+    private val clusterViewModel: ClusterViewModel by activityViewModels {
+        ClusterViewModel.Factory(requireActivity().application as ClusterApplication)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,7 +61,7 @@ class TutorialFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    carViewModel.swiftButton.collect { swiftButton ->
+                    clusterViewModel.handlebarButton.collect { swiftButton ->
                         val button = Utilities.getButtonState(swiftButton)
                         if(button == ButtonNavigation.None) return@collect
                         handleButtonNavigation(button.ordinal)

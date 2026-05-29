@@ -21,7 +21,6 @@ import com.ultraviolette.uvclusterhmi.ClusterApplication
 import com.ultraviolette.uvclusterhmi.R
 import com.ultraviolette.uvclusterhmi.domain.ennumerate.ButtonNavigation
 import com.ultraviolette.uvclusterhmi.domain.model.ClusterUiState
-import com.ultraviolette.uvclusterhmi.ui.viewModel.CarViewModel
 import com.ultraviolette.uvclusterhmi.ui.viewModel.ClusterViewModel
 import com.ultraviolette.uvclusterhmi.ui.viewModel.SharedViewModel
 import com.ultraviolette.uvclusterhmi.utils.Utilities
@@ -41,7 +40,6 @@ class BatteryFragment : Fragment() {
     private lateinit var pbBatteryLevel : ProgressBar
     private val sharedViewModel by activityViewModels<SharedViewModel> { ViewModelFactory(context = requireContext()) }
     private val viewModel: BatteryViewModel by viewModels{ ViewModelFactory(context = requireContext()) }
-    private val carViewModel by activityViewModels<CarViewModel> { ViewModelFactory(context = requireContext()) }
     private val clusterViewModel: ClusterViewModel by activityViewModels {
         ClusterViewModel.Factory(requireActivity().application as ClusterApplication)
     }
@@ -87,9 +85,10 @@ class BatteryFragment : Fragment() {
 
 
                 launch {
-                    carViewModel.swiftButton.collect {swiftButton->
+                    // Handlebar events via ClusterDataBus (replaces carViewModel.swiftButton)
+                    clusterViewModel.handlebarButton.collect { swiftButton ->
                         val button = Utilities.getButtonState(swiftButton)
-                        if(button == ButtonNavigation.None) return@collect
+                        if (button == ButtonNavigation.None) return@collect
                         handleButtonNavigation(button.ordinal)
                     }
                 }

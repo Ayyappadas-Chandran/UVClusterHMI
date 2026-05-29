@@ -16,7 +16,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.ultraviolette.uvclusterhmi.R
 import com.ultraviolette.uvclusterhmi.domain.ennumerate.ButtonNavigation
-import com.ultraviolette.uvclusterhmi.ui.viewModel.CarViewModel
 import com.ultraviolette.uvclusterhmi.ui.viewModel.SharedViewModel
 import com.ultraviolette.uvclusterhmi.utils.Utilities.setOnSoundClickListener
 import com.ultraviolette.uvclusterhmi.utils.ViewModelFactory

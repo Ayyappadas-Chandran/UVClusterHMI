@@ -34,7 +34,16 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" />
+    <!--
+        neverForLocation: we use WiFi scan results only for connection management,
+        never to derive location.  On API 31+ this flag lets getScanResults() work
+        without ACCESS_FINE_LOCATION.  ACCESS_FINE_LOCATION is still declared for
+        API 29–30 compatibility.
+    -->
+    <uses-permission
+        android:name="android.permission.NEARBY_WIFI_DEVICES"
+        android:usesPermissionFlags="neverForLocation"
+        tools:targetApi="s" />
     <uses-permission
         android:name="android.permission.OVERRIDE_WIFI_CONFIG"
         tools:ignore="ProtectedPermissions" />

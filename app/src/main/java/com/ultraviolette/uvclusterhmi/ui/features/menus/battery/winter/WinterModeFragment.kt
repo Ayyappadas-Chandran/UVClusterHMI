@@ -17,11 +17,11 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.ultraviolette.uvclusterhmi.ClusterApplication
 import com.ultraviolette.uvclusterhmi.R
 import com.ultraviolette.uvclusterhmi.domain.ennumerate.ButtonNavigation
-import com.ultraviolette.uvclusterhmi.ui.viewModel.CarViewModel
+import com.ultraviolette.uvclusterhmi.ui.viewModel.ClusterViewModel
 import com.ultraviolette.uvclusterhmi.utils.Utilities.setOnSoundClickListener
-import com.ultraviolette.uvclusterhmi.utils.ViewModelFactory
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -33,7 +33,9 @@ class WinterModeFragment : Fragment() {
     private lateinit var ivPlug: ImageView
     private lateinit var clChargerStatus: ConstraintLayout
     private lateinit var clWinterMode: ConstraintLayout
-    private val carViewModel by activityViewModels<CarViewModel>{ ViewModelFactory(context = requireContext()) }
+    private val clusterViewModel: ClusterViewModel by activityViewModels {
+        ClusterViewModel.Factory(requireActivity().application as ClusterApplication)
+    }
     private val viewModel by viewModels<WinterModeViewModel>()
 
     override fun onCreateView(
@@ -60,7 +62,8 @@ class WinterModeFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    carViewModel.swiftButton.collect {
+                    // Handlebar events via ClusterDataBus (replaces carViewModel.swiftButton)
+                    clusterViewModel.handlebarButton.collect {
                         if (it == 0xE1) {
                             handleButtonNavigation(ButtonNavigation.Back.ordinal)
                         }

@@ -14,9 +14,7 @@ import com.ultraviolette.uvclusterhmi.data.repository.BluetoothRepoImpl*/
 import com.ultraviolette.uvclusterhmi.data.repository.CarRepoImpl
 import com.ultraviolette.uvclusterhmi.data.repository.SharedPreferenceRepoImpl
 import com.ultraviolette.uvclusterhmi.domain.manager.PreferenceManager
-import com.ultraviolette.uvclusterhmi.domain.repository.BluetoothRepository
 import com.ultraviolette.uvclusterhmi.domain.repository.CarRepository
-import com.ultraviolette.uvclusterhmi.domain.repository.WifiRepository
 import com.ultraviolette.uvclusterhmi.ui.features.dashboard.DashboardViewModel
 import com.ultraviolette.uvclusterhmi.ui.features.controls.advanceFeatures.camera.CameraViewModel
 import com.ultraviolette.uvclusterhmi.ui.features.controls.advanceFeatures.radar.RadarViewModel
@@ -24,7 +22,6 @@ import com.ultraviolette.uvclusterhmi.ui.features.controls.performance.Performan
 import com.ultraviolette.uvclusterhmi.ui.features.controls.rideModes.RideModesViewModel
 import com.ultraviolette.uvclusterhmi.ui.features.controls.trips.TripsViewModel
 import com.ultraviolette.uvclusterhmi.ui.features.menus.battery.BatteryViewModel
-import com.ultraviolette.uvclusterhmi.ui.features.settings.bluetooth.BluetoothViewModel
 import com.ultraviolette.uvclusterhmi.ui.viewModel.CarViewModel
 import com.ultraviolette.uvclusterhmi.ui.features.controlSection.ControlSectionViewModel
 import com.ultraviolette.uvclusterhmi.ui.features.menu.MenuViewModel
@@ -34,19 +31,17 @@ import com.ultraviolette.uvclusterhmi.ui.features.settings.display.DisplayViewMo
 import com.ultraviolette.uvclusterhmi.ui.features.settings.general.GeneralViewModel
 import com.ultraviolette.uvclusterhmi.ui.features.settings.incognito.IncognitoViewModel
 import com.ultraviolette.uvclusterhmi.ui.viewModel.SharedViewModel
-import com.ultraviolette.uvclusterhmi.ui.features.settings.wifi.WifiViewModel
-
 /**
  * A factory class for creating instances of various ViewModels with their required repositories.
  *
  * This factory supports creation of the following ViewModels:
- * - [BluetoothViewModel] with [BluetoothRepository]
- * - [WifiViewModel] with [WifiRepository]
  * - [SharedViewModel] with no repository
  * - [CarViewModel] with [CarRepository]
+ * - Various preference-backed ViewModels
  *
- * It ensures that the required repository is provided when creating the corresponding ViewModel.
-
+ * Note: [BluetoothViewModel] and [WifiViewModel] now use their own nested Factory classes
+ * (backed by ClusterRepository via ClusterDataBus) and are no longer created here.
+ *
  * @throws IllegalArgumentException if an unknown ViewModel class is requested.
  */
 class ViewModelFactory(

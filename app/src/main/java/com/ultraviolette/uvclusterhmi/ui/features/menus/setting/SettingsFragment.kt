@@ -40,7 +40,8 @@ import com.ultraviolette.uvclusterhmi.ui.features.settings.incognito.IncognitoFr
 import com.ultraviolette.uvclusterhmi.ui.features.settings.sound.SoundFragment
 import com.ultraviolette.uvclusterhmi.ui.features.settings.systemUpdates.SystemUpdatesFragment
 import com.ultraviolette.uvclusterhmi.ui.features.settings.wifi.WifiFragment
-import com.ultraviolette.uvclusterhmi.ui.viewModel.CarViewModel
+import com.ultraviolette.uvclusterhmi.ClusterApplication
+import com.ultraviolette.uvclusterhmi.ui.viewModel.ClusterViewModel
 import com.ultraviolette.uvclusterhmi.ui.viewModel.SharedViewModel
 import com.ultraviolette.uvclusterhmi.utils.Utilities
 import com.ultraviolette.uvclusterhmi.utils.Utilities.setOnSoundClickListener
@@ -62,10 +63,12 @@ class SettingsFragment : Fragment() {
     private lateinit var clButtonNavigationDetails: ConstraintLayout
     private var verticalMenuAdapter: VerticalMenuAdapter? = null
     private val sharedViewModel by activityViewModels<SharedViewModel> { ViewModelFactory(context = requireContext()) }
+    private val clusterViewModel: ClusterViewModel by activityViewModels {
+        ClusterViewModel.Factory(requireActivity().application as ClusterApplication)
+    }
     private lateinit var navHostFragment: NavHostFragment
     private var adapterPosition = 0
     private var isChildEnter = false
-    private val carViewModel by activityViewModels<CarViewModel> { ViewModelFactory(context = requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -329,7 +332,7 @@ class SettingsFragment : Fragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    carViewModel.swiftButton.collect { swiftButton ->
+                    clusterViewModel.handlebarButton.collect { swiftButton ->
                         val button = Utilities.getButtonState(swiftButton)
                         if (button == ButtonNavigation.None) return@collect
                         handleButtonNavigation(button.ordinal)

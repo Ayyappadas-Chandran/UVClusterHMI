@@ -91,7 +91,7 @@ class InfoFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    carViewModel.swiftButton.collect { swiftButton->
+                    clusterViewModel.handlebarButton.collect { swiftButton->
                         val button = Utilities.getButtonState(swiftButton)
                         if(button == ButtonNavigation.None) return@collect
                         handleButtonNavigation(button.ordinal)

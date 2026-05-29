@@ -18,9 +18,10 @@ import com.ultraviolette.uvclusterhmi.R
 import com.ultraviolette.uvclusterhmi.domain.dataModel.SettingMenuItem
 import com.ultraviolette.uvclusterhmi.domain.ennumerate.ButtonNavigation
 import com.ultraviolette.uvclusterhmi.ui.adapter.VerticalMenuAdapter
+import com.ultraviolette.uvclusterhmi.ClusterApplication
 import com.ultraviolette.uvclusterhmi.ui.features.controls.advanceFeatures.camera.CameraFragment
 import com.ultraviolette.uvclusterhmi.ui.features.controls.advanceFeatures.radar.RadarFragment
-import com.ultraviolette.uvclusterhmi.ui.viewModel.CarViewModel
+import com.ultraviolette.uvclusterhmi.ui.viewModel.ClusterViewModel
 import com.ultraviolette.uvclusterhmi.ui.viewModel.SharedViewModel
 import com.ultraviolette.uvclusterhmi.utils.Utilities
 import com.ultraviolette.uvclusterhmi.utils.Utilities.setOnSoundClickListener
@@ -34,7 +35,9 @@ class AdvancedFeaturesFragment : Fragment() {
     private lateinit var verticalMenuAdapter: VerticalMenuAdapter
     private var adapterPosition = 0
     private var hasChildSelected = false
-    private val carViewModel by activityViewModels<CarViewModel> { ViewModelFactory(context = requireContext()) }
+    private val clusterViewModel: ClusterViewModel by activityViewModels {
+        ClusterViewModel.Factory(requireActivity().application as ClusterApplication)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -173,7 +176,8 @@ class AdvancedFeaturesFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    carViewModel.swiftButton.collect { swiftButton ->
+                    // Handlebar events via ClusterDataBus (new path, replaces carViewModel.swiftButton)
+                    clusterViewModel.handlebarButton.collect { swiftButton ->
                         val button = Utilities.getButtonState(swiftButton)
                         if (button == ButtonNavigation.None) return@collect
                         handleButtonNavigation(button.ordinal)

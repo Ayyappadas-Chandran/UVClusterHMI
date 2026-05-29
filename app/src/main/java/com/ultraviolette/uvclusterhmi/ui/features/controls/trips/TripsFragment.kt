@@ -79,7 +79,8 @@ class TripsFragment : Fragment() {
                     }
                 }
                 launch {
-                    carViewModel.swiftButton.collect { swiftButton ->
+                    // Handlebar events via ClusterDataBus (replaces carViewModel.swiftButton)
+                    clusterViewModel.handlebarButton.collect { swiftButton ->
                         val button = Utilities.getButtonState(swiftButton)
                         if (button == ButtonNavigation.None) return@collect
                         handleButtonNavigation(button.ordinal)

@@ -238,17 +238,6 @@ class DashboardFragment : Fragment() {
                     }
                 }
 
-                // ── CarViewModel: swift-button events (handlebar key codes) ───
-                // This is an event flow (not vehicle state) — stays in CarViewModel
-                // until ClusterDataBus exposes a handlebar-event channel.
-                launch {
-                    carViewModel.swiftButton.collect { swiftButton ->
-                        val button = Utilities.getButtonState(swiftButton)
-                        if (button == ButtonNavigation.None) return@collect
-                        handleButtonNavigation(button.ordinal)
-                    }
-                }
-
                 // ── DashboardViewModel: local UI state (theme, regen, etc.) ──
                 launch {
                     viewModel.uiState.collect { uiState ->
@@ -390,7 +379,7 @@ class DashboardFragment : Fragment() {
     fun normalize(value: Int, is10Levels: Boolean): Int =
         if (is10Levels) value else (value / 3) * 3
 
-    private fun handleButtonNavigation(button: Int) {
+    fun handleButtonNavigation(button: Int) {
         val currentTime = System.currentTimeMillis()
         if (currentTime - lastClickTime > SEQUENCE_TIMEOUT) sequenceStep = 0
 
@@ -518,8 +507,7 @@ class DashboardFragment : Fragment() {
         llRegenLevel4.visibility = if (hoverMode) View.INVISIBLE else {
             if (!viewModel.is10Levels) View.VISIBLE else View.INVISIBLE
         }
-        @Suppress("UNUSED_VALUE")
-        ivRegenLevel10.visibility == if (hoverMode) View.INVISIBLE else {
+        ivRegenLevel10.visibility = if (hoverMode) View.INVISIBLE else {
             if (viewModel.is10Levels) View.VISIBLE else View.INVISIBLE
         }
         ivEfficiency.visibility       = if (hoverMode) View.INVISIBLE else View.VISIBLE

@@ -26,7 +26,6 @@ import com.ultraviolette.uvclusterhmi.R
 import com.ultraviolette.uvclusterhmi.ui.adapter.WifiDeviceAdapter
 import com.ultraviolette.uvclusterhmi.ui.viewModel.SharedViewModel
 import com.ultraviolette.uvclusterhmi.utils.Utilities.setOnSoundClickListener
-import com.ultraviolette.uvclusterhmi.utils.ViewModelFactory
 import kotlinx.coroutines.launch
 
 
@@ -46,8 +45,10 @@ class WifiFragment : Fragment() {
     private lateinit var wifiAvailableDevicesProgressBar: ProgressBar
     private var wifiDialog: AlertDialog? = null
     private var wifiConnectedDialog: AlertDialog? = null
-    private val sharedViewModel by activityViewModels<SharedViewModel> { ViewModelFactory(context = requireContext()) }
-    private val wifiViewModel by activityViewModels<WifiViewModel> { ViewModelFactory(context = requireContext()) }
+    private val sharedViewModel by activityViewModels<SharedViewModel> { com.ultraviolette.uvclusterhmi.utils.ViewModelFactory(context = requireContext()) }
+    private val wifiViewModel by activityViewModels<WifiViewModel> {
+        WifiViewModel.Factory(requireActivity().application)
+    }
     private var clickedUiState: ClickedUiState = ClickedUiState.WifiStateClicked
     private var isWifiStateClicked = true
 
@@ -145,114 +146,139 @@ class WifiFragment : Fragment() {
     }
 
     private fun initObserver() {
-
+        // wifiConnected() fires an initial wifiStartScan so results populate as soon as
+        // the service is bound. wifiReconnectRequest() is a no-op in the new architecture.
         wifiViewModel.wifiConnected()
         wifiViewModel.wifiReconnectRequest()
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                // ── Primary state: WiFi enabled / disabled ────────────────────
+                // This is the CRITICAL collector.  The old code only watched
+                // connectionState (isConnected), so toggling WiFi on while not yet
+                // connected to a network never refreshed the button highlights or
+                // triggered the first scan.  isEnabled fires on every adapter-state
+                // change (enabled/disabled) regardless of connection state.
                 launch {
-                    wifiViewModel.connectedSSID.collect { state ->
-                        Log.d(TAG, "initObserver: wifiViewModel.onWifiStateChange ::  Entry  :: $state")
-                        updateConnectedNetworkName(state)
-                    }
-                }
-                launch {
-                    wifiViewModel.connectionState.collect { state ->
-                        Log.d(TAG, "initObserver: Connection State Changed :: $state")
-                        handleWifiStateClicked()
-                        if (state){
-                            startRepeatingScan()
-                        }else{
+                    wifiViewModel.isEnabled.collect { isOn ->
+                        Log.d(TAG, "initObserver: isEnabled changed :: $isOn")
+                        handleWifiStateUi(isOn)
+                        if (isOn) {
+                            // Adapter just turned on — kick off scan immediately so the
+                            // available-devices list populates without waiting for the
+                            // connection-state callback.
+                            Log.d(TAG, "initObserver: WiFi enabled — starting scan")
+                            wifiViewModel.startScan()
+                        } else {
+                            // Clear stale results so the list doesn't show old networks
+                            // after the adapter is turned off.
+                            wifiDeviceAdapter.submitList(emptyList())
                             stopRepeatingScan()
                         }
+                    }
+                }
+
+                // ── Connected / disconnected ──────────────────────────────────
+                launch {
+                    wifiViewModel.connectionState.collect { isConnected ->
+                        Log.d(TAG, "initObserver: connectionState changed :: $isConnected")
+                        // Re-read isEnabled so button highlights stay consistent.
+                        handleWifiStateUi(wifiViewModel.isWifiEnabled())
+                        if (isConnected) startRepeatingScan() else stopRepeatingScan()
+                    }
+                }
+
+                launch {
+                    wifiViewModel.connectedSSID.collect { ssid ->
+                        Log.d(TAG, "initObserver: connectedSSID changed :: $ssid")
+                        updateConnectedNetworkName(ssid)
                     }
                 }
 
                 launch {
                     wifiViewModel.reconnectSSID.collect { ssid ->
                         Log.d(TAG, "initObserver: reconnectSSID :: $ssid")
-                        if (ssid!=null){
-                            showWifiDialog(ssid)
+                        // A saved network is in range but we are not connected.
+                        // Auto-connect silently — the credentials are already stored.
+                        // Never show the password dialog here; that dialog is only for
+                        // new networks tapped from the available-devices list.
+                        if (ssid != null) {
+                            Log.d(TAG, "initObserver: auto-connecting to saved network $ssid")
+                            wifiViewModel.connectToSavedNetwork(ssid)
                         }
                     }
                 }
 
-                lifecycleScope.launchWhenStarted {
+                launch {
                     wifiViewModel.selectedItem.collect { selected ->
                         wifiSavedNetworkAdapter.updateSelected(selected)
                         wifiDeviceAdapter.updateSelected(selected)
                     }
                 }
 
+                launch {
+                    wifiViewModel.scanResult.collect { result ->
+                        Log.d(TAG, "initObserver: scanResult updated — ${result.size} network(s)")
+                        val connectedSsid = wifiViewModel.getConnectedWifiSSID()
+                        Log.d(TAG, "initObserver: connectedSsid for filter :: $connectedSsid")
+                        val filteredList = result.filter { it.ssid != connectedSsid }
+                        Log.d(TAG, "initObserver: filteredScanList size :: ${filteredList.size}")
+                        wifiDeviceAdapter.submitList(filteredList)
+                    }
+                }
 
+                launch {
+                    wifiViewModel.saveNetworkList.collect { result ->
+                        Log.d(TAG, "initObserver: saveNetworkList updated — ${result.size} network(s)")
+                        val connectedSsid = wifiViewModel.getConnectedWifiSSID()
+                        val filteredList = result.filter { it.ssid != connectedSsid }
+                        Log.d(TAG, "initObserver: filteredSavedList :: $filteredList")
+                        myNetworkVisibility()
+                        wifiSavedNetworkAdapter.submitList(filteredList)
+                    }
+                }
             }
         }
-
-
-        wifiViewModel.scanResult.observe(viewLifecycleOwner) { result ->
-
-            Log.d(TAG, "initObserver:scanResult filtered wifi list :: $result")
-            val connectedSsid = wifiViewModel.getConnectedWifiSSID()
-
-            Log.d(TAG, "initObserver:scanResult connectedSsid :: $connectedSsid")
-            val filteredList = result.filter { wifi ->
-                wifi.ssid != connectedSsid
-            }
-
-            Log.d(TAG, "initObserver:scanResult Filtered list :: $filteredList")
-
-
-            wifiDeviceAdapter.submitList(filteredList)
-        }
-
-
-        wifiViewModel.saveNetworkList.observe(viewLifecycleOwner) { result ->
-            Log.d(TAG, "initObserver: Connection savedNetworkList :: ${result.size}")
-
-            val connectedSsid = wifiViewModel.getConnectedWifiSSID()
-
-            val filteredList = result.filter { wifi ->
-                wifi.ssid != connectedSsid
-            }
-
-            Log.d(TAG, "initObserver: filtered saveNetworkList list :: $filteredList")
-
-            myNetworkVisibility()
-            wifiSavedNetworkAdapter.submitList(filteredList)
-
-        }
-
     }
 
     /**
-     * Handles the UI state for Wi-Fi state.
+     * Updates all WiFi-enable/disable-related UI elements.
+     *
+     * @param isOn The current adapter-enabled state, passed in from the [isEnabled] flow
+     *             collector so we never risk a timing mismatch from a sync ViewModel read.
      */
-    private fun handleWifiStateClicked() {
-        Log.d(TAG, "handleWifiStateClicked: Entry")
-        val isWiFiEnabled = wifiViewModel.isWifiEnabled()
-        wifiViewModel.scanResult()
+    private fun handleWifiStateUi(isOn: Boolean) {
+        Log.d(TAG, "handleWifiStateUi: isOn=$isOn")
 
-        ivWifiOnSelected.isVisible = isWiFiEnabled
-        ivWifiOffSelected.isVisible = !isWiFiEnabled
-        tvAvailableDevices.isVisible = isWiFiEnabled
-        wifiAvailableDevicesProgressBar.isVisible = isWiFiEnabled
-        tvSearching.isVisible = isWiFiEnabled
+        // Selection indicators
+        ivWifiOnSelected.isVisible = isOn
+        ivWifiOffSelected.isVisible = !isOn
 
-        Log.d(TAG, "handleWifiStateClicked: Wifi Enabled Status Fetched")
-        Log.d(TAG, "handleWifiStateClicked: Wifi Enabled Status :: $isWiFiEnabled")
-        val selectedTextColor = ContextCompat.getColor(requireContext(), R.color.white)
-        val selectedBackgroundColor =
-            ContextCompat.getColor(requireContext(), R.color.activeSelectionRed)
-        val unselectedTextColor = ContextCompat.getColor(requireContext(), R.color.unSelected)
-        val unselectedBackgroundColor =
-            ContextCompat.getColor(requireContext(), R.color.transparent)
-        tvWifiOn.setTextColor(if (isWiFiEnabled) selectedTextColor else unselectedTextColor)
-        tvWifiOn.setBackgroundColor(if (isWiFiEnabled) selectedBackgroundColor else unselectedBackgroundColor)
-        tvWifiOff.setTextColor(if (!isWiFiEnabled) selectedTextColor else unselectedTextColor)
-        tvWifiOff.setBackgroundColor(if (!isWiFiEnabled) selectedBackgroundColor else unselectedBackgroundColor)
-        Log.d(TAG, "handleWifiStateClicked: Wifi Enabled Status Updated")
+        // Show/hide the "Available devices" section
+        tvAvailableDevices.isVisible = isOn
+        wifiAvailableDevicesProgressBar.isVisible = isOn
+        tvSearching.isVisible = isOn
+
+        // ON / OFF button highlight colours
+        val selectedText  = ContextCompat.getColor(requireContext(), R.color.white)
+        val selectedBg    = ContextCompat.getColor(requireContext(), R.color.activeSelectionRed)
+        val unselectedText = ContextCompat.getColor(requireContext(), R.color.unSelected)
+        val unselectedBg   = ContextCompat.getColor(requireContext(), R.color.transparent)
+
+        tvWifiOn.setTextColor(if (isOn)  selectedText  else unselectedText)
+        tvWifiOn.setBackgroundColor(if (isOn)  selectedBg    else unselectedBg)
+        tvWifiOff.setTextColor(if (!isOn) selectedText  else unselectedText)
+        tvWifiOff.setBackgroundColor(if (!isOn) selectedBg    else unselectedBg)
+
+        Log.d(TAG, "handleWifiStateUi: button states updated")
     }
+
+    /**
+     * Kept for call sites that were already compiled against the old name.
+     * Reads the current enabled state from the ViewModel and delegates to [handleWifiStateUi].
+     */
+    private fun handleWifiStateClicked() = handleWifiStateUi(wifiViewModel.isWifiEnabled())
 
     private fun updateConnectedNetworkName(ssid: String?) {
         val status = ssid != "<unknown ssid>" && ssid != null
@@ -304,37 +330,19 @@ class WifiFragment : Fragment() {
 
 
 
-    /**
-     * Observes changes in the Wi-Fi scan results.
-     */
-    //27/01/2026
     fun handleButtonNavigation(button: Int) {
-//        when (button) {
-//            ButtonNavigation.Left.ordinal -> {
-//                if (wifiViewModel.isWifiEnabled()) {
-//                    tvWifiOff.performClick()
-//                } else {
-//                    tvWifiOn.performClick()
-//                }
-//            }
-//
-//            ButtonNavigation.Right.ordinal -> {
-//                if (wifiViewModel.isWifiEnabled()) {
-//                    tvWifiOff.performClick()
-//                } else {
-//                    tvWifiOn.performClick()
-//                }
-//            }
-//
-//            ButtonNavigation.Back.ordinal -> {
-//                //for bug no 46 - pop up exit on button press
-//                if (wifiDialog?.isShowing == true) {
-//                    wifiDialog?.dismiss()
-//                }
-//                ivWifiOnSelected.isVisible = false
-//                ivWifiOffSelected.isVisible = false
-//            }
-//        }
+        // Wifi button navigation: dismiss any open dialog on Back.
+        // Left/Right toggle not used since the toolbar handles enable/disable.
+        when (button) {
+            com.ultraviolette.uvclusterhmi.domain.ennumerate.ButtonNavigation.Back.ordinal -> {
+                if (wifiDialog?.isShowing == true) {
+                    wifiDialog?.dismiss()
+                } else {
+                    android.util.Log.d(TAG, "handleButtonNavigation: Back — no dialog to dismiss")
+                }
+            }
+            else -> android.util.Log.d(TAG, "handleButtonNavigation: unhandled button=$button")
+        }
     }
 
     /**

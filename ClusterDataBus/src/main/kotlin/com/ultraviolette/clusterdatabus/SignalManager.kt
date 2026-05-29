@@ -1,8 +1,10 @@
 package com.ultraviolette.clusterdatabus
 
 import android.util.Log
+import com.ultraviolette.cluster.aidl.BtScanResult
 import com.ultraviolette.cluster.aidl.BtState
 import com.ultraviolette.cluster.aidl.VehicleSnapshot
+import com.ultraviolette.cluster.aidl.WifiScanResult
 import com.ultraviolette.cluster.aidl.WifiState
 
 /**
@@ -56,6 +58,28 @@ class SignalManager(
         threadDispatcher.post {
             subscriptionManager.broadcastHandlebarButton(button)
             Log.d(tag, "HandlebarButton broadcast: button=$button")
+        }
+    }
+
+    /**
+     * Bluetooth scan results received from ConnectionManager during device discovery.
+     * Always forwarded — no change-detection (partial results during discovery are valid).
+     */
+    fun onBluetoothScanResult(devices: List<BtScanResult>) {
+        threadDispatcher.post {
+            subscriptionManager.broadcastBluetoothScanResult(devices)
+            Log.d(tag, "BluetoothScanResult broadcast: ${devices.size} device(s)")
+        }
+    }
+
+    /**
+     * Wi-Fi scan results received after SCAN_RESULTS_AVAILABLE_ACTION.
+     * Always forwarded — no change-detection (result sets vary between scans).
+     */
+    fun onWifiScanResult(results: List<WifiScanResult>) {
+        threadDispatcher.post {
+            subscriptionManager.broadcastWifiScanResult(results)
+            Log.d(tag, "WifiScanResult broadcast: ${results.size} network(s)")
         }
     }
 }

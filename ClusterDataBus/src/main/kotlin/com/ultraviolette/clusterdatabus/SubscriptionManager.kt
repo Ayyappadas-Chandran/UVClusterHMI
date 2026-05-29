@@ -2,9 +2,11 @@ package com.ultraviolette.clusterdatabus
 
 import android.os.RemoteCallbackList
 import android.util.Log
+import com.ultraviolette.cluster.aidl.BtScanResult
 import com.ultraviolette.cluster.aidl.BtState
 import com.ultraviolette.cluster.aidl.ISharedSignalCallback
 import com.ultraviolette.cluster.aidl.VehicleSnapshot
+import com.ultraviolette.cluster.aidl.WifiScanResult
 import com.ultraviolette.cluster.aidl.WifiState
 
 /** Manages the set of ISharedSignalCallback subscribers and fans out updates. */
@@ -35,6 +37,14 @@ class SubscriptionManager {
 
     fun broadcastHandlebarButton(button: Int) {
         broadcast("onHandlebarButton") { it.onHandlebarButton(button) }
+    }
+
+    fun broadcastBluetoothScanResult(devices: List<BtScanResult>) {
+        broadcast("onBluetoothScanResult") { it.onBluetoothScanResult(devices) }
+    }
+
+    fun broadcastWifiScanResult(results: List<WifiScanResult>) {
+        broadcast("onWifiScanResult") { it.onWifiScanResult(results) }
     }
 
     fun kill() {

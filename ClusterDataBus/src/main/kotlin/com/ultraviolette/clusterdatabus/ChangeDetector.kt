@@ -8,38 +8,73 @@ import com.ultraviolette.cluster.aidl.WifiState
 class ChangeDetector {
 
     fun hasChanged(incoming: VehicleSnapshot, cached: VehicleSnapshot): Boolean =
-        incoming.vehicleSpeed != cached.vehicleSpeed ||
-        incoming.batterySoc != cached.batterySoc ||
-        incoming.rideMode != cached.rideMode ||
-        incoming.motorArmed != cached.motorArmed ||
-        incoming.criticalMalfunction != cached.criticalMalfunction ||
-        incoming.thermalRunway != cached.thermalRunway ||
-        incoming.odometer != cached.odometer ||
-        incoming.speedKph != cached.speedKph ||
-        incoming.motorPower != cached.motorPower ||
-        incoming.regenLevel != cached.regenLevel ||
-        incoming.indicator != cached.indicator ||
-        incoming.absMode != cached.absMode ||
-        incoming.hillHold != cached.hillHold ||
-        incoming.lockdown != cached.lockdown ||
-        incoming.rollAngle != cached.rollAngle ||
-        incoming.tripDistance != cached.tripDistance ||
-        incoming.brightnessLevel != cached.brightnessLevel ||
-        incoming.brightnessAuto != cached.brightnessAuto ||
-        incoming.trip1Distance != cached.trip1Distance ||
-        incoming.trip2Distance != cached.trip2Distance ||
-        incoming.trip3Distance != cached.trip3Distance ||
-        // Telltale signals that have fast individual-property events (~50 ms).
-        // These were missing, so any snapshot where ONLY these fields changed
-        // was incorrectly suppressed — causing the observed ~600 ms delay for
-        // high-beam and hazard updates (only the slow blob cycle got through).
-        incoming.highBeam != cached.highBeam ||
-        incoming.hazardLamps != cached.hazardLamps ||
-        // Blob-only signals that are safety-relevant and must not be suppressed.
-        incoming.sideStandDeployed != cached.sideStandDeployed ||
-        incoming.thermalRunwayV != cached.thermalRunwayV ||
-        incoming.thermalRunwayT != cached.thermalRunwayT ||
-        incoming.thermalRunwayH != cached.thermalRunwayH
+        // ── Speed / power ─────────────────────────────────────────────────────
+        incoming.speedKph             != cached.speedKph             ||
+        incoming.vehicleSpeed         != cached.vehicleSpeed         ||
+        incoming.motorPower           != cached.motorPower           ||
+        incoming.motorArmed           != cached.motorArmed           ||
+        // ── Battery / SOC ─────────────────────────────────────────────────────
+        incoming.batterySoc           != cached.batterySoc           ||
+        incoming.batteryError         != cached.batteryError         ||
+        incoming.batteryOverTemp      != cached.batteryOverTemp      ||
+        // ── Regen ─────────────────────────────────────────────────────────────
+        incoming.regenLevel           != cached.regenLevel           ||
+        incoming.regenUnavailable     != cached.regenUnavailable     ||
+        // ── Drive / ride mode ─────────────────────────────────────────────────
+        incoming.rideMode             != cached.rideMode             ||
+        incoming.modeHover            != cached.modeHover            ||
+        incoming.isBallisticPlus      != cached.isBallisticPlus      ||
+        // ── MTC / ABS / hill-hold ─────────────────────────────────────────────
+        incoming.mtcMode              != cached.mtcMode              ||
+        incoming.mtcState             != cached.mtcState             ||
+        incoming.absMode              != cached.absMode              ||
+        incoming.absWarningLamp       != cached.absWarningLamp       ||
+        incoming.hillHold             != cached.hillHold             ||
+        incoming.hillHoldIcon         != cached.hillHoldIcon         ||
+        // ── Telltale warnings ────────────────────────────────────────────────
+        incoming.motorTempIcon        != cached.motorTempIcon        ||
+        incoming.highBeam             != cached.highBeam             ||
+        incoming.hazardLamps          != cached.hazardLamps          ||
+        incoming.indicator            != cached.indicator            ||
+        incoming.milState             != cached.milState             ||
+        incoming.milIcon              != cached.milIcon              ||
+        incoming.otaPending           != cached.otaPending           ||
+        incoming.criticalMalfunction  != cached.criticalMalfunction  ||
+        // ── Safety alerts ─────────────────────────────────────────────────────
+        incoming.thermalRunway        != cached.thermalRunway        ||
+        incoming.thermalRunwayV       != cached.thermalRunwayV       ||
+        incoming.thermalRunwayH       != cached.thermalRunwayH       ||
+        incoming.thermalRunwayT       != cached.thermalRunwayT       ||
+        incoming.sideStandDeployed    != cached.sideStandDeployed    ||
+        incoming.lockdown             != cached.lockdown             ||
+        // ── Radar ─────────────────────────────────────────────────────────────
+        incoming.radarIndicator       != cached.radarIndicator       ||
+        incoming.radarLeftWarn        != cached.radarLeftWarn        ||
+        incoming.radarLeftAlert       != cached.radarLeftAlert       ||
+        incoming.radarRightWarn       != cached.radarRightWarn       ||
+        incoming.radarRightAlert      != cached.radarRightAlert      ||
+        incoming.rcwAlert             != cached.rcwAlert             ||
+        // ── Cruise control ────────────────────────────────────────────────────
+        incoming.cruiseOff            != cached.cruiseOff            ||
+        incoming.cruiseStandby        != cached.cruiseStandby        ||
+        incoming.cruiseActive         != cached.cruiseActive         ||
+        incoming.cruiseError          != cached.cruiseError          ||
+        incoming.cruiseValue          != cached.cruiseValue          ||
+        // ── Charging / power state ────────────────────────────────────────────
+        incoming.charger              != cached.charger              ||
+        incoming.keyOff               != cached.keyOff              ||
+        // ── Odometer / range / trip ───────────────────────────────────────────
+        incoming.odometer             != cached.odometer             ||
+        incoming.range                != cached.range                ||
+        incoming.whPerKm              != cached.whPerKm              ||
+        incoming.rollAngle            != cached.rollAngle            ||
+        incoming.tripDistance         != cached.tripDistance         ||
+        incoming.trip1Distance        != cached.trip1Distance        ||
+        incoming.trip2Distance        != cached.trip2Distance        ||
+        incoming.trip3Distance        != cached.trip3Distance        ||
+        // ── Brightness ────────────────────────────────────────────────────────
+        incoming.brightnessLevel      != cached.brightnessLevel      ||
+        incoming.brightnessAuto       != cached.brightnessAuto
     fun hasChanged(incoming: BtState, cached: BtState): Boolean =
         incoming.isEnabled != cached.isEnabled ||
         incoming.bondState != cached.bondState ||

@@ -13,14 +13,16 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
+import com.ultraviolette.cluster.aidl.BtScanResult
+import com.ultraviolette.uvclusterhmi.ClusterApplication
 import com.ultraviolette.uvclusterhmi.R
 import com.ultraviolette.uvclusterhmi.domain.ennumerate.ButtonNavigation
 import com.ultraviolette.uvclusterhmi.ui.adapter.BluetoothDeviceAdapter
-import com.ultraviolette.uvclusterhmi.ui.viewModel.CarViewModel
 import com.ultraviolette.uvclusterhmi.ui.viewModel.SharedViewModel
 import com.ultraviolette.uvclusterhmi.utils.Utilities.invisible
 import com.ultraviolette.uvclusterhmi.utils.Utilities.setOnSoundClickListener
@@ -38,10 +40,8 @@ class BluetoothFragment : Fragment() {
     private lateinit var rvAvailableDevices: RecyclerView
     private lateinit var pbAvailableDevices: ProgressBar
     private val  sharedViewModel by activityViewModels<SharedViewModel> { ViewModelFactory(context = requireContext()) }
-    private val bluetoothViewModel by activityViewModels<BluetoothViewModel>{
-        ViewModelFactory(
-            context = requireContext()
-        )
+    private val bluetoothViewModel: BluetoothViewModel by viewModels {
+        BluetoothViewModel.Factory(requireActivity().application)
     }
     private var clickedUiState: ClickedUiState = ClickedUiState.BluetoothStateClicked
     private var isBluetoothStateClicked = true
@@ -59,10 +59,10 @@ class BluetoothFragment : Fragment() {
     /**
      * Create adapter for the available list
      */
-    private val bluetoothDeviceAdapter = BluetoothDeviceAdapter { bluetoothDevice ->
+    private val bluetoothDeviceAdapter = BluetoothDeviceAdapter { result ->
         clickedUiState = ClickedUiState.BluetoothDeviceClicked
         handleUi()
-        bluetoothViewModel.createBond(bluetoothDevice)
+        bluetoothViewModel.createBond(result.address)
         sharedViewModel.handleSettingsChildClick(true)
     }
 
@@ -103,7 +103,6 @@ class BluetoothFragment : Fragment() {
         Log.d("BluetoothFragment", "OnViewCreated")
         initViews(view)
         initObserver()
-        bluetoothViewModel.scanResult()
         if (bluetoothViewModel.isBluetoothEnabled()) {
             pbAvailableDevices.isVisible = true
             bluetoothViewModel.startDiscovery()
@@ -147,25 +146,25 @@ class BluetoothFragment : Fragment() {
      */
     private fun initObserver() {
         sharedViewModel.settingsChildClick.observe(viewLifecycleOwner) { isClicked ->
-            if (!isClicked) {
-                resetBluetoothStateClicked()
-            } else {
-                handleUi()
-            }
+            if (!isClicked) resetBluetoothStateClicked() else handleUi()
         }
-        bluetoothViewModel.scanResult.observe(viewLifecycleOwner) { result ->
-            bluetoothDeviceAdapter.submitList(result)
-            pbAvailableDevices.isVisible = false
-        }
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                bluetoothViewModel.onBluetoothStateChange.collect {
-                    if(bluetoothViewModel.isBluetoothEnabled()){
-                        pbAvailableDevices.visible()
-                    }else{
-                        pbAvailableDevices.invisible()
+                launch {
+                    bluetoothViewModel.scanResults.collect { results ->
+                        bluetoothDeviceAdapter.submitList(results)
+                        pbAvailableDevices.isVisible = false
                     }
-                   handleBluetoothStateClicked()
+                }
+                launch {
+                    bluetoothViewModel.isEnabled.collect {
+                        if (bluetoothViewModel.isBluetoothEnabled()) {
+                            pbAvailableDevices.visible()
+                        } else {
+                            pbAvailableDevices.invisible()
+                        }
+                        handleBluetoothStateClicked()
+                    }
                 }
             }
         }

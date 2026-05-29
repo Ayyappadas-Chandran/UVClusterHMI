@@ -42,7 +42,7 @@ import kotlin.math.floor
 import kotlin.math.roundToInt
 
 class ClusterViewModel(
-    repository: ClusterRepository,
+    private val repository: ClusterRepository,
     private val prefs: PreferenceManager,
 ) : ViewModel() {
 
@@ -66,6 +66,16 @@ class ClusterViewModel(
         onBufferOverflow    = BufferOverflow.DROP_OLDEST,
     )
     val menuNavEvent: SharedFlow<MenuPosition> = _menuNavEvent
+
+    /**
+     * Handlebar / swift-button press events forwarded from CarPropertyService via ClusterDataBus.
+     *
+     * Fragments collect this instead of CarViewModel.swiftButton — the event now travels the
+     * clean path: CarPropertyService → ClusterDataBus → BusDataSource → ClusterRepository → here.
+     *
+     * replay=0: button presses are momentary; do not re-deliver to late subscribers.
+     */
+    val handlebarButton: SharedFlow<Int> = repository.handlebarButton
 
     enum class IndicatorMode { Off, Left, Right, Hazard }
 

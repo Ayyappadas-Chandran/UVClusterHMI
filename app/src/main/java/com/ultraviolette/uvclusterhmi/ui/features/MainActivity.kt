@@ -58,6 +58,7 @@ import com.ultraviolette.uvclusterhmi.R
 import com.ultraviolette.uvclusterhmi.domain.dataModel.vcuData.TellTales
 import com.ultraviolette.uvclusterhmi.domain.ennumerate.ButtonNavigation
 import com.ultraviolette.uvclusterhmi.ui.features.controls.advancedFeatures.AdvancedFeaturesFragment
+import com.ultraviolette.uvclusterhmi.ui.features.dashboard.DashboardFragment
 import com.ultraviolette.uvclusterhmi.ui.features.controls.performance.PerformanceFragment
 import com.ultraviolette.uvclusterhmi.ui.features.controls.rideModes.RideModesFragment
 import com.ultraviolette.uvclusterhmi.ui.features.controls.trips.TripsFragment
@@ -446,6 +447,25 @@ class MainActivity : AppCompatActivity() {
                     clusterViewModel.uiState.collect { uiState ->
                         val active = uiState as? ClusterUiState.Active ?: return@collect
                         handleToolbarFromUiState(active.toolbar)
+                    }
+                }
+
+                // ── Handlebar buttons from VCU (AIDL via ClusterDataBus) ─────────
+                // Routes VCU handlebar-button events through the same handleButtonNavigation
+                // path as on-screen touch buttons, so ALL active screens (Dashboard, Menu,
+                // Settings, etc.) receive AIDL buttons uniformly.
+                // When the Compose MenuScreen is open, buttons go directly to
+                // clusterViewModel.handleMenuButton so the VM drives tile selection.
+                launch {
+                    clusterViewModel.handlebarButton.collect { swiftButton ->
+                        val button = Utilities.getButtonState(swiftButton)
+                        if (button == ButtonNavigation.None) return@collect
+                        val activeState = clusterViewModel.uiState.value as? ClusterUiState.Active
+                        if (activeState?.screenMode == ScreenMode.Menu) {
+                            clusterViewModel.handleMenuButton(button)
+                        } else {
+                            handleButtonNavigation(button.ordinal)
+                        }
                     }
                 }
             }
@@ -935,6 +955,7 @@ class MainActivity : AppCompatActivity() {
 
         val primaryFragment = navHostFragment?.childFragmentManager?.primaryNavigationFragment
         when (primaryFragment) {
+            is DashboardFragment -> primaryFragment.handleButtonNavigation(button)
             is MenuFragment -> primaryFragment.handleButtonNavigation(button)
             is MyF77MenuFragment -> primaryFragment.handleButtonNavigation(button)
             is DocumentMenuFragment -> primaryFragment.handleButtonNavigation(button)

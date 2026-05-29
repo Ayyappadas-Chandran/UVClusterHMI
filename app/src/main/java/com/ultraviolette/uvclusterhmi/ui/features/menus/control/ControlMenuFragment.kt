@@ -16,8 +16,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.ultraviolette.uvclusterhmi.R
 import com.ultraviolette.uvclusterhmi.domain.ennumerate.ButtonNavigation
+import com.ultraviolette.uvclusterhmi.ClusterApplication
 import com.ultraviolette.uvclusterhmi.ui.adapter.ControlMenuAdapter
-import com.ultraviolette.uvclusterhmi.ui.viewModel.CarViewModel
+import com.ultraviolette.uvclusterhmi.ui.viewModel.ClusterViewModel
 import com.ultraviolette.uvclusterhmi.ui.viewModel.SharedViewModel
 import com.ultraviolette.uvclusterhmi.utils.Utilities
 import com.ultraviolette.uvclusterhmi.utils.Utilities.setOnSoundClickListener
@@ -29,7 +30,9 @@ class ControlMenuFragment : Fragment() {
     private lateinit var rvControls: RecyclerView
     private var controlMenuAdapter: ControlMenuAdapter? = null
     private val viewModel: ControlViewModel by viewModels()
-    private val carViewModel by activityViewModels<CarViewModel> { ViewModelFactory(context = requireContext()) }
+    private val clusterViewModel: ClusterViewModel by activityViewModels {
+        ClusterViewModel.Factory(requireActivity().application as ClusterApplication)
+    }
     private val sharedViewModel by activityViewModels<SharedViewModel> { ViewModelFactory(context = requireContext()) }
     private var isEnterClicked = false
 
@@ -74,9 +77,10 @@ class ControlMenuFragment : Fragment() {
                     }
                 }
                 launch {
-                    carViewModel.swiftButton.collect {swiftButton ->
+                    // Handlebar events via ClusterDataBus (replaces carViewModel.swiftButton)
+                    clusterViewModel.handlebarButton.collect { swiftButton ->
                         val button = Utilities.getButtonState(swiftButton)
-                        if(button == ButtonNavigation.None) return@collect
+                        if (button == ButtonNavigation.None) return@collect
                         handleButtonNavigation(button.ordinal)
                     }
                 }

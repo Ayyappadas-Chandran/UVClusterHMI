@@ -1,244 +1,221 @@
 package com.ultraviolette.uvclusterhmi.ui.features.settings.wifi
 
-import android.net.wifi.WifiConfiguration
+import android.app.Application
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ultraviolette.uvclusterhmi.domain.repository.WifiRepository
+import androidx.lifecycle.ViewModelProvider
+import com.ultraviolette.uvclusterhmi.ClusterApplication
+import com.ultraviolette.uvclusterhmi.data.repository.ClusterRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import androidx.lifecycle.viewModelScope
-import kotlin.collections.map
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
 /**
- * ViewModel responsible for managing Wi-Fi operations and exposing scan results to the UI.
- * Acts as a mediator between the UI and [com.ultraviolette.uvclusterhmi.domain.repository.WifiRepository].
+ * ViewModel for the Wi-Fi settings screen.
  *
- * @param wifiRepository The repository handling Wi-Fi-related operations.
+ * All state is derived from [ClusterRepository] flows (backed by ClusterDataBus AIDL).
+ * No Wi-Fi SDK calls are made from this class — all control commands are delegated to
+ * ClusterDataBus via [ClusterRepository].
  */
-class WifiViewModel(private val wifiRepository: WifiRepository): ViewModel() {
-//    private var _scanResult  = MutableLiveData<List<String>>()
-//
-//    /**
-//     * LiveData containing the list of discovered Wi-Fi SSIDs.
-//     */
-//    val scanResult : LiveData<List<String>>
-//        get() = _scanResult
+class WifiViewModel(private val repository: ClusterRepository) : ViewModel() {
 
-    private val TAG = "WifiViewModel"
+    private val tag = "HMI/WifiViewModel"
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
-    private val _currentSignalLevel = MutableStateFlow(0)
-    val currentSignalLevel: StateFlow<Int> = _currentSignalLevel.asStateFlow()
-    private val _scanResult = MutableLiveData<List<WifiUiModel>>()
+    // ── State flows ───────────────────────────────────────────────────────────
 
-    val scanResult: LiveData<List<WifiUiModel>>
-        get() = _scanResult
+    /** True when the Wi-Fi adapter is enabled. */
+    val isEnabled: StateFlow<Boolean> = repository.wifiState
+        .map { it.isEnabled }
+        .stateIn(scope, SharingStarted.Eagerly, false)
 
-    private val _saveNetworkList = MutableLiveData<List<WifiUiModel>>()
+    /** Alias kept for ControlSectionFragment source compatibility. */
+    val onWifiStateChange: StateFlow<Boolean> = isEnabled
 
-    val saveNetworkList: LiveData<List<WifiUiModel>>
-        get() = _saveNetworkList
+    /** SSID of the currently connected network, or null when not connected / unknown. */
+    val connectedSSID: StateFlow<String?> = repository.wifiState
+        .map { state ->
+            state.connectedSsid.trim('"').takeIf { it.isNotBlank() && it != "<unknown ssid>" }
+        }
+        .stateIn(scope, SharingStarted.Eagerly, null)
 
-    //27/01/2026
-    private var _connectionState = MutableStateFlow<Boolean>(false)
+    /** True when the device has an active Wi-Fi data connection. */
+    val connectionState: StateFlow<Boolean> = repository.wifiState
+        .map { it.isConnected }
+        .stateIn(scope, SharingStarted.Eagerly, false)
 
-    val connectionState : StateFlow<Boolean>
-            = _connectionState.asStateFlow()
+    /** Current signal level (0–5) of the connected network. 0 when not connected. */
+    val signalLevel: StateFlow<Int> = repository.wifiState
+        .map { it.signalLevel }
+        .stateIn(scope, SharingStarted.Eagerly, 0)
 
-    private var _wifiState = MutableStateFlow(isWifiEnabled())
-    val onWifiStateChange : StateFlow<Boolean>
-        get() = _wifiState.asStateFlow()
+    /**
+     * Available Wi-Fi networks from the latest scan cycle.
+     * Maps each [WifiScanResult] to a [WifiUiModel] for the adapter.
+     */
+    val scanResult: StateFlow<List<WifiUiModel>> = repository.wifiScanResults
+        .map { results ->
+            results.map { WifiUiModel(ssid = it.ssid, level = it.level, isSecured = it.isSecured) }
+        }
+        .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    private var _connectedSSID = MutableStateFlow<String?>(null)
-    val connectedSSID : StateFlow<String?>
-        get() = _connectedSSID.asStateFlow()
+    /**
+     * Previously saved / configured networks that are currently in scan range.
+     * Derived from [scanResult] by filtering on the [isSaved] flag set by ClusterDataBus.
+     */
+    val saveNetworkList: StateFlow<List<WifiUiModel>> = repository.wifiScanResults
+        .map { results ->
+            results
+                .filter { it.isSaved }
+                .map { WifiUiModel(ssid = it.ssid, level = it.level, isSecured = it.isSecured) }
+        }
+        .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    private var _reconnectSSID = MutableStateFlow<String?>(null)
-    val reconnectSSID : StateFlow<String?>
-        get() = _reconnectSSID.asStateFlow()
+    /**
+     * SSID of a saved network that is in scan range while the device is not connected,
+     * making it a candidate for automatic re-connection prompting. Null when connected or
+     * no saved network is in range.
+     */
+    val reconnectSSID: StateFlow<String?> = combine(connectionState, saveNetworkList) { isConnected, saved ->
+        if (!isConnected && saved.isNotEmpty()) {
+            saved.first().ssid.also { Log.d(tag, "reconnectSSID candidate: $it") }
+        } else {
+            null
+        }
+    }.stateIn(scope, SharingStarted.Eagerly, null)
 
+    /** Currently highlighted item in the scan / saved-network list. */
     private val _selectedItem = MutableStateFlow<String?>(null)
     val selectedItem: StateFlow<String?> = _selectedItem.asStateFlow()
 
+    // ── Synchronous accessors (for imperative fragment calls) ─────────────────
 
-    fun startSignalMonitoring() {
-        viewModelScope.launch {
-            while (true) {
-                if (wifiRepository.isWifiEnabled()) {
-                    val level = wifiRepository.getCurrentSignalLevel()
-                    _currentSignalLevel.value = level
-                } else {
-                    _currentSignalLevel.value = 0
-                }
-                delay(2000)
-            }
-        }
-    }
-    fun wifiStateChange(){
-        wifiRepository.wifiStateChange {
-            _wifiState.value = it
-        }
-    }
+    /** Synchronous read of the current enabled state. */
+    fun isWifiEnabled(): Boolean = isEnabled.value
 
-    fun registerWifiStateChangeReceiver(){
-        wifiRepository.registerWifiStateChangeReceiver()
-    }
+    /** Synchronous SSID accessor used when filtering scan results against the connected network. */
+    fun getConnectedWifiSSID(): String? = connectedSSID.value
 
-    fun unregisterWifiStateChangeReceiver(){
-        wifiRepository.unregisterWifiStateChangeReceiver()
-    }
+    /** True when the device has an active Wi-Fi connection. */
+    fun isConnectionStateActive(): Boolean = connectionState.value
 
+    /** True when the saved-network list is empty. */
+    fun isSavedNetworkListEmpty(): Boolean = saveNetworkList.value.isEmpty()
 
-
-    /**
-     * Checks whether Wi-Fi is currently enabled on the device.
-     *
-     * @return true if Wi-Fi is enabled, false otherwise.
-     */
-    fun isWifiEnabled(): Boolean = wifiRepository.isWifiEnabled()
-
-    /**
-     * Connects to a specified Wi-Fi hotspot using SSID and password.
-     *
-     * @param ssid The SSID of the hotspot.
-     * @param password The password for the hotspot.
-     */
-    fun connectHotspot(ssid: String, password: String) = wifiRepository.connectHotspot(ssid, password, true)
-
-    /**
-     * Initiates a scan to discover available Wi-Fi networks.
-     */
-    fun startScan() = wifiRepository.startScan()
-
-    /**
-     * Returns the SSID of the currently connected Wi-Fi network.
-     *
-     * @return SSID as a string, or null if not connected.
-     */
-    fun getConnectedWifiSSID() = wifiRepository.getConnectedWifiSSID()
-
-    /**
-     * Forgets the currently connected or previously remembered Wi-Fi hotspot.
-     */
-    fun forgetHotspot() = wifiRepository.forgetHotspot()
-
-    /**
-     * Fetches the scan results asynchronously and updates [scanResult] LiveData.
-     */
-//    fun scanResult() {
-//        //for bug no 42 - Fix the Duplicates wifi  network
-//        wifiRepository.scanResult { result ->
-//            _scanResult.value = result.distinct()
-//        }
-//    }
-    fun scanResult() {
-        wifiRepository.scanResult { results ->
-            Log.d(TAG, "scanResult:  wifiRepository.scanResult :: $results")
-            _scanResult.value = results.map { result ->
-                WifiUiModel(
-                    ssid = result.SSID,
-                    level = android.net.wifi.WifiManager.calculateSignalLevel(result.level, 6), // normalize to 0–5
-                    isSecured = result.capabilities.contains("WEP") ||
-                            result.capabilities.contains("WPA") ||
-                            result.capabilities.contains("WPA2") ||
-                            result.capabilities.contains("WPA3")
-                )
-            }
-        }
-    }
-
-
-    fun getSavedNetworkList(){
-        wifiRepository.savedNetworkList{savedList->
-            val tempSavedNetworkList= savedList.toUiModels()
-            _saveNetworkList.value =  tempSavedNetworkList
-        }
-    }
-
-
-    fun isSavedNetworkListEmpty(): Boolean {
-        return _saveNetworkList.value.isNullOrEmpty()
-    }
-
-    fun connectToSavedNetwork(ssid: String){
-        wifiRepository.connectToSavedNetwork(ssid)
-    }
-
-
-
-    fun List<WifiConfiguration>.toUiModels(): List<WifiUiModel> {
-        return this.map { config ->
-            val ssid = config.SSID.trim('"')   // remove quotes around SSID
-
-            val isSecured = config.allowedKeyManagement.get(WifiConfiguration.KeyMgmt.WPA_PSK) ||
-                    config.allowedKeyManagement.get(WifiConfiguration.KeyMgmt.WPA_EAP) ||
-                    config.allowedKeyManagement.get(WifiConfiguration.KeyMgmt.IEEE8021X) ||
-                    config.wepKeys.any { !it.isNullOrBlank() }
-
-            WifiUiModel(
-                ssid = ssid,
-                level = 0,
-                isSecured = isSecured
-            )
-        }
-    }
-
+    /** True when a valid (non-placeholder) SSID is connected. */
     fun isNetworkConnected(): Boolean {
-        val ssid = _connectedSSID.value
+        val ssid = connectedSSID.value
         return ssid != null && ssid != "<unknown ssid>"
     }
 
+    // ── Control commands ──────────────────────────────────────────────────────
 
-    fun isConnectionStateActive(): Boolean{
-        return _connectionState.value
-    }
-
-    fun enableWifi(enable:Boolean){
-        wifiRepository.enableWifi(enable)
-    }
-
-    //27/01/2026
-    fun wifiConnected(){
-        Log.d(TAG, "wifiConnected: Entry")
-        wifiRepository.connectionState {isConnected->
-            Log.d(TAG, "wifiConnected: Connection state Changed :: $isConnected")
-            _connectionState.value = isConnected
+    /**
+     * Enable or disable the Wi-Fi adapter.
+     * @param enable true to enable, false to disable.
+     */
+    fun enableWifi(enable: Boolean) {
+        if (enable) {
+            Log.d(tag, "enableWifi()")
+            repository.wifiEnable()
+        } else {
+            Log.d(tag, "disableWifi()")
+            repository.wifiDisable()
         }
-        getConnectedSSID()
-        getSavedNetworkList()
-        startScan()
     }
 
-    ///WIFFI
-    fun autoConnectWifi() {
-        wifiRepository.startScan()
+    /** Trigger a new Wi-Fi scan. Results arrive via [scanResult] and [saveNetworkList]. */
+    fun startScan() {
+        Log.d(tag, "startScan()")
+        repository.wifiStartScan()
     }
 
-    fun getConnectedSSID() {
-        wifiRepository.connectedSSID{ssid->
-            _connectedSSID.value = ssid
-        }
-
+    /**
+     * No-op in the ClusterDataBus architecture.
+     * Scan results arrive automatically via [scanResult] after each scan cycle.
+     * Kept for source-compatibility with [WifiFragment] call sites.
+     */
+    fun scanResult() {
+        Log.d(tag, "scanResult() — scan results delivered via flow; triggering wifiStartScan")
+        repository.wifiStartScan()
     }
 
-    fun wifiReconnectRequest() {
-        wifiRepository.reconnectRequestSSID{ssid->
-            _reconnectSSID.value = ssid
-        }
-
+    /**
+     * Connect to a Wi-Fi network using the provided credentials.
+     * @param ssid     Network name.
+     * @param password Network password.
+     */
+    fun connectHotspot(ssid: String, password: String) {
+        Log.d(tag, "connectHotspot($ssid)")
+        repository.wifiConnect(ssid, password)
     }
 
+    /** Connect to an already-configured (saved) network by SSID without entering a password. */
+    fun connectToSavedNetwork(ssid: String) {
+        Log.d(tag, "connectToSavedNetwork($ssid)")
+        repository.wifiConnectToSaved(ssid)
+    }
+
+    /** Remove the current Wi-Fi connection from the configured-network list. */
+    fun forgetHotspot() {
+        Log.d(tag, "forgetHotspot()")
+        repository.wifiForget()
+    }
+
+    /**
+     * Refresh the saved-network list.
+     * In the ClusterDataBus architecture, saved networks arrive via [saveNetworkList] after
+     * each scan cycle. Triggers a new scan so the list is up-to-date.
+     */
+    fun getSavedNetworkList() {
+        Log.d(tag, "getSavedNetworkList() — triggering wifiStartScan")
+        repository.wifiStartScan()
+    }
+
+    /** Mark [ssid] as the currently highlighted item in the adapter. */
     fun selectItem(ssid: String) {
+        Log.d(tag, "selectItem($ssid)")
         _selectedItem.value = ssid
     }
 
-    ///END
+    /**
+     * Previously registered broadcast-receiver callbacks in the old WifiRepository.
+     * No-op in the ClusterDataBus architecture — connection state arrives via [connectionState] flow.
+     * Triggers a scan so UI is populated immediately on attach.
+     */
+    fun wifiConnected() {
+        Log.d(tag, "wifiConnected() — triggering initial scan")
+        repository.wifiStartScan()
+    }
 
+    /**
+     * Previously set up a reconnect-request listener in the old WifiRepository.
+     * No-op in the ClusterDataBus architecture — reconnect candidates are derived via [reconnectSSID].
+     */
+    fun wifiReconnectRequest() {
+        Log.d(tag, "wifiReconnectRequest() — reconnect candidates derived from saveNetworkList + connectionState")
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        scope.cancel()
+    }
+
+    // ── Factory ───────────────────────────────────────────────────────────────
+
+    class Factory(private val app: Application) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            val clusterApp = app as ClusterApplication
+            return WifiViewModel(clusterApp.clusterRepository) as T
+        }
+    }
 }
-
-
-

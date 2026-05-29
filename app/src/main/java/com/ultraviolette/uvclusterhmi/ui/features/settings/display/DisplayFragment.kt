@@ -20,7 +20,6 @@ import androidx.fragment.app.viewModels
 import com.ultraviolette.uvclusterhmi.R
 import com.ultraviolette.uvclusterhmi.domain.ennumerate.ButtonNavigation
 import com.ultraviolette.uvclusterhmi.ui.features.MainActivity
-import com.ultraviolette.uvclusterhmi.ui.viewModel.CarViewModel
 import com.ultraviolette.uvclusterhmi.ui.viewModel.SharedViewModel
 import com.ultraviolette.uvclusterhmi.utils.Utilities.setOnSoundClickListener
 import com.ultraviolette.uvclusterhmi.utils.ViewModelFactory
@@ -48,8 +47,6 @@ class DisplayFragment : Fragment() {
     private val viewModel by viewModels<DisplayViewModel> { ViewModelFactory(context = requireContext()) }
     private var clickedUiState: ClickedUiState = ClickedUiState.Brightness
     private var buttonClickedState: ButtonClickedState = ButtonClickedState.Brightness
-
-    private val carViewModel by activityViewModels<CarViewModel> { ViewModelFactory(context = requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

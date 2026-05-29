@@ -24,7 +24,8 @@ import com.ultraviolette.uvclusterhmi.R
 import com.ultraviolette.uvclusterhmi.domain.ennumerate.ButtonNavigation
 import com.ultraviolette.uvclusterhmi.ui.customWidget.CurvedProgressBarLeft
 import com.ultraviolette.uvclusterhmi.ui.customWidget.CurvedProgressBarRight
-import com.ultraviolette.uvclusterhmi.ui.viewModel.CarViewModel
+import com.ultraviolette.uvclusterhmi.ClusterApplication
+import com.ultraviolette.uvclusterhmi.ui.viewModel.ClusterViewModel
 import com.ultraviolette.uvclusterhmi.utils.Utilities
 import com.ultraviolette.uvclusterhmi.utils.Utilities.setOnSoundClickListener
 import com.ultraviolette.uvclusterhmi.utils.ViewModelFactory
@@ -56,7 +57,9 @@ class TpmsFragment : Fragment() {
     //for bug no 46 - pop up exit on button press
     private var tpmsPurchaseDialog : AlertDialog ?= null
     private var pressureInfoDialog : AlertDialog ?= null
-    private val carViewModel by activityViewModels<CarViewModel> { ViewModelFactory(context = requireContext()) }
+    private val clusterViewModel: ClusterViewModel by activityViewModels {
+        ClusterViewModel.Factory(requireActivity().application as ClusterApplication)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,9 +80,10 @@ class TpmsFragment : Fragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    carViewModel.swiftButton.collect { swiftButton ->
+                    // Handlebar events via ClusterDataBus (replaces carViewModel.swiftButton)
+                    clusterViewModel.handlebarButton.collect { swiftButton ->
                         val button = Utilities.getButtonState(swiftButton)
-                        if(button == ButtonNavigation.None) return@collect
+                        if (button == ButtonNavigation.None) return@collect
                         handleButtonNavigation(button.ordinal)
                     }
                 }

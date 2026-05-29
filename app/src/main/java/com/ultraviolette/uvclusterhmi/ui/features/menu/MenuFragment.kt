@@ -30,7 +30,6 @@ import com.airbnb.lottie.LottieAnimationView
 import com.ultraviolette.uvclusterhmi.R
 import com.ultraviolette.uvclusterhmi.domain.ennumerate.ButtonNavigation
 import com.ultraviolette.uvclusterhmi.ui.features.MainActivity
-import com.ultraviolette.uvclusterhmi.ui.viewModel.CarViewModel
 import com.ultraviolette.uvclusterhmi.ui.viewModel.SharedViewModel
 import com.ultraviolette.uvclusterhmi.utils.Utilities
 import com.ultraviolette.uvclusterhmi.utils.Utilities.ARG_BALLISTIC_PLUS
@@ -155,7 +154,6 @@ class MenuFragment : Fragment() {
         AnimationUtils.loadAnimation(requireContext(), R.anim.release_scale)
     }
 
-    private val carViewModel by activityViewModels<CarViewModel> { ViewModelFactory(context = requireContext()) }
     private val sharedViewModel by activityViewModels<SharedViewModel> { ViewModelFactory(context = requireContext()) }
     private val viewModel by activityViewModels<MenuViewModel> { ViewModelFactory(context = requireContext()) }
     private val clusterViewModel: com.ultraviolette.uvclusterhmi.ui.viewModel.ClusterViewModel by activityViewModels {
@@ -246,20 +244,18 @@ class MenuFragment : Fragment() {
         showToolBar()
 
 	//16April
-	viewLifecycleOwner.lifecycleScope.launch {
+        // Handlebar events via ClusterDataBus (replaces carViewModel.swiftButton).
+        // isMenuActive gate still applies — events are dropped while we are in a child screen.
+        viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                carViewModel.swiftButton.collect { swiftButton ->
-
+                clusterViewModel.handlebarButton.collect { swiftButton ->
                     val button = Utilities.getButtonState(swiftButton)
-
                     if (button == ButtonNavigation.None) return@collect
-
                     if (!isMenuActive) {
-                        Log.w(TAG, "DROPPED — fragment not active")
+                        Log.w(TAG, "handlebarButton: DROPPED — fragment not active")
                         return@collect
                     }
-
-                    Log.d(TAG, "swiftButton: ACCEPTED [${buttonName(button.ordinal)}] currentPosition=${positionName(currentPosition)}, navDest=${findNavController().currentDestination?.label}")
+                    Log.d(TAG, "handlebarButton: ACCEPTED [${buttonName(button.ordinal)}] pos=${positionName(currentPosition)} dest=${findNavController().currentDestination?.label}")
                     handleButtonNavigation(button.ordinal)
                 }
             }

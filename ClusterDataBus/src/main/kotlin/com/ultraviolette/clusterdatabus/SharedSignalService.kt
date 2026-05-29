@@ -40,6 +40,18 @@ class SharedSignalService : Service() {
         override fun getLastVehicleSnapshot(): VehicleSnapshot = stateManager.vehicleSnapshot
         override fun getLastBtState(): BtState = stateManager.btState
         override fun getLastWifiState(): WifiState = stateManager.wifiState
+        override fun bluetoothEnable()           = connectionManager.enableBluetooth()
+        override fun bluetoothDisable()          = connectionManager.disableBluetooth()
+        override fun bluetoothStartDiscovery()   = connectionManager.startDiscoveryFromService()
+        override fun bluetoothCreateBond(address: String) = connectionManager.createBond(address)
+
+        // ── Wi-Fi control ─────────────────────────────────────────────────────
+        override fun wifiEnable()                         = connectionManager.wifiEnable()
+        override fun wifiDisable()                        = connectionManager.wifiDisable()
+        override fun wifiConnect(ssid: String, password: String) = connectionManager.wifiConnect(ssid, password)
+        override fun wifiConnectToSaved(ssid: String)     = connectionManager.wifiConnectToSaved(ssid)
+        override fun wifiForget()                         = connectionManager.wifiForget()
+        override fun wifiStartScan()                      = connectionManager.wifiStartScan()
     }
 
     private val configBinder = object : IConfigService.Stub() {
@@ -59,6 +71,10 @@ class SharedSignalService : Service() {
         super.onCreate()
         startForeground(NOTIFICATION_ID, buildNotification())
         initManagers()
+        // Audit runtime permissions on every start — logs which permissions are missing.
+        // If Wi-Fi location permission is absent the HMI app process reads scan results
+        // via its own BroadcastReceiver (BusDataSource) using its own granted permissions.
+        permissionManager.logPermissionAudit()
         restorePersistedState()
         connectionManager.connect()
         configManager.connectCloud()

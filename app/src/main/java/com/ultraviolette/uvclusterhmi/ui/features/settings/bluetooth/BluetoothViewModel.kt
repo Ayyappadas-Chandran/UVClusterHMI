@@ -1,91 +1,79 @@
 package com.ultraviolette.uvclusterhmi.ui.features.settings.bluetooth
 
-import android.bluetooth.BluetoothDevice
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.app.Application
 import androidx.lifecycle.ViewModel
-import com.ultraviolette.uvclusterhmi.domain.repository.BluetoothRepository
-import kotlinx.coroutines.flow.MutableStateFlow
+import androidx.lifecycle.ViewModelProvider
+import com.ultraviolette.cluster.aidl.BtScanResult
+import com.ultraviolette.uvclusterhmi.ClusterApplication
+import com.ultraviolette.uvclusterhmi.data.repository.ClusterRepository
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import android.util.Log
 
 /**
- * ViewModel responsible for managing Bluetooth operations.
- * It acts as an interface between the UI layer and the BluetoothRepository.
+ * ViewModel for the Bluetooth settings screen.
  *
- * @param bluetoothRepository The repository that handles Bluetooth-related logic.
+ * State and control commands flow through ClusterDataBus (AIDL) rather than
+ * calling Android Bluetooth APIs directly from the HMI process.
  */
-class BluetoothViewModel(private val bluetoothRepository: BluetoothRepository) : ViewModel() {
-    private val _scanResult = MutableLiveData<List<BluetoothDevice>>()
-    /**
-     * LiveData holding the list of discovered Bluetooth devices.
-     */
-    val scanResult: LiveData<List<BluetoothDevice>>
-        get() = _scanResult
+class BluetoothViewModel(private val repository: ClusterRepository) : ViewModel() {
 
-    /**
-     * Initiates the Bluetooth scanning process and updates scanResult LiveData
-     * with the list of discovered Bluetooth devices.
-     */
-    fun scanResult() {
-        bluetoothRepository.scanResult { result ->
-            _scanResult.value = result
-        }
-    }
+    private val tag = "HMI/BluetoothViewModel"
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
-    private val _onBluetoothStateChange = MutableStateFlow(isBluetoothEnabled())
-    val onBluetoothStateChange: StateFlow<Boolean>
-        get() = _onBluetoothStateChange
+    /** True when the Bluetooth adapter is enabled. Derived from ClusterDataBus BtState. */
+    val isEnabled: StateFlow<Boolean> = repository.btState
+        .map { it.isEnabled }
+        .stateIn(scope, kotlinx.coroutines.flow.SharingStarted.Eagerly, false)
 
-    fun bluetoothStateChange() {
-        bluetoothRepository.bluetoothStateChange {
-            _onBluetoothStateChange.value = it
-        }
-    }
+    /** Devices discovered during the current scan cycle. Empty list when scan starts or BT is off. */
+    val scanResults: StateFlow<List<BtScanResult>> = repository.btScanResults
+        .stateIn(scope, kotlinx.coroutines.flow.SharingStarted.Eagerly, emptyList())
 
-    /**
-     * Checks if Bluetooth is currently enabled on the device.
-     *
-     * @return true if Bluetooth is enabled, false otherwise.
-     */
-    fun isBluetoothEnabled(): Boolean {
-        return bluetoothRepository.isBluetoothEnabled()
-    }
-
-    /**
-     * Starts the discovery process to search for nearby Bluetooth devices.
-     */
-    fun startDiscovery() {
-        bluetoothRepository.startDiscovery()
-    }
+    /** Convenience accessor for the current enabled state (synchronous). */
+    fun isBluetoothEnabled(): Boolean = isEnabled.value
 
     fun enableBluetooth() {
-        bluetoothRepository.enableBluetooth()
+        Log.d(tag, "enableBluetooth()")
+        repository.bluetoothEnable()
     }
 
     fun disableBluetooth() {
-        bluetoothRepository.disableBluetooth()
+        Log.d(tag, "disableBluetooth()")
+        repository.bluetoothDisable()
+    }
+
+    fun startDiscovery() {
+        Log.d(tag, "startDiscovery()")
+        repository.bluetoothStartDiscovery()
     }
 
     /**
-     * Initiates bonding (pairing) with the specified Bluetooth device.
-     *
-     * @param bluetoothDevice The device to bond with.
+     * Initiate pairing with the device identified by its MAC [address].
+     * The bond-state update will arrive via [repository.btState] once pairing completes.
      */
-    fun createBond(bluetoothDevice: BluetoothDevice) {
-        bluetoothRepository.createBond(bluetoothDevice)
+    fun createBond(address: String) {
+        Log.d(tag, "createBond($address)")
+        repository.bluetoothCreateBond(address)
     }
 
-    /**
-     * Registers the broadcast receiver to listen for Bluetooth-related system events.
-     */
-    fun registerBluetoothActionReceiver() {
-        bluetoothRepository.registerBluetoothActionReceiver()
+    override fun onCleared() {
+        super.onCleared()
+        scope.cancel()
     }
 
-    /**
-     * Unregisters the previously registered Bluetooth broadcast receiver.
-     */
-    fun unregisterBluetoothActionReceiver() {
-        bluetoothRepository.unregisterBluetoothActionReceiver()
+    // ── Factory ───────────────────────────────────────────────────────────────
+
+    class Factory(private val app: Application) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            val clusterApp = app as ClusterApplication
+            return BluetoothViewModel(clusterApp.clusterRepository) as T
+        }
     }
 }
